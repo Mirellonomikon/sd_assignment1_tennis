@@ -14,6 +14,7 @@ public interface UserService {
     User loginUser(UserSignInDTO userSignInDTO) throws Exception;
     User updateUserCredentials(UserUpdateCredentialsDTO userUpdateCredentialsDTO, Integer id) throws Exception;
     Optional<User> findUserByUsername(String username);
+    List<User> findUserByRole(String role);
     List<User> findAllUsers();
     User updateUser(UserDTO userDTO, Integer id) throws Exception;
     void deleteUser(Integer userId) throws Exception;
