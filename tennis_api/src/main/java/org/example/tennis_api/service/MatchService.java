@@ -22,6 +22,7 @@ public interface MatchService {
     List<Match> findMatchesByLocation(String location);
     List<Match> findMatchesByReferee(Integer refereeId);
     List<Match> findMatchesByPlayer(Integer playerId);
+    List<Match> findMatches(LocalDate startDate, LocalDate endDate, String location, Integer refereeId, Integer playerId);
     void exportMatches(List<Match> matches, OutputStream outputStream, MatchExportStrategy strategy) throws IOException;
 }
 

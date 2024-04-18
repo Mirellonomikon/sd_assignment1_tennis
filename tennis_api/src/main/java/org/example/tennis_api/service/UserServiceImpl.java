@@ -8,7 +8,7 @@ import org.example.tennis_api.entity.User;
 import org.example.tennis_api.mapper.UserMapper;
 import org.example.tennis_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +19,10 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
@@ -82,6 +82,7 @@ public class UserServiceImpl implements UserService{
         existingUser.setUsername(userDTO.getUsername());
         existingUser.setName(userDTO.getName());
         existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        existingUser.setUserType(userDTO.getUserType());
         return userRepository.save(existingUser);
     }
 

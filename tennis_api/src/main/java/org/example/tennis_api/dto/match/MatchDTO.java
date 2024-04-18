@@ -15,7 +15,6 @@ public class MatchDTO {
     private LocalDate matchDate;
     private LocalTime matchTime;
     private String location;
-    private Integer tournament;
     private Integer referee;
     private Integer player1;
     private Integer player1Score;

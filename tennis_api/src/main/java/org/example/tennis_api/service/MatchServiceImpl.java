@@ -1,5 +1,6 @@
 package org.example.tennis_api.service;
 
+import jakarta.transaction.Transactional;
 import org.example.tennis_api.dto.match.MatchDTO;
 import org.example.tennis_api.entity.Match;
 import org.example.tennis_api.mapper.MatchMapper;
@@ -36,13 +37,19 @@ public class MatchServiceImpl implements MatchService{
     }
 
     @Override
+    @Transactional
     public Match createMatch(MatchDTO matchDTO) throws Exception {
         validateMatchDTO(matchDTO);
         Match match = matchMapper.toEntity(matchDTO);
-        return matchRepository.save(match);
+        Match updatedMatch = matchRepository.save(match);
+        matchRepository.updateReferee(updatedMatch.getId(), matchDTO.getReferee());
+        matchRepository.updatePlayer1(updatedMatch.getId(), matchDTO.getPlayer1());
+        matchRepository.updatePlayer2(updatedMatch.getId(), matchDTO.getPlayer2());
+        return updatedMatch;
     }
 
     @Override
+    @Transactional
     public Match registerPlayerToMatch(Integer matchId, Integer playerId) throws Exception {
         Match match = matchRepository.findById(matchId)
                 .orElseThrow(() -> new Exception("Match not found"));
@@ -65,12 +72,12 @@ public class MatchServiceImpl implements MatchService{
 
     @Override
     public List<Match> findAllMatches() {
-        return List.of();
+        return matchRepository.findAll();
     }
 
     @Override
     public Optional<Match> findMatchById(Integer matchId) throws Exception {
-        return Optional.empty();
+        return matchRepository.findById(matchId);
     }
 
     @Override
@@ -137,7 +144,24 @@ public class MatchServiceImpl implements MatchService{
         return matchRepository.findByPlayer1IdOrPlayer2Id(playerId, playerId);
     }
 
+
+    @Override
+    public List<Match> findMatches(LocalDate startDate, LocalDate endDate, String location, Integer refereeId, Integer playerId) {
+        if (startDate != null && endDate != null) {
+            return findMatchesByDateRange(startDate, endDate);
+        } else if (location != null) {
+            return findMatchesByLocation(location);
+        } else if (refereeId != null) {
+            return findMatchesByReferee(refereeId);
+        } else if (playerId != null) {
+            return findMatchesByPlayer(playerId);
+        }
+        return findAllMatches();
+    }
+
+    @Override
     public void exportMatches(List<Match> matches, OutputStream outputStream, MatchExportStrategy strategy) throws IOException {
         strategy.export(matches, outputStream);
     }
+
 }

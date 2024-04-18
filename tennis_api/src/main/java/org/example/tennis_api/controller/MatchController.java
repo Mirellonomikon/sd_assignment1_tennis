@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,11 +38,11 @@ public class MatchController {
         }
     }
 
-    @PostMapping("/{matchId}/register/")
-    public ResponseEntity<MatchDTO> registerPlayerToMatch(@PathVariable Integer matchId, @RequestParam Integer playerId) {
+    @PutMapping("/{matchId}/register/")
+    public ResponseEntity<Match> registerPlayerToMatch(@PathVariable Integer matchId, @RequestParam Integer playerId) {
         try {
             Match match = matchService.registerPlayerToMatch(matchId, playerId);
-            return ResponseEntity.ok(matchMapper.toDTO(match));
+            return ResponseEntity.ok(match);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
@@ -105,10 +104,10 @@ public class MatchController {
                                                 @RequestParam(required = false) Integer playerId,
                                                 @RequestParam String format) {
         try {
-            List<Match> matches = filterMatches(startDate, endDate, location, refereeId, playerId);
+            List<Match> matches = matchService.findMatches(startDate, endDate, location, refereeId, playerId);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             MatchExportStrategy strategy = format.equals("csv") ? new CsvExportStrategy() : new TxtExportStrategy();
-            strategy.export(matches, outputStream);
+            matchService.exportMatches(matches, outputStream, strategy);
             byte[] data = outputStream.toByteArray();
             return ResponseEntity.ok()
                     .contentType(format.equals("csv") ? MediaType.valueOf("text/csv") : MediaType.valueOf("text/plain"))
@@ -119,19 +118,4 @@ public class MatchController {
         }
     }
 
-    private List<Match> filterMatches(LocalDate startDate, LocalDate endDate, String location, Integer refereeId, Integer playerId) {
-        List<Match> matches = new ArrayList<>();
-        if (startDate != null && endDate != null) {
-            matches.addAll(matchService.findMatchesByDateRange(startDate, endDate));
-        } else if (location != null) {
-            matches.addAll(matchService.findMatchesByLocation(location));
-        } else if (refereeId != null) {
-            matches.addAll(matchService.findMatchesByReferee(refereeId));
-        } else if (playerId != null) {
-            matches.addAll(matchService.findMatchesByPlayer(playerId));
-        } else {
-            matches = matchService.findAllMatches();
-        }
-        return matches;
-    }
 }

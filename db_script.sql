@@ -25,9 +25,9 @@ create table matches
     location      varchar(255) not null,
     referee_id    integer
         references users,
-    player1_id    integer      not null
+    player1_id    integer
         references users,
-    player2_id    integer      not null
+    player2_id    integer
         references users,
     player1_score integer,
     player2_score integer
