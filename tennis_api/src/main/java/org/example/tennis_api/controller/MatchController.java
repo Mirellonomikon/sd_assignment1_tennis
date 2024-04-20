@@ -25,7 +25,6 @@ import java.util.List;
 public class MatchController {
 
     private final MatchService matchService;
-    private final MatchMapper matchMapper;
 
     @PostMapping("/create")
     public ResponseEntity<Match> createMatch(@RequestBody MatchDTO matchDTO) throws Exception {
