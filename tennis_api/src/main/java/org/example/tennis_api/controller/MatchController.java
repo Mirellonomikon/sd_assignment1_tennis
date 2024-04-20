@@ -28,14 +28,10 @@ public class MatchController {
     private final MatchService matchService;
     private final MatchMapper matchMapper;
 
-    @PostMapping("/")
-    public ResponseEntity<Match> createMatch(@RequestBody MatchDTO matchDTO) {
-        try {
-            Match match = matchService.createMatch(matchDTO);
-            return ResponseEntity.ok(match);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    @PostMapping("/create")
+    public ResponseEntity<Match> createMatch(@RequestBody MatchDTO matchDTO) throws Exception {
+        Match match = matchService.createMatch(matchDTO);
+        return ResponseEntity.ok(match);
     }
 
     @PutMapping("/{matchId}/register/")
@@ -48,7 +44,7 @@ public class MatchController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public ResponseEntity<List<Match>> getAllMatches() {
         List<Match> matches = matchService.findAllMatches();
         return ResponseEntity.ok(matches);

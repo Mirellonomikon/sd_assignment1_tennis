@@ -14,14 +14,10 @@ public interface MatchService {
     Match createMatch(MatchDTO matchDTO) throws Exception;
     Match registerPlayerToMatch(Integer matchId, Integer playerId) throws Exception;
     List<Match> findAllMatches();
-    Optional<Match> findMatchById(Integer matchId) throws Exception;
+    Optional<Match> findMatchById(Integer matchId);
     Match updateMatchScore(Integer matchId, Integer player1Score, Integer player2Score) throws Exception;
     Match updateMatch(MatchDTO matchDTO, Integer id) throws Exception;
     void deleteMatch(Integer matchId) throws Exception;
-    List<Match> findMatchesByDateRange(LocalDate startDate, LocalDate endDate);
-    List<Match> findMatchesByLocation(String location);
-    List<Match> findMatchesByReferee(Integer refereeId);
-    List<Match> findMatchesByPlayer(Integer playerId);
     List<Match> findMatches(LocalDate startDate, LocalDate endDate, String location, Integer refereeId, Integer playerId);
     void exportMatches(List<Match> matches, OutputStream outputStream, MatchExportStrategy strategy) throws IOException;
 }

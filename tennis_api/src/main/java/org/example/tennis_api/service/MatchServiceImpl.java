@@ -1,10 +1,11 @@
 package org.example.tennis_api.service;
 
-import jakarta.transaction.Transactional;
 import org.example.tennis_api.dto.match.MatchDTO;
 import org.example.tennis_api.entity.Match;
+import org.example.tennis_api.entity.User;
 import org.example.tennis_api.mapper.MatchMapper;
 import org.example.tennis_api.repository.MatchRepository;
+import org.example.tennis_api.repository.UserRepository;
 import org.example.tennis_api.utilities.MatchExportStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,16 +15,19 @@ import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MatchServiceImpl implements MatchService{
 
     private final MatchRepository matchRepository;
+    private final UserRepository userRepository;
     private final MatchMapper matchMapper;
 
     @Autowired
-    public MatchServiceImpl(MatchRepository matchRepository, MatchMapper matchMapper) {
+    public MatchServiceImpl(MatchRepository matchRepository, UserRepository userRepository, MatchMapper matchMapper) {
         this.matchRepository = matchRepository;
+        this.userRepository = userRepository;
         this.matchMapper = matchMapper;
     }
 
@@ -37,19 +41,30 @@ public class MatchServiceImpl implements MatchService{
     }
 
     @Override
-    @Transactional
     public Match createMatch(MatchDTO matchDTO) throws Exception {
         validateMatchDTO(matchDTO);
         Match match = matchMapper.toEntity(matchDTO);
-        Match updatedMatch = matchRepository.save(match);
-        matchRepository.updateReferee(updatedMatch.getId(), matchDTO.getReferee());
-        matchRepository.updatePlayer1(updatedMatch.getId(), matchDTO.getPlayer1());
-        matchRepository.updatePlayer2(updatedMatch.getId(), matchDTO.getPlayer2());
-        return updatedMatch;
+
+        if (matchDTO.getReferee() != null) {
+            User referee = userRepository.findById(matchDTO.getReferee())
+                    .orElseThrow(() -> new IllegalArgumentException("Referee not found with ID: " + matchDTO.getReferee()));
+            match.setReferee(referee);
+        }
+        if (matchDTO.getPlayer1() != null) {
+            User player1 = userRepository.findById(matchDTO.getPlayer1())
+                    .orElseThrow(() -> new IllegalArgumentException("Player 1 not found with ID: " + matchDTO.getPlayer1()));
+            match.setPlayer1(player1);
+        }
+        if (matchDTO.getPlayer2() != null) {
+            User player2 = userRepository.findById(matchDTO.getPlayer2())
+                    .orElseThrow(() -> new IllegalArgumentException("Player 2 not found with ID: " + matchDTO.getPlayer2()));
+            match.setPlayer2(player2);
+        }
+
+        return matchRepository.save(match);
     }
 
     @Override
-    @Transactional
     public Match registerPlayerToMatch(Integer matchId, Integer playerId) throws Exception {
         Match match = matchRepository.findById(matchId)
                 .orElseThrow(() -> new Exception("Match not found"));
@@ -76,7 +91,7 @@ public class MatchServiceImpl implements MatchService{
     }
 
     @Override
-    public Optional<Match> findMatchById(Integer matchId) throws Exception {
+    public Optional<Match> findMatchById(Integer matchId) {
         return matchRepository.findById(matchId);
     }
 
@@ -95,14 +110,28 @@ public class MatchServiceImpl implements MatchService{
                 .orElseThrow(() -> new Exception("Match not found"));
         validateMatchDTO(matchDTO);
 
-        if (matchDTO.getReferee() != null && !matchDTO.getReferee().equals(existingMatch.getReferee().getId())) {
-            matchRepository.updateReferee(id, matchDTO.getReferee());
+        if (matchDTO.getReferee() != null && (existingMatch.getReferee() == null || !matchDTO.getReferee().equals(existingMatch.getReferee().getId()))) {
+            User referee = userRepository.findById(matchDTO.getReferee())
+                    .orElseThrow(() -> new Exception("Referee with ID " + matchDTO.getReferee() + " not found"));
+            existingMatch.setReferee(referee);
+        } else if (matchDTO.getReferee() == null) {
+            existingMatch.setReferee(null);
         }
+
         if (matchDTO.getPlayer1() != null && (existingMatch.getPlayer1() == null || !matchDTO.getPlayer1().equals(existingMatch.getPlayer1().getId()))) {
-            matchRepository.updatePlayer1(id, matchDTO.getPlayer1());
+            User player1 = userRepository.findById(matchDTO.getPlayer1())
+                    .orElseThrow(() -> new Exception("Player1 with ID " + matchDTO.getPlayer1() + " not found"));
+            existingMatch.setPlayer1(player1);
+        } else if (matchDTO.getPlayer1() == null) {
+            existingMatch.setPlayer1(null);
         }
+
         if (matchDTO.getPlayer2() != null && (existingMatch.getPlayer2() == null || !matchDTO.getPlayer2().equals(existingMatch.getPlayer2().getId()))) {
-            matchRepository.updatePlayer2(id, matchDTO.getPlayer2());
+            User player2 = userRepository.findById(matchDTO.getPlayer2())
+                    .orElseThrow(() -> new Exception("Player2 with ID " + matchDTO.getPlayer2() + " not found"));
+            existingMatch.setPlayer2(player2);
+        } else if (matchDTO.getPlayer2() == null) {
+            existingMatch.setPlayer2(null);
         }
 
         existingMatch.setName(matchDTO.getName());
@@ -125,38 +154,32 @@ public class MatchServiceImpl implements MatchService{
     }
 
     @Override
-    public List<Match> findMatchesByDateRange(LocalDate startDate, LocalDate endDate) {
-        return matchRepository.findByMatchDateBetween(startDate, endDate);
-    }
-
-    @Override
-    public List<Match> findMatchesByLocation(String location) {
-        return matchRepository.findByLocation(location);
-    }
-
-    @Override
-    public List<Match> findMatchesByReferee(Integer refereeId) {
-        return matchRepository.findByRefereeId(refereeId);
-    }
-
-    @Override
-    public List<Match> findMatchesByPlayer(Integer playerId) {
-        return matchRepository.findByPlayer1IdOrPlayer2Id(playerId, playerId);
-    }
-
-
-    @Override
     public List<Match> findMatches(LocalDate startDate, LocalDate endDate, String location, Integer refereeId, Integer playerId) {
+        List<Match> matches = matchRepository.findAll();
+
         if (startDate != null && endDate != null) {
-            return findMatchesByDateRange(startDate, endDate);
-        } else if (location != null) {
-            return findMatchesByLocation(location);
-        } else if (refereeId != null) {
-            return findMatchesByReferee(refereeId);
-        } else if (playerId != null) {
-            return findMatchesByPlayer(playerId);
+            matches = matches.stream()
+                    .filter(match -> !match.getMatchDate().isBefore(startDate) && !match.getMatchDate().isAfter(endDate))
+                    .collect(Collectors.toList());
         }
-        return findAllMatches();
+        if (location != null) {
+            matches = matches.stream()
+                    .filter(match -> match.getLocation().equalsIgnoreCase(location))
+                    .collect(Collectors.toList());
+        }
+        if (refereeId != null) {
+            matches = matches.stream()
+                    .filter(match -> match.getReferee() != null && match.getReferee().getId().equals(refereeId))
+                    .collect(Collectors.toList());
+        }
+        if (playerId != null) {
+            matches = matches.stream()
+                    .filter(match -> (match.getPlayer1() != null && match.getPlayer1().getId().equals(playerId)) ||
+                            (match.getPlayer2() != null && match.getPlayer2().getId().equals(playerId)))
+                    .collect(Collectors.toList());
+        }
+
+        return matches;
     }
 
     @Override
