@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User loginUser(UserSignInDTO userSignInDTO) throws Exception {
         User user = userRepository.findByUsername(userSignInDTO.getUsername())
-                .orElseThrow(() -> new Exception("User not found."));
+                .orElseThrow(() -> new IllegalArgumentException("User not found."));
         if (!passwordEncoder.matches(userSignInDTO.getPassword(), user.getPassword())) {
             throw new Exception("Invalid password.");
         }
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User updateUserCredentials(UserUpdateCredentialsDTO userUpdateCredentialsDTO, Integer id) throws Exception {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new Exception("User not found."));
+                .orElseThrow(() -> new IllegalArgumentException("User not found."));
         if (!passwordEncoder.matches(userUpdateCredentialsDTO.getOldPassword(), user.getPassword())) {
             throw new Exception("Invalid old password.");
         }
@@ -76,9 +76,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUser(UserDTO userDTO, Integer id) throws Exception {
+    public User updateUser(UserDTO userDTO, Integer id) {
         User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new Exception("User not found."));
+                .orElseThrow(() -> new IllegalArgumentException("User not found."));
         existingUser.setUsername(userDTO.getUsername());
         existingUser.setName(userDTO.getName());
         existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -87,9 +87,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void deleteUser(Integer userId) throws Exception {
+    public void deleteUser(Integer userId) {
         if (!userRepository.existsById(userId)) {
-            throw new Exception("User not found.");
+            throw new IllegalArgumentException("User not found.");
         }
         userRepository.deleteById(userId);
     }

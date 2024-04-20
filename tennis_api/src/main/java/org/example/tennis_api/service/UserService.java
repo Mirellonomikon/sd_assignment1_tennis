@@ -16,6 +16,6 @@ public interface UserService {
     Optional<User> findUserByUsername(String username);
     List<User> findUserByRole(String role);
     List<User> findAllUsers();
-    User updateUser(UserDTO userDTO, Integer id) throws Exception;
-    void deleteUser(Integer userId) throws Exception;
+    User updateUser(UserDTO userDTO, Integer id);
+    void deleteUser(Integer userId);
 }

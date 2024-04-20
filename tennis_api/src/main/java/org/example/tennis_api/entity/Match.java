@@ -31,18 +31,18 @@ public class Match {
     @Column(name = "location", nullable = false)
     private String location;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "referee_id")
     private User referee;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "player1_id")
     private User player1;
 
     @Column(name = "player1_score")
     private Integer player1Score;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "player2_id")
     private User player2;
 

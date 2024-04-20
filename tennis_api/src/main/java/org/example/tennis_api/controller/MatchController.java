@@ -9,15 +9,14 @@ import org.example.tennis_api.utilities.CsvExportStrategy;
 import org.example.tennis_api.utilities.MatchExportStrategy;
 import org.example.tennis_api.utilities.TxtExportStrategy;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -34,14 +33,10 @@ public class MatchController {
         return ResponseEntity.ok(match);
     }
 
-    @PutMapping("/{matchId}/register/")
-    public ResponseEntity<Match> registerPlayerToMatch(@PathVariable Integer matchId, @RequestParam Integer playerId) {
-        try {
-            Match match = matchService.registerPlayerToMatch(matchId, playerId);
-            return ResponseEntity.ok(match);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+    @PutMapping("/{matchId}/register")
+    public ResponseEntity<Match> registerPlayerToMatch(@PathVariable Integer matchId, @RequestParam Integer playerId) throws Exception {
+        Match match = matchService.registerPlayerToMatch(matchId, playerId);
+        return ResponseEntity.ok(match);
     }
 
     @GetMapping("/all")
@@ -51,45 +46,28 @@ public class MatchController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MatchDTO> getMatchById(@PathVariable Integer id) {
-        try {
-            Optional<Match> match = matchService.findMatchById(id);
-            return match.map(value -> ResponseEntity.ok(matchMapper.toDTO(value)))
-                    .orElseGet(() -> ResponseEntity.notFound().build());
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Match> getMatchById(@PathVariable Integer id) {
+        Match match = matchService.findMatchById(id).orElseThrow(() -> new InputMismatchException("Match not found"));
+        return ResponseEntity.ok(match);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Match> updateMatch(@PathVariable Integer id, @RequestBody MatchDTO matchDTO) {
-        try {
-            Match updatedMatch = matchService.updateMatch(matchDTO, id);
-            return ResponseEntity.ok(updatedMatch);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<Match> updateMatch(@PathVariable Integer id, @RequestBody MatchDTO matchDTO) throws Exception {
+        Match updatedMatch = matchService.updateMatch(matchDTO, id);
+        return ResponseEntity.ok(updatedMatch);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMatch(@PathVariable Integer id) {
-        try {
-            matchService.deleteMatch(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> deleteMatch(@PathVariable Integer id) throws Exception {
+        matchService.deleteMatch(id);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{matchId}/score")
-    public ResponseEntity<MatchDTO> updateMatchScore(@PathVariable Integer matchId, @RequestParam Integer player1Score, @RequestParam Integer player2Score) {
-        try {
-            matchService.updateMatchScore(matchId, player1Score, player2Score);
-            Match updatedMatch = matchService.findMatchById(matchId).orElseThrow(() -> new Exception("Match not found after update"));
-            return ResponseEntity.ok(matchMapper.toDTO(updatedMatch));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+    public ResponseEntity<Match> updateMatchScore(@PathVariable Integer matchId, @RequestParam Integer player1Score, @RequestParam Integer player2Score) throws Exception {
+        matchService.updateMatchScore(matchId, player1Score, player2Score);
+        Match updatedMatch = matchService.findMatchById(matchId).orElseThrow(() -> new Exception("Match not found after update"));
+        return ResponseEntity.ok(updatedMatch);
     }
 
     @GetMapping("/export")
@@ -98,20 +76,15 @@ public class MatchController {
                                                 @RequestParam(required = false) String location,
                                                 @RequestParam(required = false) Integer refereeId,
                                                 @RequestParam(required = false) Integer playerId,
-                                                @RequestParam String format) {
-        try {
-            List<Match> matches = matchService.findMatches(startDate, endDate, location, refereeId, playerId);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            MatchExportStrategy strategy = format.equals("csv") ? new CsvExportStrategy() : new TxtExportStrategy();
-            matchService.exportMatches(matches, outputStream, strategy);
-            byte[] data = outputStream.toByteArray();
-            return ResponseEntity.ok()
-                    .contentType(format.equals("csv") ? MediaType.valueOf("text/csv") : MediaType.valueOf("text/plain"))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"matches." + format + "\"")
-                    .body(data);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+                                                @RequestParam String format) throws Exception {
+        List<Match> matches = matchService.findMatches(startDate, endDate, location, refereeId, playerId);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MatchExportStrategy strategy = format.equals("csv") ? new CsvExportStrategy() : new TxtExportStrategy();
+        matchService.exportMatches(matches, outputStream, strategy);
+        byte[] data = outputStream.toByteArray();
+        return ResponseEntity.ok()
+                .contentType(format.equals("csv") ? MediaType.valueOf("text/csv") : MediaType.valueOf("text/plain"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"matches." + format + "\"")
+                .body(data);
     }
-
 }

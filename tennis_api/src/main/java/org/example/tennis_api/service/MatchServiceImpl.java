@@ -76,10 +76,13 @@ public class MatchServiceImpl implements MatchService{
             throw new Exception("Player already registered to this match");
         }
 
-        if (match.getPlayer1() == null && matchRepository.setPlayer1(matchId, playerId) == 0) {
-            throw new Exception("Failed to register player 1");
-        } else if (match.getPlayer2() == null && matchRepository.setPlayer2(matchId, playerId) == 0) {
-            throw new Exception("Failed to register player 2");
+        User player = userRepository.findById(playerId)
+                .orElseThrow(() -> new IllegalArgumentException("Player not found with ID: " + playerId));
+
+        if (match.getPlayer1() == null) {
+            match.setPlayer1(player);
+        } else if (match.getPlayer2() == null) {
+            match.setPlayer2(player);
         }
 
         return matchRepository.findById(matchId).orElseThrow(() -> new Exception("Failed to update match"));
@@ -112,7 +115,7 @@ public class MatchServiceImpl implements MatchService{
 
         if (matchDTO.getReferee() != null && (existingMatch.getReferee() == null || !matchDTO.getReferee().equals(existingMatch.getReferee().getId()))) {
             User referee = userRepository.findById(matchDTO.getReferee())
-                    .orElseThrow(() -> new Exception("Referee with ID " + matchDTO.getReferee() + " not found"));
+                    .orElseThrow(() -> new IllegalArgumentException("Referee with ID " + matchDTO.getReferee() + " not found"));
             existingMatch.setReferee(referee);
         } else if (matchDTO.getReferee() == null) {
             existingMatch.setReferee(null);
@@ -120,7 +123,7 @@ public class MatchServiceImpl implements MatchService{
 
         if (matchDTO.getPlayer1() != null && (existingMatch.getPlayer1() == null || !matchDTO.getPlayer1().equals(existingMatch.getPlayer1().getId()))) {
             User player1 = userRepository.findById(matchDTO.getPlayer1())
-                    .orElseThrow(() -> new Exception("Player1 with ID " + matchDTO.getPlayer1() + " not found"));
+                    .orElseThrow(() -> new IllegalArgumentException("Player1 with ID " + matchDTO.getPlayer1() + " not found"));
             existingMatch.setPlayer1(player1);
         } else if (matchDTO.getPlayer1() == null) {
             existingMatch.setPlayer1(null);
@@ -128,7 +131,7 @@ public class MatchServiceImpl implements MatchService{
 
         if (matchDTO.getPlayer2() != null && (existingMatch.getPlayer2() == null || !matchDTO.getPlayer2().equals(existingMatch.getPlayer2().getId()))) {
             User player2 = userRepository.findById(matchDTO.getPlayer2())
-                    .orElseThrow(() -> new Exception("Player2 with ID " + matchDTO.getPlayer2() + " not found"));
+                    .orElseThrow(() -> new IllegalArgumentException("Player2 with ID " + matchDTO.getPlayer2() + " not found"));
             existingMatch.setPlayer2(player2);
         } else if (matchDTO.getPlayer2() == null) {
             existingMatch.setPlayer2(null);
@@ -186,5 +189,4 @@ public class MatchServiceImpl implements MatchService{
     public void exportMatches(List<Match> matches, OutputStream outputStream, MatchExportStrategy strategy) throws IOException {
         strategy.export(matches, outputStream);
     }
-
 }

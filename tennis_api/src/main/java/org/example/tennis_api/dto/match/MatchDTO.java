@@ -2,6 +2,7 @@ package org.example.tennis_api.dto.match;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class MatchDTO {
     private String name;
     private LocalDate matchDate;

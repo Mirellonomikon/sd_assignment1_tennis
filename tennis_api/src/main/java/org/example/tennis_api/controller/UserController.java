@@ -8,7 +8,6 @@ import org.example.tennis_api.dto.user.UserUpdateCredentialsDTO;
 import org.example.tennis_api.entity.User;
 import org.example.tennis_api.mapper.UserMapper;
 import org.example.tennis_api.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,33 +23,21 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserSignUpDTO userSignUpDTO) {
-        try {
-            User registeredUser = userService.registerUser(userSignUpDTO);
-            return ResponseEntity.ok(registeredUser);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    public ResponseEntity<User> registerUser(@RequestBody UserSignUpDTO userSignUpDTO) throws Exception {
+        User registeredUser = userService.registerUser(userSignUpDTO);
+        return ResponseEntity.ok(registeredUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody UserSignInDTO userSignInDTO) {
-        try {
-            User user = userService.loginUser(userSignInDTO);
-            return ResponseEntity.ok(user);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
+    public ResponseEntity<User> loginUser(@RequestBody UserSignInDTO userSignInDTO) throws Exception {
+        User user = userService.loginUser(userSignInDTO);
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<User> updateCredentials(@PathVariable Integer id, @RequestBody UserUpdateCredentialsDTO userUpdateCredentialsDTO) {
-        try {
-            User updatedUser = userService.updateUserCredentials(userUpdateCredentialsDTO, id);
-            return ResponseEntity.ok(updatedUser);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<User> updateCredentials(@PathVariable Integer id, @RequestBody UserUpdateCredentialsDTO userUpdateCredentialsDTO) throws Exception {
+        User updatedUser = userService.updateUserCredentials(userUpdateCredentialsDTO, id);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @GetMapping("/all")
@@ -59,34 +46,28 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/{role}")
+    public ResponseEntity<List<User>> getUserByRole(@PathVariable String role) {
+        List<User> users = userService.findUserByRole(role);
+        return ResponseEntity.ok(users);
+    }
+
     @GetMapping("/{name}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable String name) {
-        try {
-            User user = userService.findUserByUsername(name).orElseThrow(() -> new Exception("User not found"));
-            UserDTO userDTO = userMapper.toDTO(user);
-            return ResponseEntity.ok(userDTO);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<UserDTO> getUser(@PathVariable String name) throws IllegalArgumentException {
+        User user = userService.findUserByUsername(name).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        UserDTO userDTO = userMapper.toDTO(user);
+        return ResponseEntity.ok(userDTO);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO, @PathVariable Integer id) {
-        try {
-            User updatedUser = userService.updateUser(userDTO, id);
-            return ResponseEntity.ok(updatedUser);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        User updatedUser = userService.updateUser(userDTO, id);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
-        try {
-            userService.deleteUser(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) throws IllegalArgumentException {
+        userService.deleteUser(id);
+        return ResponseEntity.ok().build();
     }
 }
