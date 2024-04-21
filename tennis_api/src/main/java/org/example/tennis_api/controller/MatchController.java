@@ -3,7 +3,6 @@ package org.example.tennis_api.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.tennis_api.dto.match.MatchDTO;
 import org.example.tennis_api.entity.Match;
-import org.example.tennis_api.mapper.MatchMapper;
 import org.example.tennis_api.service.MatchService;
 import org.example.tennis_api.utilities.CsvExportStrategy;
 import org.example.tennis_api.utilities.MatchExportStrategy;
@@ -48,6 +47,12 @@ public class MatchController {
     public ResponseEntity<Match> getMatchById(@PathVariable Integer id) {
         Match match = matchService.findMatchById(id).orElseThrow(() -> new InputMismatchException("Match not found"));
         return ResponseEntity.ok(match);
+    }
+
+    @GetMapping("/ref/{ref}")
+    public ResponseEntity<List<Match>> getMatchByRef(@PathVariable Integer ref) throws Exception {
+        List<Match> matches = matchService.findAllMatchesByRefereeId(ref);
+        return ResponseEntity.ok(matches);
     }
 
     @PutMapping("/{id}")

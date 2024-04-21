@@ -94,17 +94,25 @@ public class MatchServiceImpl implements MatchService{
     }
 
     @Override
+    public List<Match> findAllMatchesByRefereeId(Integer refereeId) throws Exception {
+        User referee = userRepository.findById(refereeId).orElseThrow(() -> new IllegalArgumentException("User doesn't exist."));
+        if(!referee.getUserType().equals("referee"))
+            throw new Exception("User is not a referee");
+        return matchRepository.findByReferee(referee);
+    }
+
+    @Override
     public Optional<Match> findMatchById(Integer matchId) {
         return matchRepository.findById(matchId);
     }
 
     @Override
-    public Match updateMatchScore(Integer matchId, Integer player1Score, Integer player2Score) throws Exception {
+    public void updateMatchScore(Integer matchId, Integer player1Score, Integer player2Score) throws Exception {
         Match match = matchRepository.findById(matchId)
                 .orElseThrow(() -> new Exception("Match not found"));
         match.setPlayer1Score(player1Score);
         match.setPlayer2Score(player2Score);
-        return matchRepository.save(match);
+        matchRepository.save(match);
     }
 
     @Override
