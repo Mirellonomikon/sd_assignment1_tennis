@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  tennisapp:
+    image: 'tennis_api:latest'
+    build:
+      context: ./tennis_api
+    container_name: tennisapp
+    ports:
+      - "8081:8081"
+    depends_on:
+      - tennisdb
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://tennisdb:5433/tennis_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+          
+  tennisdb:
+    image: 'postgres:13.1-alpine'
+    container_name: tennisdb
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata1:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=tennis_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+  frontend:
+    container_name: react_front
+    image: 'react_frontend:latest'
+    build:
+      context: ./tennis_frontend
+    volumes:
+      - ./tennis_frontend/src:/app/src
+      - ./tennis_frontend/public:/app/public
+      - ./tennis_frontend/package.json:/app/package.json
+    ports:
+      - 3000:3000
+    depends_on:
+      - tennisapp
+
+volumes:
+  pgdata1:
