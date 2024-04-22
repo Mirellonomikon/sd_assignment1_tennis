@@ -1,25 +1,63 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import ProtectedRoute from './ProtectedRoute';
+import Login from './Login';
+import SignUp from './SignUp';
+import RefereeSchedule from './RefereeSchedule';
+import PlayerSchedule from './PlayerSchedule';
+import AdminSchedule from './AdminSchedule';
+import AdminUsersView from './AdminUsersView';
 
-function App() {
+const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        
+        <Route
+          path="/referee-schedule"
+          element={
+            <ProtectedRoute
+              element={<RefereeSchedule />}
+              allowedRoles={['referee']}
+            />
+          }
+        />
+
+        <Route
+          path="/player-schedule"
+          element={
+            <ProtectedRoute
+              element={<PlayerSchedule />}
+              allowedRoles={['player']}
+            />
+          }
+        />
+
+        <Route
+          path="/admin-schedule"
+          element={
+            <ProtectedRoute
+              element={<AdminSchedule />}
+              allowedRoles={['administrator']}
+            />
+          }
+        />
+
+        <Route
+          path="/admin-users-view"
+          element={
+            <ProtectedRoute
+              element={<AdminUsersView />}
+              allowedRoles={['administrator']}
+            />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
