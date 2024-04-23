@@ -7,7 +7,7 @@ function ProtectedRoute({ element, allowedRoles }) {
   const userRole = user ? user.userType : null;
 
   if (!userRole || !allowedRoles.includes(userRole)) {
-    return <Navigate to="/login" state={{ from: location }} />;
+    return <Navigate to="/" state={{ from: location }} />;
   }
 
   return element;

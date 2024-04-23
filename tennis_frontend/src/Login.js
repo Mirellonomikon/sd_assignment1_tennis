@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Container, CssBaseline, Box, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { TextField, Button, Typography, Container, CssBaseline, Box, Alert } from '@mui/material';
+import axios from 'axios';
 
-function LoginPage() {
+const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -10,19 +11,16 @@ function LoginPage() {
 
     const handleLogin = async (event) => {
         event.preventDefault();
-        setError('');
+        setError(''); // Clear previous errors
 
         try {
-            const response = await fetch('/api/user/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+            const response = await axios.post('http://localhost:8081/api/user/login', {
+                username,
+                password
             });
-            if (!response.ok) {
-                throw new Error('Failed to login');
-            }
-            const user = await response.json();
-            localStorage.setItem('user', JSON.stringify(user));
+
+            const user = response.data;
+            localStorage.setItem('user', JSON.stringify(user)); // Save user info to local storage
 
             switch (user.userType) {
                 case 'administrator':
@@ -35,10 +33,11 @@ function LoginPage() {
                     navigate('/player-schedule');
                     break;
                 default:
-                    navigate('/login');
+                    throw new Error('User type is not valid');
             }
         } catch (err) {
-            setError(err.message || 'Unexpected Error');
+            const errorMessage = err.response?.data || 'Login failed. Please try again.';
+            setError(errorMessage);
         }
     };
 
@@ -53,11 +52,9 @@ function LoginPage() {
                     alignItems: 'center',
                 }}
             >
-                <Typography component="h1" variant="h5">
-                    Sign in
-                </Typography>
-                {error && <Alert severity="error">{error}</Alert>}
-                <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
+                <Typography component="h1" variant="h5" marginBottom="10px">Login</Typography>
+                {error && <Alert severity="error" sx={{ width: '100%', mb: 2 }}>{error}</Alert>}
+                <Box component="form" onSubmit={handleLogin} sx={{ mt: 1, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <TextField
                         margin="normal"
                         required
@@ -82,15 +79,14 @@ function LoginPage() {
                     />
                     <Button
                         type="submit"
-                        fullWidth
                         variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
+                        sx={{ mt: 3, mb: 2, width: '75%' }}
                     >
-                        Sign In
+                        Login
                     </Button>
                     <Button
-                        fullWidth
                         variant="text"
+                        sx={{ mt: 1, width: '75%' }}
                         onClick={() => navigate('/signup')}
                     >
                         Don't have an account? Sign Up
@@ -99,6 +95,6 @@ function LoginPage() {
             </Box>
         </Container>
     );
-}
+};
 
-export default LoginPage;
+export default Login;

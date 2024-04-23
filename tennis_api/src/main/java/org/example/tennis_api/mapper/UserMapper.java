@@ -1,9 +1,7 @@
 package org.example.tennis_api.mapper;
 
 import org.example.tennis_api.dto.user.UserDTO;
-import org.example.tennis_api.dto.user.UserSignInDTO;
 import org.example.tennis_api.dto.user.UserSignUpDTO;
-import org.example.tennis_api.dto.user.UserUpdateCredentialsDTO;
 import org.example.tennis_api.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +31,6 @@ public class UserMapper implements GenericMapper<User, UserDTO>{
         User user = modelMapper.map(dto, User.class);
         user.setUserType(resolveUserType(dto.getUserTypeCode()));
         return user;
-    }
-
-    public User updateCredentialsDtoToEntity(UserUpdateCredentialsDTO dto) {
-        return modelMapper.map(dto, User.class);
-    }
-
-    public User signInDtoToEntity(UserSignInDTO dto) {
-        return modelMapper.map(dto, User.class);
     }
 
     private String resolveUserType(String code) {
