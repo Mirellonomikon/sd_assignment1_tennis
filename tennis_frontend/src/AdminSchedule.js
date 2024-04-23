@@ -16,6 +16,10 @@ import {
     TablePagination,
     TableSortLabel,
     IconButton,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -36,6 +40,7 @@ const AdminSchedule = () => {
     const [isAddFormOpen, setIsAddFormOpen] = useState(false);
     const [isUpdateFormOpen, setIsUpdateFormOpen] = useState(false);
     const [selectedMatchId, setSelectedMatchId] = useState(null);
+    const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
     const navigate = useNavigate();
 
     const fetchMatches = async () => {
@@ -58,6 +63,24 @@ const AdminSchedule = () => {
     useEffect(() => {
         fetchMatches();
     }, []);
+
+    const handleDelete = async () => {
+        try {
+            await axios.delete(`http://localhost:8081/api/match/${selectedMatch?.id}`);
+            setDeleteConfirmationOpen(false);
+            fetchMatches();
+        } catch (err) {
+            setError(`Failed to delete match: ${err.response?.data || err.message}`);
+        }
+    };
+
+    const handleDeleteButtonClick = () => {
+        setDeleteConfirmationOpen(true);
+    };
+
+    const handleCancelDelete = () => {
+        setDeleteConfirmationOpen(false)
+    };
 
     const handleSort = (field) => {
         const isAsc = sortField === field && sortDirection === 'asc';
@@ -153,7 +176,7 @@ const AdminSchedule = () => {
                                 </IconButton>
                                 <IconButton
                                     color="error"
-                                    onClick={() => console.log('Delete')}
+                                    onClick={handleDeleteButtonClick}
                                     disabled={!isEditDeleteEnabled}
                                 >
                                     <Delete />
@@ -284,6 +307,21 @@ const AdminSchedule = () => {
                     </TableContainer>
                 </ClickAwayListener>
             )}
+
+            <Dialog open={deleteConfirmationOpen} onClose={handleCancelDelete}>
+                <DialogTitle>Delete Match</DialogTitle>
+                <DialogContent>
+                    <Typography>Are you sure you want to delete this match?</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCancelDelete} color="primary">
+                        No
+                    </Button>
+                    <Button onClick={handleDelete} color="secondary">
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
                 <Button

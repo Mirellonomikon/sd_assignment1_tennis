@@ -16,6 +16,7 @@ import axios from 'axios';
 
 
 const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
+    const [defaultMatch, setDefaultMatch] = useState(null); // State to hold the fetched data
     const [name, setName] = useState('');
     const [matchDate, setMatchDate] = useState('');
     const [matchTime, setMatchTime] = useState('');
@@ -30,37 +31,40 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        const fetchMatchDetails = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8081/api/match/${matchId}`);
-                const match = response.data;
+        if (open) {
+            const fetchMatchDetails = async () => {
+                try {
+                    const response = await axios.get(`http://localhost:8081/api/match/${matchId}`);
+                    const match = response.data;
+                    setDefaultMatch(match); // Set default match values
 
-                setName(match.name);
-                setMatchDate(match.matchDate);
-                setMatchTime(match.matchTime);
-                setLocation(match.location);
-                setReferee(match.referee ? match.referee.id : '');
-                setPlayer1(match.player1 ? match.player1.id : '');
-                setPlayer1Score(match.player1Score);
-                setPlayer2(match.player2 ? match.player2.id : '');
-                setPlayer2Score(match.player2Score);
+                    setName(match.name);
+                    setMatchDate(match.matchDate);
+                    setMatchTime(match.matchTime);
+                    setLocation(match.location);
+                    setReferee(match.referee ? match.referee.id : '');
+                    setPlayer1(match.player1 ? match.player1.id : '');
+                    setPlayer1Score(match.player1Score);
+                    setPlayer2(match.player2 ? match.player2.id : '');
+                    setPlayer2Score(match.player2Score);
 
-                const fetchUsers = async (role) => {
-                    const userResponse = await axios.get(`http://localhost:8081/api/user/role/${role}`);
-                    return userResponse.data;
-                };
+                    const fetchUsers = async (role) => {
+                        const userResponse = await axios.get(`http://localhost:8081/api/user/role/${role}`);
+                        return userResponse.data;
+                    };
 
-                setReferees(await fetchUsers('referee'));
-                setPlayers(await fetchUsers('player'));
-            } catch (err) {
-                setError(err.response?.data || 'Failed to fetch match details.');
-            }
-        };
+                    setReferees(await fetchUsers('referee'));
+                    setPlayers(await fetchUsers('player'));
+                } catch (err) {
+                    setError(err.response?.data || 'Failed to fetch match details.');
+                }
+            };
 
-        if (matchId) {
             fetchMatchDetails();
+        } else {
+            setError(''); // Clear errors when dialog closes
         }
-    }, [matchId]);
+    }, [open, matchId]);
 
     const handleUpdate = async () => {
         try {
@@ -83,8 +87,22 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
         }
     };
 
+    const handleReset = () => {
+        if (defaultMatch) {
+            setName(defaultMatch.name);
+            setMatchDate(defaultMatch.matchDate);
+            setMatchTime(defaultMatch.matchTime);
+            setLocation(defaultMatch.location);
+            setReferee(defaultMatch.referee ? defaultMatch.referee.id : '');
+            setPlayer1(defaultMatch.player1 ? defaultMatch.player1.id : '');
+            setPlayer1Score(defaultMatch.player1Score);
+            setPlayer2(defaultMatch.player2 ? defaultMatch.player2.id : '');
+            setPlayer2Score(defaultMatch.player2Score);
+        }
+    };
+
     return (
-        <Dialog open={open} onClose={() => handleClose(false)} sx={{ '& .MuiPaper-root': { backgroundColor: '#f1f8e9' } }}>
+        <Dialog open={open} onClose={() => { handleClose(false); handleReset(); }} sx={{ '& .MuiPaper-root': { backgroundColor: '#f1f8e9' } }}>
             <DialogTitle>Update Match</DialogTitle>
             <DialogContent>
                 {error && <Alert severity="error" style={{ backgroundColor: '#FFF6EA', marginBottom: "5px" }}>{error}</Alert>}
@@ -108,7 +126,9 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                     variant="outlined"
                     value={matchDate}
                     onChange={(e) => setMatchDate(e.target.value)}
-                    InputLabelProps={{ shrink: true }}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
                 <TextField
                     margin="dense"
@@ -119,7 +139,9 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                     variant="outlined"
                     value={matchTime}
                     onChange={(e) => setMatchTime(e.target.value)}
-                    InputLabelProps={{ shrink: true }}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
 
                 <TextField
@@ -136,7 +158,6 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                     <InputLabel>Referee</InputLabel>
                     <Select
                         value={referee}
-                        label="Referee"
                         onChange={(e) => setReferee(e.target.value)}
                     >
                         <MenuItem value="">
@@ -153,7 +174,6 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                     <InputLabel>Player 1</InputLabel>
                     <Select
                         value={player1}
-                        label="Player 1"
                         onChange={(e) => setPlayer1(e.target.value)}
                     >
                         <MenuItem value="">
@@ -179,7 +199,6 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                     <InputLabel>Player 2</InputLabel>
                     <Select
                         value={player2}
-                        label="Player 2"
                         onChange={(e) => setPlayer2(e.target.value)}
                     >
                         <MenuItem value="">
@@ -191,7 +210,7 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                             </MenuItem>
                         ))}
                     </Select>
-                </FormControl >
+                </FormControl>
                 <TextField
                     margin="dense"
                     label="Player 2 Score"
@@ -213,5 +232,6 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
         </Dialog >
     );
 };
+
 
 export default UpdateMatchDialog;
