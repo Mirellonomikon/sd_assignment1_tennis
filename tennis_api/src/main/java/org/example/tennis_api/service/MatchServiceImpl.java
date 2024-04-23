@@ -35,14 +35,17 @@ public class MatchServiceImpl implements MatchService{
         if (matchDTO.getMatchDate().isBefore(LocalDate.now())) {
             throw new Exception("Match date cannot be in the past.");
         }
-        if (matchDTO.getPlayer1().equals(matchDTO.getPlayer2())) {
-            throw new Exception("Player1 and Player2 cannot be the same.");
+        if (matchDTO.getPlayer1() != null && matchDTO.getPlayer2() != null) {
+            if (matchDTO.getPlayer1().equals(matchDTO.getPlayer2())) {
+                throw new Exception("Player1 and Player2 cannot be the same.");
+            }
         }
     }
 
     @Override
     public Match createMatch(MatchDTO matchDTO) throws Exception {
         validateMatchDTO(matchDTO);
+
         Match match = matchMapper.toEntity(matchDTO);
 
         if (matchDTO.getReferee() != null) {
@@ -50,11 +53,13 @@ public class MatchServiceImpl implements MatchService{
                     .orElseThrow(() -> new IllegalArgumentException("Referee not found with ID: " + matchDTO.getReferee()));
             match.setReferee(referee);
         }
+
         if (matchDTO.getPlayer1() != null) {
             User player1 = userRepository.findById(matchDTO.getPlayer1())
                     .orElseThrow(() -> new IllegalArgumentException("Player 1 not found with ID: " + matchDTO.getPlayer1()));
             match.setPlayer1(player1);
         }
+
         if (matchDTO.getPlayer2() != null) {
             User player2 = userRepository.findById(matchDTO.getPlayer2())
                     .orElseThrow(() -> new IllegalArgumentException("Player 2 not found with ID: " + matchDTO.getPlayer2()));
@@ -63,6 +68,7 @@ public class MatchServiceImpl implements MatchService{
 
         return matchRepository.save(match);
     }
+
 
     @Override
     public Match registerPlayerToMatch(Integer matchId, Integer playerId) throws Exception {

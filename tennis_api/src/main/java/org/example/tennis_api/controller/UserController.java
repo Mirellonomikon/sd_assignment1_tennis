@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{role}")
+    @GetMapping("/role/{role}")
     public ResponseEntity<List<User>> getUserByRole(@PathVariable String role) {
         List<User> users = userService.findUserByRole(role);
         return ResponseEntity.ok(users);

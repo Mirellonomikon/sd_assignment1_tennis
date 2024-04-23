@@ -11,7 +11,7 @@ const Login = () => {
 
     const handleLogin = async (event) => {
         event.preventDefault();
-        setError(''); // Clear previous errors
+        setError('');
 
         try {
             const response = await axios.post('http://localhost:8081/api/user/login', {
@@ -20,7 +20,7 @@ const Login = () => {
             });
 
             const user = response.data;
-            localStorage.setItem('user', JSON.stringify(user)); // Save user info to local storage
+            localStorage.setItem('user', JSON.stringify(user));
 
             switch (user.userType) {
                 case 'administrator':
@@ -62,7 +62,6 @@ const Login = () => {
                         label="Username"
                         name="username"
                         autoComplete="username"
-                        autoFocus
                         value={username}
                         onChange={e => setUsername(e.target.value)}
                     />
