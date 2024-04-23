@@ -10,11 +10,12 @@ import {
     MenuItem,
     FormControl,
     InputLabel,
-    Alert
+    Alert,
 } from '@mui/material';
 import axios from 'axios';
 
-const AddMatchDialog = ({ open, handleClose }) => {
+
+const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
     const [name, setName] = useState('');
     const [matchDate, setMatchDate] = useState('');
     const [matchTime, setMatchTime] = useState('');
@@ -29,37 +30,39 @@ const AddMatchDialog = ({ open, handleClose }) => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        const fetchUsers = async (role) => {
+        const fetchMatchDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8081/api/user/role/${role}`);
-                if (role === 'referee') {
-                    setReferees(response.data);
-                } else {
-                    setPlayers(response.data);
-                }
+                const response = await axios.get(`http://localhost:8081/api/match/${matchId}`);
+                const match = response.data;
+
+                setName(match.name);
+                setMatchDate(match.matchDate);
+                setMatchTime(match.matchTime);
+                setLocation(match.location);
+                setReferee(match.referee ? match.referee.id : '');
+                setPlayer1(match.player1 ? match.player1.id : '');
+                setPlayer1Score(match.player1Score);
+                setPlayer2(match.player2 ? match.player2.id : '');
+                setPlayer2Score(match.player2Score);
+
+                const fetchUsers = async (role) => {
+                    const userResponse = await axios.get(`http://localhost:8081/api/user/role/${role}`);
+                    return userResponse.data;
+                };
+
+                setReferees(await fetchUsers('referee'));
+                setPlayers(await fetchUsers('player'));
             } catch (err) {
-                setError(err.response?.data || 'Failed to fetch users.');
+                setError(err.response?.data || 'Failed to fetch match details.');
             }
         };
 
-        fetchUsers('referee');
-        fetchUsers('player');
-    }, []);
+        if (matchId) {
+            fetchMatchDetails();
+        }
+    }, [matchId]);
 
-    const resetForm = () => {
-        setName('');
-        setMatchDate('');
-        setMatchTime('');
-        setLocation('');
-        setReferee('');
-        setPlayer1('');
-        setPlayer1Score('');
-        setPlayer2('');
-        setPlayer2Score('');
-        setError('');
-    };
-
-    const handleSubmit = async () => {
+    const handleUpdate = async () => {
         try {
             const matchDTO = {
                 name,
@@ -70,27 +73,19 @@ const AddMatchDialog = ({ open, handleClose }) => {
                 player1,
                 player1Score,
                 player2,
-                player2Score
+                player2Score,
             };
 
-            await axios.post('http://localhost:8081/api/match/create', matchDTO);
+            await axios.put(`http://localhost:8081/api/match/${matchId}`, matchDTO);
             handleClose(true);
-            resetForm();
         } catch (err) {
-            setError(err.response?.data || 'Failed to create match.');
+            setError(err.response?.data || 'Failed to update match.');
         }
-    };
-
-    const handleDialogClose = (submitSuccessful) => {
-        if (!submitSuccessful) {
-            resetForm();
-        }
-        handleClose(submitSuccessful);
     };
 
     return (
-        <Dialog open={open} onClose={() => handleDialogClose(false)} sx={{ '& .MuiPaper-root': { backgroundColor: '#f1f8e9' } }}>
-            <DialogTitle>Add Match</DialogTitle>
+        <Dialog open={open} onClose={() => handleClose(false)} sx={{ '& .MuiPaper-root': { backgroundColor: '#f1f8e9' } }}>
+            <DialogTitle>Update Match</DialogTitle>
             <DialogContent>
                 {error && <Alert severity="error" style={{ backgroundColor: '#FFF6EA', marginBottom: "5px" }}>{error}</Alert>}
                 <TextField
@@ -113,9 +108,7 @@ const AddMatchDialog = ({ open, handleClose }) => {
                     variant="outlined"
                     value={matchDate}
                     onChange={(e) => setMatchDate(e.target.value)}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
+                    InputLabelProps={{ shrink: true }}
                 />
                 <TextField
                     margin="dense"
@@ -126,15 +119,14 @@ const AddMatchDialog = ({ open, handleClose }) => {
                     variant="outlined"
                     value={matchTime}
                     onChange={(e) => setMatchTime(e.target.value)}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
+                    InputLabelProps={{ shrink: true }}
                 />
+
                 <TextField
                     margin="dense"
                     label="Location"
-                    type="text"
                     required
+                    type="text"
                     fullWidth
                     variant="outlined"
                     value={location}
@@ -199,7 +191,7 @@ const AddMatchDialog = ({ open, handleClose }) => {
                             </MenuItem>
                         ))}
                     </Select>
-                </FormControl>
+                </FormControl >
                 <TextField
                     margin="dense"
                     label="Player 2 Score"
@@ -209,17 +201,17 @@ const AddMatchDialog = ({ open, handleClose }) => {
                     value={player2Score}
                     onChange={(e) => setPlayer2Score(e.target.value)}
                 />
-            </DialogContent>
+            </DialogContent >
             <DialogActions>
-                <Button onClick={() => handleDialogClose(false)} color="secondary">
+                <Button onClick={() => handleClose(false)} color="secondary">
                     Cancel
                 </Button>
-                <Button onClick={handleSubmit} color="primary">
-                    Submit
+                <Button onClick={handleUpdate} color="primary">
+                    Update
                 </Button>
             </DialogActions>
-        </Dialog>
+        </Dialog >
     );
 };
 
-export default AddMatchDialog;
+export default UpdateMatchDialog;

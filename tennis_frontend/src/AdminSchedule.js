@@ -22,6 +22,7 @@ import axios from 'axios';
 import { Edit, Delete } from '@mui/icons-material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import AddMatchDialog from './AddMatchDialog';
+import UpdateMatchDialog from './UpdateMatchDialog';
 
 const AdminSchedule = () => {
     const [matches, setMatches] = useState([]);
@@ -33,6 +34,8 @@ const AdminSchedule = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [isAddFormOpen, setIsAddFormOpen] = useState(false);
+    const [isUpdateFormOpen, setIsUpdateFormOpen] = useState(false);
+    const [selectedMatchId, setSelectedMatchId] = useState(null);
     const navigate = useNavigate();
 
     const fetchMatches = async () => {
@@ -41,7 +44,7 @@ const AdminSchedule = () => {
             const data = response.data.map((match) => ({
                 ...match,
                 matchDate: match.matchDate
-                ? new Date(match.matchDate).toLocaleDateString('en-GB') : 'N/A',
+                    ? new Date(match.matchDate).toLocaleDateString('en-GB') : 'N/A',
                 matchTime: match.matchTime ? new Date(`1970-01-01T${match.matchTime}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A',
             }));
             setMatches(data);
@@ -63,7 +66,7 @@ const AdminSchedule = () => {
     };
 
     const handleRowClick = (match) => {
-        setSelectedMatch(match);
+        setSelectedMatch(selectedMatch?.id === match.id ? null : match);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -76,6 +79,16 @@ const AdminSchedule = () => {
 
     const handleCloseAddForm = () => {
         setIsAddFormOpen(false);
+        fetchMatches();
+    };
+
+    const handleOpenUpdateForm = (matchId) => {
+        setSelectedMatchId(matchId);
+        setIsUpdateFormOpen(true);
+    };
+
+    const handleCloseUpdateForm = () => {
+        setIsUpdateFormOpen(false);
         fetchMatches();
     };
 
@@ -94,6 +107,8 @@ const AdminSchedule = () => {
 
         return sortDirection === 'asc' ? (aField > bField ? 1 : -1) : (aField < bField ? 1 : -1);
     });
+
+    const isEditDeleteEnabled = Boolean(selectedMatch);
 
     return (
         <Container component="main">
@@ -128,22 +143,22 @@ const AdminSchedule = () => {
                 <ClickAwayListener onClickAway={handleTableClickAway}>
                     <TableContainer component={Paper}>
                         <Toolbar>
-                            {selectedMatch && (
-                                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                    <IconButton
-                                        color="primary"
-                                        onClick={() => console.log('Edit')}
-                                    >
-                                        <Edit />
-                                    </IconButton>
-                                    <IconButton
-                                        color="error"
-                                        onClick={() => console.log('Delete')}
-                                    >
-                                        <Delete />
-                                    </IconButton>
-                                </Box>
-                            )}
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                <IconButton
+                                    color="primary"
+                                    onClick={() => handleOpenUpdateForm(selectedMatch?.id)}
+                                    disabled={!isEditDeleteEnabled}
+                                >
+                                    <Edit />
+                                </IconButton>
+                                <IconButton
+                                    color="error"
+                                    onClick={() => console.log('Delete')}
+                                    disabled={!isEditDeleteEnabled}
+                                >
+                                    <Delete />
+                                </IconButton>
+                            </Box>
                         </Toolbar>
 
                         <Table size="small" stickyHeader>
@@ -221,7 +236,6 @@ const AdminSchedule = () => {
                                             Player 2
                                         </TableSortLabel>
                                     </TableCell>
-
                                     <TableCell>Player 1 Score</TableCell>
                                     <TableCell>Player 2 Score</TableCell>
                                 </TableRow>
@@ -289,6 +303,12 @@ const AdminSchedule = () => {
                 </Button>
             </Box>
             <AddMatchDialog open={isAddFormOpen} handleClose={handleCloseAddForm} />
+            <UpdateMatchDialog
+                open={isUpdateFormOpen}
+                matchId={selectedMatchId}
+                handleClose={handleCloseUpdateForm}
+                onUpdate={fetchMatches}
+            />
         </Container>
     );
 };
