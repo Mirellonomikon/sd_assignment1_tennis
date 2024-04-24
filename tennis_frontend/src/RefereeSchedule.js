@@ -67,10 +67,11 @@ const RefereeSchedule = () => {
     }, [refereeId]);
 
     const handleRowClick = (match) => {
-        if (match) {
-            const isCurrentlySelected = selectedMatch?.id === match.id;
-            setSelectedMatch(isCurrentlySelected ? null : match);
-        }
+        setSelectedMatch(selectedMatch?.id === match.id ? null : match);
+    };
+
+    const handleTableClickAway = () => {
+        setSelectedMatch(null);
     };
 
     const handleOpenScoreDialog = () => {
@@ -81,7 +82,7 @@ const RefereeSchedule = () => {
 
     const handleCloseScoreDialog = () => {
         setIsScoreDialogOpen(false);
-        fetchMatches(); // Refresh data
+        fetchMatches();
     };
 
     const handleSort = (field) => {
@@ -131,7 +132,7 @@ const RefereeSchedule = () => {
             {loading ? (
                 <Typography variant="body1">Loading...</Typography>
             ) : (
-                <ClickAwayListener onClickAway={() => handleRowClick(null)}>
+                <ClickAwayListener onClickAway={handleTableClickAway}>
                     <TableContainer component={Paper}>
                         <Toolbar>
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
