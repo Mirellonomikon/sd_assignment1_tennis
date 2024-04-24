@@ -52,11 +52,16 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable String name) throws IllegalArgumentException {
-        User user = userService.findUserByUsername(name).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        UserDTO userDTO = userMapper.toDTO(user);
-        return ResponseEntity.ok(userDTO);
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Integer id) throws IllegalArgumentException {
+        User user = userService.findUserById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<User> addUser(@RequestBody UserDTO userDTO) throws Exception {
+        User registeredUser = userService.addUser(userDTO);
+        return ResponseEntity.ok(registeredUser);
     }
 
     @PutMapping("/{id}")

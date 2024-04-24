@@ -7,7 +7,7 @@ import SignUp from './SignUp';
 import RefereeSchedule from './RefereeSchedule';
 import PlayerSchedule from './PlayerSchedule';
 import AdminSchedule from './AdminSchedule';
-import AdminUsersView from './AdminUsersView';
+import AdminUsersView from "./AdminUsersView";
 import theme from './theme';
 import { ThemeProvider } from "@mui/material/styles";
 

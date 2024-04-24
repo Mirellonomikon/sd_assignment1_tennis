@@ -61,8 +61,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Optional<User> findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<User> findUserById(Integer id) {
+        return userRepository.findById(id);
     }
 
     @Override
@@ -73,6 +73,16 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<User> findAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User addUser(UserDTO userDTO) throws Exception {
+        if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
+            throw new Exception("Username already exists.");
+        }
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        User user = userMapper.toEntity(userDTO);
+        return userRepository.save(user);
     }
 
     @Override

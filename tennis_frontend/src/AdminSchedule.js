@@ -27,6 +27,7 @@ import { Edit, Delete } from '@mui/icons-material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import AddMatchDialog from './AddMatchDialog';
 import UpdateMatchDialog from './UpdateMatchDialog';
+import ExportFilterDialog from './ExportFilterDialog';
 
 const AdminSchedule = () => {
     const [matches, setMatches] = useState([]);
@@ -41,6 +42,7 @@ const AdminSchedule = () => {
     const [isUpdateFormOpen, setIsUpdateFormOpen] = useState(false);
     const [selectedMatchId, setSelectedMatchId] = useState(null);
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+    const [isFilterExportFormOpen, setIsFilterExportFormOpen] = useState(false);
     const navigate = useNavigate();
 
     const fetchMatches = async () => {
@@ -73,6 +75,11 @@ const AdminSchedule = () => {
             setError(`Failed to delete match: ${err.response?.data || err.message}`);
         }
     };
+
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        navigate('/login');
+      };
 
     const handleDeleteButtonClick = () => {
         setDeleteConfirmationOpen(true);
@@ -114,6 +121,15 @@ const AdminSchedule = () => {
         setIsUpdateFormOpen(false);
         fetchMatches();
     };
+
+    const handleOpenFilterExportForm = () => {
+        setIsFilterExportFormOpen(true);
+      };
+    
+      const handleCloseFilterExportForm = () => {
+        setIsFilterExportFormOpen(false);
+      };
+
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
@@ -323,22 +339,28 @@ const AdminSchedule = () => {
                 </DialogActions>
             </Dialog>
 
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => console.log('Filter')}
-                    sx={{ mr: 1 }}
-                >
-                    Filter & Export
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
+                <Button variant="contained" color="secondary" onClick={handleLogout}>
+                    Logout
                 </Button>
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleOpenAddForm()}
-                >
-                    Add Match
-                </Button>
+
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleOpenFilterExportForm()}
+                        sx={{ mr: 1 }}
+                    >
+                        Filter & Export
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => handleOpenAddForm()}
+                    >
+                        Add Match
+                    </Button>
+                </Box>
             </Box>
             <AddMatchDialog open={isAddFormOpen} handleClose={handleCloseAddForm} />
             <UpdateMatchDialog
@@ -346,6 +368,10 @@ const AdminSchedule = () => {
                 matchId={selectedMatchId}
                 handleClose={handleCloseUpdateForm}
                 onUpdate={fetchMatches}
+            />
+            <ExportFilterDialog
+                open={isFilterExportFormOpen}
+                handleClose={handleCloseFilterExportForm}
             />
         </Container>
     );

@@ -158,6 +158,7 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                     <InputLabel>Referee</InputLabel>
                     <Select
                         value={referee}
+                        label="Referee"
                         onChange={(e) => setReferee(e.target.value)}
                     >
                         <MenuItem value="">
@@ -174,6 +175,7 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                     <InputLabel>Player 1</InputLabel>
                     <Select
                         value={player1}
+                        label="Player 1"
                         onChange={(e) => setPlayer1(e.target.value)}
                     >
                         <MenuItem value="">
@@ -199,6 +201,7 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                     <InputLabel>Player 2</InputLabel>
                     <Select
                         value={player2}
+                        label="Player 2"
                         onChange={(e) => setPlayer2(e.target.value)}
                     >
                         <MenuItem value="">
