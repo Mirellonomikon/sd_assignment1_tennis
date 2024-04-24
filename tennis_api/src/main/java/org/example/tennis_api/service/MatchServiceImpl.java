@@ -116,8 +116,10 @@ public class MatchServiceImpl implements MatchService{
     public void updateMatchScore(Integer matchId, Integer player1Score, Integer player2Score) throws Exception {
         Match match = matchRepository.findById(matchId)
                 .orElseThrow(() -> new Exception("Match not found"));
+
         match.setPlayer1Score(player1Score);
         match.setPlayer2Score(player2Score);
+        
         matchRepository.save(match);
     }
 

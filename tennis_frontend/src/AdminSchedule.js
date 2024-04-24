@@ -295,10 +295,10 @@ const AdminSchedule = () => {
                                             <TableCell>{match.matchTime}</TableCell>
                                             <TableCell>{match.location}</TableCell>
                                             <TableCell>
-                                                {match.referee?.name || 'No Referee Assigned'}
+                                                {match.referee?.name || 'N/A'}
                                             </TableCell>
-                                            <TableCell>{match.player1?.name || 'No Player Assigned'}</TableCell>
-                                            <TableCell>{match.player2?.name || 'No Player Assigned'}</TableCell>
+                                            <TableCell>{match.player1?.name || 'N/A'}</TableCell>
+                                            <TableCell>{match.player2?.name || 'N/A'}</TableCell>
                                             <TableCell>
                                                 {match.player1Score !== null ? match.player1Score : 'N/A'}
                                             </TableCell>

@@ -16,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -67,12 +68,16 @@ public class MatchController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{matchId}/score")
-    public ResponseEntity<Match> updateMatchScore(@PathVariable Integer matchId, @RequestParam Integer player1Score, @RequestParam Integer player2Score) throws Exception {
+    @PutMapping("/{matchId}/score")
+    public ResponseEntity<Match> updateMatchScore(@PathVariable Integer matchId, @RequestBody Map<String, Integer> scoreData) throws Exception {
+        Integer player1Score = scoreData.get("player1Score");
+        Integer player2Score = scoreData.get("player2Score");
+
         matchService.updateMatchScore(matchId, player1Score, player2Score);
         Match updatedMatch = matchService.findMatchById(matchId).orElseThrow(() -> new Exception("Match not found after update"));
         return ResponseEntity.ok(updatedMatch);
     }
+
 
     @GetMapping("/export")
     public ResponseEntity<byte[]> exportMatches(@RequestParam(required = false) LocalDate startDate,

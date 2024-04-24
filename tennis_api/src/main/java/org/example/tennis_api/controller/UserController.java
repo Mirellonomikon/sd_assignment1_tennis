@@ -6,7 +6,6 @@ import org.example.tennis_api.dto.user.UserSignInDTO;
 import org.example.tennis_api.dto.user.UserSignUpDTO;
 import org.example.tennis_api.dto.user.UserUpdateCredentialsDTO;
 import org.example.tennis_api.entity.User;
-import org.example.tennis_api.mapper.UserMapper;
 import org.example.tennis_api.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final UserMapper userMapper;
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody UserSignUpDTO userSignUpDTO) throws Exception {

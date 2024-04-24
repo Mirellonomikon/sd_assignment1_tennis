@@ -16,7 +16,7 @@ import axios from 'axios';
 
 
 const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
-    const [defaultMatch, setDefaultMatch] = useState(null); // State to hold the fetched data
+    const [defaultMatch, setDefaultMatch] = useState(null);
     const [name, setName] = useState('');
     const [matchDate, setMatchDate] = useState('');
     const [matchTime, setMatchTime] = useState('');
@@ -36,7 +36,7 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                 try {
                     const response = await axios.get(`http://localhost:8081/api/match/${matchId}`);
                     const match = response.data;
-                    setDefaultMatch(match); // Set default match values
+                    setDefaultMatch(match);
 
                     setName(match.name);
                     setMatchDate(match.matchDate);
@@ -62,7 +62,7 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
 
             fetchMatchDetails();
         } else {
-            setError(''); // Clear errors when dialog closes
+            setError('');
         }
     }, [open, matchId]);
 
