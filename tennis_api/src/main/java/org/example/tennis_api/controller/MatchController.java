@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +45,7 @@ public class MatchController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Match> getMatchById(@PathVariable Integer id) {
-        Match match = matchService.findMatchById(id).orElseThrow(() -> new InputMismatchException("Match not found"));
+        Match match = matchService.findMatchById(id);
         return ResponseEntity.ok(match);
     }
 
@@ -73,8 +72,7 @@ public class MatchController {
         Integer player1Score = scoreData.get("player1Score");
         Integer player2Score = scoreData.get("player2Score");
 
-        matchService.updateMatchScore(matchId, player1Score, player2Score);
-        Match updatedMatch = matchService.findMatchById(matchId).orElseThrow(() -> new Exception("Match not found after update"));
+        Match updatedMatch = matchService.updateMatchScore(matchId, player1Score, player2Score);
         return ResponseEntity.ok(updatedMatch);
     }
 

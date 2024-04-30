@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,19 +32,19 @@ public class MatchServiceImpl implements MatchService{
         this.matchMapper = matchMapper;
     }
 
-    private void validateMatchDTO(MatchDTO matchDTO) throws Exception {
+    private void validateMatchDTO(MatchDTO matchDTO) throws IllegalArgumentException {
         if (matchDTO.getMatchDate().isBefore(LocalDate.now())) {
-            throw new Exception("Match date cannot be in the past.");
+            throw new IllegalArgumentException("Match date cannot be in the past.");
         }
         if (matchDTO.getPlayer1() != null && matchDTO.getPlayer2() != null) {
             if (matchDTO.getPlayer1().equals(matchDTO.getPlayer2())) {
-                throw new Exception("Player1 and Player2 cannot be the same.");
+                throw new IllegalArgumentException("Player1 and Player2 cannot be the same.");
             }
         }
     }
 
     @Override
-    public Match createMatch(MatchDTO matchDTO) throws Exception {
+    public Match createMatch(MatchDTO matchDTO) throws IllegalArgumentException {
         validateMatchDTO(matchDTO);
 
         Match match = matchMapper.toEntity(matchDTO);
@@ -71,19 +72,19 @@ public class MatchServiceImpl implements MatchService{
 
 
     @Override
-    public Match registerPlayerToMatch(Integer matchId, Integer playerId) throws Exception {
+    public Match registerPlayerToMatch(Integer matchId, Integer playerId) throws IllegalArgumentException, NoSuchElementException {
         Match match = matchRepository.findById(matchId)
-                .orElseThrow(() -> new Exception("Match not found"));
+                .orElseThrow(() -> new NoSuchElementException("Match not found"));
         if (match.getPlayer1() != null && match.getPlayer2() != null) {
-            throw new Exception("Match already has two players");
+            throw new IllegalArgumentException("Match already has two players");
         }
         if ((match.getPlayer1() != null && match.getPlayer1().getId().equals(playerId)) ||
                 (match.getPlayer2() != null && match.getPlayer2().getId().equals(playerId))) {
-            throw new Exception("Player already registered to this match");
+            throw new IllegalArgumentException("Player already registered to this match");
         }
 
         User player = userRepository.findById(playerId)
-                .orElseThrow(() -> new IllegalArgumentException("Player not found with ID: " + playerId));
+                .orElseThrow(() -> new NoSuchElementException("Player not found with ID: " + playerId));
 
         if (match.getPlayer1() == null) {
             match.setPlayer1(player);
@@ -91,7 +92,7 @@ public class MatchServiceImpl implements MatchService{
             match.setPlayer2(player);
         }
 
-        return matchRepository.findById(matchId).orElseThrow(() -> new Exception("Failed to update match"));
+        return matchRepository.save(match);
     }
 
     @Override
@@ -100,38 +101,38 @@ public class MatchServiceImpl implements MatchService{
     }
 
     @Override
-    public List<Match> findAllMatchesByRefereeId(Integer refereeId) throws Exception {
-        User referee = userRepository.findById(refereeId).orElseThrow(() -> new IllegalArgumentException("User doesn't exist."));
+    public List<Match> findAllMatchesByRefereeId(Integer refereeId) throws IllegalArgumentException, NoSuchElementException {
+        User referee = userRepository.findById(refereeId).orElseThrow(() -> new NoSuchElementException("User doesn't exist."));
         if(!referee.getUserType().equals("referee"))
-            throw new Exception("User is not a referee");
+            throw new IllegalArgumentException("User is not a referee");
         return matchRepository.findByReferee(referee);
     }
 
     @Override
-    public Optional<Match> findMatchById(Integer matchId) {
-        return matchRepository.findById(matchId);
+    public Match findMatchById(Integer matchId) {
+        return matchRepository.findById(matchId).orElseThrow(() -> new NoSuchElementException("Match not found"));
     }
 
     @Override
-    public void updateMatchScore(Integer matchId, Integer player1Score, Integer player2Score) throws Exception {
+    public Match updateMatchScore(Integer matchId, Integer player1Score, Integer player2Score) throws NoSuchElementException {
         Match match = matchRepository.findById(matchId)
-                .orElseThrow(() -> new Exception("Match not found"));
+                .orElseThrow(() -> new NoSuchElementException("Match not found"));
 
         match.setPlayer1Score(player1Score);
         match.setPlayer2Score(player2Score);
         
-        matchRepository.save(match);
+        return matchRepository.save(match);
     }
 
     @Override
-    public Match updateMatch(MatchDTO matchDTO, Integer id) throws Exception {
+    public Match updateMatch(MatchDTO matchDTO, Integer id) throws NoSuchElementException {
         Match existingMatch = matchRepository.findById(id)
-                .orElseThrow(() -> new Exception("Match not found"));
+                .orElseThrow(() -> new NoSuchElementException("Match not found"));
         validateMatchDTO(matchDTO);
 
         if (matchDTO.getReferee() != null && (existingMatch.getReferee() == null || !matchDTO.getReferee().equals(existingMatch.getReferee().getId()))) {
             User referee = userRepository.findById(matchDTO.getReferee())
-                    .orElseThrow(() -> new IllegalArgumentException("Referee with ID " + matchDTO.getReferee() + " not found"));
+                    .orElseThrow(() -> new NoSuchElementException("Referee with ID " + matchDTO.getReferee() + " not found"));
             existingMatch.setReferee(referee);
         } else if (matchDTO.getReferee() == null) {
             existingMatch.setReferee(null);
@@ -139,7 +140,7 @@ public class MatchServiceImpl implements MatchService{
 
         if (matchDTO.getPlayer1() != null && (existingMatch.getPlayer1() == null || !matchDTO.getPlayer1().equals(existingMatch.getPlayer1().getId()))) {
             User player1 = userRepository.findById(matchDTO.getPlayer1())
-                    .orElseThrow(() -> new IllegalArgumentException("Player1 with ID " + matchDTO.getPlayer1() + " not found"));
+                    .orElseThrow(() -> new NoSuchElementException("Player1 with ID " + matchDTO.getPlayer1() + " not found"));
             existingMatch.setPlayer1(player1);
         } else if (matchDTO.getPlayer1() == null) {
             existingMatch.setPlayer1(null);
@@ -147,7 +148,7 @@ public class MatchServiceImpl implements MatchService{
 
         if (matchDTO.getPlayer2() != null && (existingMatch.getPlayer2() == null || !matchDTO.getPlayer2().equals(existingMatch.getPlayer2().getId()))) {
             User player2 = userRepository.findById(matchDTO.getPlayer2())
-                    .orElseThrow(() -> new IllegalArgumentException("Player2 with ID " + matchDTO.getPlayer2() + " not found"));
+                    .orElseThrow(() -> new NoSuchElementException("Player2 with ID " + matchDTO.getPlayer2() + " not found"));
             existingMatch.setPlayer2(player2);
         } else if (matchDTO.getPlayer2() == null) {
             existingMatch.setPlayer2(null);
@@ -165,9 +166,9 @@ public class MatchServiceImpl implements MatchService{
 
 
     @Override
-    public void deleteMatch(Integer matchId) throws Exception {
+    public void deleteMatch(Integer matchId) throws NoSuchElementException {
         if (!matchRepository.existsById(matchId)) {
-            throw new Exception("Match not found");
+            throw new NoSuchElementException("Match not found");
         }
         matchRepository.deleteById(matchId);
     }
