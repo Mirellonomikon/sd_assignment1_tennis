@@ -57,6 +57,18 @@ public class UserServiceImpl implements UserService{
         if (!passwordEncoder.matches(userUpdateCredentialsDTO.getOldPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid old password.");
         }
+
+        Optional<User> existingUser = userRepository.findByUsername(userUpdateCredentialsDTO.getUsername());
+        if (existingUser.isPresent() && !existingUser.get().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("Username already in use by another account.");
+        }
+
+        Optional<User> existingName = userRepository.findByName(userUpdateCredentialsDTO.getName());
+        if (existingName.isPresent() && !existingName.get().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("Name already in use by another account.");
+        }
+
+        user.setUsername(userUpdateCredentialsDTO.getUsername());
         user.setName(userUpdateCredentialsDTO.getName());
         user.setPassword(passwordEncoder.encode(userUpdateCredentialsDTO.getNewPassword()));
         return userRepository.save(user);
@@ -91,6 +103,17 @@ public class UserServiceImpl implements UserService{
     public User updateUser(UserDTO userDTO, Integer id) throws NoSuchElementException{
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found."));
+
+        Optional<User> userWithSameUsername = userRepository.findByUsername(userDTO.getUsername());
+        if (userWithSameUsername.isPresent() && !userWithSameUsername.get().getId().equals(id)) {
+            throw new IllegalArgumentException("Username already in use by another account.");
+        }
+
+        Optional<User> userWithSameName = userRepository.findByName(userDTO.getName());
+        if (userWithSameName.isPresent() && !userWithSameName.get().getId().equals(id)) {
+            throw new IllegalArgumentException("Name already in use by another account.");
+        }
+
         existingUser.setUsername(userDTO.getUsername());
         existingUser.setName(userDTO.getName());
         existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));

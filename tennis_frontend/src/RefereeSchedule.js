@@ -22,6 +22,7 @@ import { Edit } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ScoreDialog from './ScoreDialog';
+import UpdateCredsForm from './UpdateCredsForm';
 
 const RefereeSchedule = () => {
     const [matches, setMatches] = useState([]);
@@ -33,6 +34,7 @@ const RefereeSchedule = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [isScoreDialogOpen, setIsScoreDialogOpen] = useState(false);
+    const [openUpdateForm, setOpenUpdateForm] = useState(false);
 
     const navigate = useNavigate();
     const storedUser = localStorage.getItem('user');
@@ -100,6 +102,14 @@ const RefereeSchedule = () => {
         navigate('/login');
     };
 
+    const handleOpenUpdateForm = () => {
+        setOpenUpdateForm(true);
+    };
+
+    const handleCloseUpdateForm = () => {
+        setOpenUpdateForm(false);
+    };
+
     const sortedMatches = matches.sort((a, b) => {
         const aField = a[sortField] || '';
         const bField = b[sortField] || '';
@@ -118,8 +128,8 @@ const RefereeSchedule = () => {
                 }}
             >
                 <Typography variant="h4">Referee Schedule</Typography>
-                <Button variant="contained" color="primary">
-                    Edit User
+                <Button variant="contained" color="primary" onClick={handleOpenUpdateForm}>
+                    Edit Credentials
                 </Button>
             </Box>
 
@@ -232,12 +242,17 @@ const RefereeSchedule = () => {
                 handleClose={handleCloseScoreDialog}
                 matchId={selectedMatch?.id}
             />
-
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginTop: 2 }}>
                 <Button variant="contained" color="secondary" onClick={handleLogout}>
                     Logout
                 </Button>
             </Box>
+            <UpdateCredsForm
+                open={openUpdateForm}
+                handleClose={handleCloseUpdateForm}
+                userId={refereeId}
+            />
+
         </Container>
     );
 };
