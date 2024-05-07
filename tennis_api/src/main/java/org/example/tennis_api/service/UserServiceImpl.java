@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService{
         }
         userSignUpDTO.setPassword(passwordEncoder.encode(userSignUpDTO.getPassword()));
         User user = userMapper.signUpDtoToEntity(userSignUpDTO);
+        user.setIsRegisteredInTournament(false);
         return userRepository.save(user);
     }
 
@@ -85,6 +86,20 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public List<User> findRegisteredPlayers() {
+        return userRepository.findByIsRegisteredInTournament(true);
+    }
+
+    @Override
+    public User registerTournamentUser(Integer id) throws NoSuchElementException {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found."));
+
+        user.setIsRegisteredInTournament(!user.getIsRegisteredInTournament());
+        return userRepository.save(user);
+    }
+
+    @Override
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
@@ -118,6 +133,7 @@ public class UserServiceImpl implements UserService{
         existingUser.setName(userDTO.getName());
         existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         existingUser.setUserType(userDTO.getUserType());
+        existingUser.setIsRegisteredInTournament(userDTO.getIsRegisteredInTournament());
         return userRepository.save(existingUser);
     }
 

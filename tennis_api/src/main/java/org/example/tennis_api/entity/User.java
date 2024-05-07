@@ -28,10 +28,14 @@ public class User {
     @Column(name = "user_type", nullable = false)
     private String userType;
 
+    @Column(name = "tournament_register", nullable = false)
+    private Boolean isRegisteredInTournament;
+
     public User(String username, String name, String password, String userType) {
         this.username = username;
         this.name = name;
         this.password = password;
         this.userType = userType;
+        this.isRegisteredInTournament = false;
     }
 }

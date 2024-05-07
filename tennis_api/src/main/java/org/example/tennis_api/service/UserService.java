@@ -15,6 +15,8 @@ public interface UserService {
     User updateUserCredentials(UserUpdateCredentialsDTO userUpdateCredentialsDTO, Integer id) throws Exception;
     Optional<User> findUserById(Integer id);
     List<User> findUserByRole(String role);
+    List<User> findRegisteredPlayers();
+    User registerTournamentUser(Integer id) throws Exception;
     List<User> findAllUsers();
     User addUser(UserDTO userDTO) throws Exception;
     User updateUser(UserDTO userDTO, Integer id);
