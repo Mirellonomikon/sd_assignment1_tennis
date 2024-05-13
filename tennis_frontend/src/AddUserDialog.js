@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -10,7 +10,9 @@ import {
     MenuItem,
     FormControl,
     InputLabel,
-    Alert
+    Alert,
+    Checkbox,
+    FormControlLabel
 } from '@mui/material';
 import axios from 'axios';
 
@@ -21,12 +23,14 @@ const AddUserDialog = ({ open, handleClose }) => {
     const [role, setRole] = useState('');
     const [roles] = useState(['referee', 'player', 'administrator']);
     const [error, setError] = useState('');
+    const [isRegisteredInTournament, setIsRegisteredInTournament] = useState(false);
 
     const resetForm = () => {
         setUsername('');
         setName('');
         setPassword('');
         setRole('');
+        setIsRegisteredInTournament(false);
         setError('');
     };
 
@@ -36,7 +40,8 @@ const AddUserDialog = ({ open, handleClose }) => {
                 username,
                 name,
                 password,
-                userType: role
+                userType: role,
+                isRegisteredInTournament
             };
 
             await axios.post('http://localhost:8081/api/user/add', userDTO);
@@ -53,6 +58,12 @@ const AddUserDialog = ({ open, handleClose }) => {
         }
         handleClose(submitSuccessful);
     };
+
+    useEffect(() => {
+        if (role !== 'player') {
+            setIsRegisteredInTournament(false);
+        }
+    }, [role]);
 
     return (
         <Dialog open={open} onClose={() => handleDialogClose(false)} sx={{ '& .MuiPaper-root': { backgroundColor: '#f1f8e9' } }}>
@@ -108,6 +119,17 @@ const AddUserDialog = ({ open, handleClose }) => {
                         ))}
                     </Select>
                 </FormControl>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={isRegisteredInTournament}
+                            onChange={(e) => setIsRegisteredInTournament(e.target.checked)}
+                            name="isRegisteredInTournament"
+                            disabled={role !== 'player'}
+                        />
+                    }
+                    label="Register in Tournament"
+                />
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => handleDialogClose(false)} color="secondary">

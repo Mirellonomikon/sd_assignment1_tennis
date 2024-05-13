@@ -53,8 +53,13 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                         return userResponse.data;
                     };
 
+                    const fetchPlayers = async () => {
+                        const userResponse = await axios.get(`http://localhost:8081/api/user/role/tournament`);
+                        return userResponse.data;
+                    };
+
                     setReferees(await fetchUsers('referee'));
-                    setPlayers(await fetchUsers('player'));
+                    setPlayers(await fetchPlayers());
                 } catch (err) {
                     setError(err.response?.data || 'Failed to fetch match details.');
                 }

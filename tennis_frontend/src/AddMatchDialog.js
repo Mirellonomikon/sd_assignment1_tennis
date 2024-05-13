@@ -42,8 +42,18 @@ const AddMatchDialog = ({ open, handleClose }) => {
             }
         };
 
+        const fetchPlayers = async () => {
+            try {
+                const response = await axios.get('http://localhost:8081/api/user/role/tournament');
+                setPlayers(response.data);
+            }
+            catch (err) {
+                setError(err.response?.data || 'Failed to fetch players.');
+            }
+        };
+
         fetchUsers('referee');
-        fetchUsers('player');
+        fetchPlayers();
     }, []);
 
     const resetForm = () => {

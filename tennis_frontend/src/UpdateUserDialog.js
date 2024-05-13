@@ -11,6 +11,8 @@ import {
     FormControl,
     InputLabel,
     Alert,
+    Checkbox,
+    FormControlLabel
 } from '@mui/material';
 import axios from 'axios';
 
@@ -22,6 +24,7 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
     const [role, setRole] = useState('');
     const [roles] = useState(['referee', 'player', 'administrator']);
     const [error, setError] = useState('');
+    const [isRegisteredInTournament, setIsRegisteredInTournament] = useState(false);
 
     useEffect(() => {
         if (open) {
@@ -35,6 +38,7 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                     setName(user.name);
                     setPassword(user.password);
                     setRole(user.userType);
+                    setIsRegisteredInTournament(user.isRegisteredInTournament);
                 } catch (err) {
                     setError(err.response?.data || 'Failed to fetch user details.');
                 }
@@ -46,6 +50,12 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
         }
     }, [open, userId]);
 
+    useEffect(() => {
+        if (role !== 'player') {
+            setIsRegisteredInTournament(false);
+        }
+    }, [role]);
+
     const handleUpdate = async () => {
         try {
             const userDTO = {
@@ -53,6 +63,7 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                 name,
                 password,
                 userType: role,
+                isRegisteredInTournament
             };
 
             await axios.put(`http://localhost:8081/api/user/${userId}`, userDTO);
@@ -68,6 +79,7 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
             setName(defaultUser.name);
             setPassword(defaultUser.password);
             setRole(defaultUser.userType);
+            setIsRegisteredInTournament(defaultUser.isRegisteredInTournament);
         }
     };
 
@@ -132,6 +144,17 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                         ))}
                     </Select>
                 </FormControl>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={isRegisteredInTournament}
+                            onChange={(e) => setIsRegisteredInTournament(e.target.checked)}
+                            name="isRegisteredInTournament"
+                            disabled={role !== 'player'}
+                        />
+                    }
+                    label="Register in Tournament"
+                />
             </DialogContent>
 
             <DialogActions>

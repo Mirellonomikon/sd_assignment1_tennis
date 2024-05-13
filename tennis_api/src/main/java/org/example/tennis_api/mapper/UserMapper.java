@@ -30,6 +30,7 @@ public class UserMapper implements GenericMapper<User, UserDTO>{
     public User signUpDtoToEntity(UserSignUpDTO dto) {
         User user = modelMapper.map(dto, User.class);
         user.setUserType(resolveUserType(dto.getUserTypeCode()));
+        user.setIsRegisteredInTournament(false);
         return user;
     }
 

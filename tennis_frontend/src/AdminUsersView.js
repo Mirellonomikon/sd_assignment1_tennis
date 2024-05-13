@@ -222,6 +222,15 @@ const AdminUsersView = () => {
                                             User Type
                                         </TableSortLabel>
                                     </TableCell>
+                                    <TableCell>
+                                        <TableSortLabel
+                                            active={sortField === 'isRegisteredInTournament'}
+                                            direction={sortDirection}
+                                            onClick={() => handleSort('isRegisteredInTournament')}
+                                        >
+                                            Competing
+                                        </TableSortLabel>
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -238,6 +247,9 @@ const AdminUsersView = () => {
                                             <TableCell>{user.username}</TableCell>
                                             <TableCell>{user.name}</TableCell>
                                             <TableCell>{user.userType}</TableCell>
+                                            <TableCell>
+                                                {user.isRegisteredInTournament ? "Yes" : "No"}
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                             </TableBody>
