@@ -54,10 +54,6 @@ const ScoreDialog = ({ open, handleClose, matchId }) => {
             const player1ScoreValue = parseInt(player1Score, 10);
             const player2ScoreValue = parseInt(player2Score, 10);
 
-            if (isNaN(player1ScoreValue) || isNaN(player2ScoreValue)) {
-                throw new Error('Scores must be valid integers.');
-            }
-
             const scoreData = {
                 player1Score: player1ScoreValue,
                 player2Score: player2ScoreValue,

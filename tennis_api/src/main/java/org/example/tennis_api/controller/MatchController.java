@@ -67,6 +67,12 @@ public class MatchController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{matchId}/remove/{playerId}")
+    public ResponseEntity<Match> removePlayerFromMatch(@PathVariable Integer matchId, @PathVariable Integer playerId) {
+        Match updatedMatch = matchService.removePlayerFromMatch(matchId, playerId);
+        return ResponseEntity.ok(updatedMatch);
+    }
+
     @PutMapping("/{matchId}/score")
     public ResponseEntity<Match> updateMatchScore(@PathVariable Integer matchId, @RequestBody Map<String, Integer> scoreData) throws Exception {
         Integer player1Score = scoreData.getOrDefault("player1Score", null);
