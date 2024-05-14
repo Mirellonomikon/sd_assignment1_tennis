@@ -263,7 +263,9 @@ const AdminUsersView = () => {
                             rowsPerPage={rowsPerPage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                             rowsPerPageOptions={[10, 25, 50]}
+                            labelRowsPerPage="Rows per page"
                         />
+
                     </TableContainer>
                 </ClickAwayListener>
             )}

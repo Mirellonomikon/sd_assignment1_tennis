@@ -20,13 +20,14 @@ const ScoreDialog = ({ open, handleClose, matchId }) => {
     const [initialPlayer2Score, setInitialPlayer2Score] = useState('');
 
     useEffect(() => {
-        if (open) {
+        if (open && matchId) {
+            console.log("Fetching details for match ID:", matchId);
             const fetchMatchDetails = async () => {
                 try {
                     const response = await axios.get(`http://localhost:8081/api/match/${matchId}`);
                     const match = response.data;
-                    const p1Score = match.player1Score ?? '0';
-                    const p2Score = match.player2Score ?? '0';
+                    const p1Score = match.player1Score != null ? match.player1Score.toString() : '0';
+                    const p2Score = match.player2Score != null ? match.player2Score.toString() : '0';
                     
                     setPlayer1Score(p1Score);
                     setPlayer2Score(p2Score);
@@ -52,18 +53,20 @@ const ScoreDialog = ({ open, handleClose, matchId }) => {
         try {
             const player1ScoreValue = parseInt(player1Score, 10);
             const player2ScoreValue = parseInt(player2Score, 10);
-    
+
+            if (isNaN(player1ScoreValue) || isNaN(player2ScoreValue)) {
+                throw new Error('Scores must be valid integers.');
+            }
+
             const scoreData = {
                 player1Score: player1ScoreValue,
                 player2Score: player2ScoreValue,
             };
-    
-            await axios.put(`http://localhost:8081/api/match/${matchId}/score`, scoreData, {
-                
-            });
+
+            await axios.put(`http://localhost:8081/api/match/${matchId}/score`, scoreData);
             handleClose(true);
         } catch (err) {
-            setError(err.response?.data || 'Failed to update scores.');
+            setError(err.response?.data || err.message || 'Failed to update scores.');
         }
     };
 
@@ -98,7 +101,7 @@ const ScoreDialog = ({ open, handleClose, matchId }) => {
                     fullWidth
                     variant="outlined"
                     value={player2Score}
-                    onChange = {(e) => setPlayer2Score(e.target.value)}
+                    onChange={(e) => setPlayer2Score(e.target.value)}
                 />
             </DialogContent>
             <DialogActions>

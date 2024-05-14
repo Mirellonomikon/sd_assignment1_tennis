@@ -69,11 +69,15 @@ const RefereeSchedule = () => {
     }, [refereeId]);
 
     const handleRowClick = (match) => {
-        setSelectedMatch(selectedMatch?.id === match.id ? null : match);
+        if (!isScoreDialogOpen) {
+            setSelectedMatch(selectedMatch?.id === match.id ? null : match);
+        }
     };
 
     const handleTableClickAway = () => {
-        setSelectedMatch(null);
+        if (!isScoreDialogOpen) {
+            setSelectedMatch(null);
+        }
     };
 
     const handleOpenScoreDialog = () => {
@@ -226,7 +230,7 @@ const RefereeSchedule = () => {
 
                         <TablePagination
                             component="div"
-                            count={(matches.length)}
+                            count={matches.length}
                             page={page}
                             onPageChange={handleChangePage}
                             rowsPerPage={rowsPerPage}

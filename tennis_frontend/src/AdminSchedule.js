@@ -318,7 +318,7 @@ const AdminSchedule = () => {
                             rowsPerPage={rowsPerPage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                             rowsPerPageOptions={[10, 25, 50]}
-                            labelRowsPer Page
+                            labelRowsPerPage="Rows per page"
                         />
                     </TableContainer>
                 </ClickAwayListener>
