@@ -23,6 +23,14 @@ public class UserServiceImpl implements UserService{
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
+    private void validateUserCredentials(String username, String name, String password) {
+        if (username == null || username.trim().isEmpty() ||
+                name == null || name.trim().isEmpty() ||
+                password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username, name and password cannot be empty.");
+        }
+    }
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -32,6 +40,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User registerUser(UserSignUpDTO userSignUpDTO) throws DataIntegrityViolationException {
+        validateUserCredentials(userSignUpDTO.getUsername(), userSignUpDTO.getName(), userSignUpDTO.getPassword());
         if (userRepository.findByUsername(userSignUpDTO.getUsername()).isPresent()) {
             throw new DataIntegrityViolationException("Username already exists.");
         }
@@ -55,6 +64,7 @@ public class UserServiceImpl implements UserService{
     public User updateUserCredentials(UserUpdateCredentialsDTO userUpdateCredentialsDTO, Integer id) throws NoSuchElementException, IllegalArgumentException {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found."));
+        validateUserCredentials(userUpdateCredentialsDTO.getUsername(), userUpdateCredentialsDTO.getName(), userUpdateCredentialsDTO.getNewPassword());
         if (!passwordEncoder.matches(userUpdateCredentialsDTO.getOldPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid old password.");
         }
@@ -106,6 +116,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User addUser(UserDTO userDTO) throws DataIntegrityViolationException {
+        validateUserCredentials(userDTO.getUsername(), userDTO.getName(), userDTO.getPassword());
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
             throw new DataIntegrityViolationException("Username already exists.");
         }
@@ -118,6 +129,7 @@ public class UserServiceImpl implements UserService{
     public User updateUser(UserDTO userDTO, Integer id) throws NoSuchElementException{
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found."));
+        validateUserCredentials(userDTO.getUsername(), userDTO.getName(), userDTO.getPassword());
 
         Optional<User> userWithSameUsername = userRepository.findByUsername(userDTO.getUsername());
         if (userWithSameUsername.isPresent() && !userWithSameUsername.get().getId().equals(id)) {

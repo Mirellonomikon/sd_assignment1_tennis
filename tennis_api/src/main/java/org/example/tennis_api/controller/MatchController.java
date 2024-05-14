@@ -69,8 +69,8 @@ public class MatchController {
 
     @PutMapping("/{matchId}/score")
     public ResponseEntity<Match> updateMatchScore(@PathVariable Integer matchId, @RequestBody Map<String, Integer> scoreData) throws Exception {
-        Integer player1Score = scoreData.get("player1Score");
-        Integer player2Score = scoreData.get("player2Score");
+        Integer player1Score = scoreData.getOrDefault("player1Score", null);
+        Integer player2Score = scoreData.getOrDefault("player2Score", null);
 
         Match updatedMatch = matchService.updateMatchScore(matchId, player1Score, player2Score);
         return ResponseEntity.ok(updatedMatch);

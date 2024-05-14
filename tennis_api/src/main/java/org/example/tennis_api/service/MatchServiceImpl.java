@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDate;
-import java.util.InputMismatchException;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -32,6 +32,21 @@ public class MatchServiceImpl implements MatchService{
         this.matchMapper = matchMapper;
     }
 
+    private void validateMatchDetails(String name, LocalDate matchDate, LocalTime matchTime, String location) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Match name cannot be empty.");
+        }
+        if (matchDate == null) {
+            throw new IllegalArgumentException("Match date cannot be null.");
+        }
+        if (matchTime == null) {
+            throw new IllegalArgumentException("Match time cannot be null.");
+        }
+        if (location == null || location.trim().isEmpty()) {
+            throw new IllegalArgumentException("Location cannot be empty.");
+        }
+    }
+
     private void validateMatchDTO(MatchDTO matchDTO) throws IllegalArgumentException {
         if (matchDTO.getMatchDate().isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("Match date cannot be in the past.");
@@ -45,6 +60,7 @@ public class MatchServiceImpl implements MatchService{
 
     @Override
     public Match createMatch(MatchDTO matchDTO) throws IllegalArgumentException {
+        validateMatchDetails(matchDTO.getName(), matchDTO.getMatchDate(), matchDTO.getMatchTime(), matchDTO.getLocation());
         validateMatchDTO(matchDTO);
 
         Match match = matchMapper.toEntity(matchDTO);
@@ -129,6 +145,7 @@ public class MatchServiceImpl implements MatchService{
         Match existingMatch = matchRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Match not found"));
         validateMatchDTO(matchDTO);
+        validateMatchDetails(matchDTO.getName(), matchDTO.getMatchDate(), matchDTO.getMatchTime(), matchDTO.getLocation());
 
         if (matchDTO.getReferee() != null && (existingMatch.getReferee() == null || !matchDTO.getReferee().equals(existingMatch.getReferee().getId()))) {
             User referee = userRepository.findById(matchDTO.getReferee())

@@ -66,8 +66,6 @@ const ScoreDialog = ({ open, handleClose, matchId }) => {
             setError(err.response?.data || 'Failed to update scores.');
         }
     };
-    
-    
 
     const handleReset = () => {
         setPlayer1Score(initialPlayer1Score);
