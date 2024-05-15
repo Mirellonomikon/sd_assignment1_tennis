@@ -36,6 +36,7 @@ const PlayerSchedule = () => {
     const navigate = useNavigate();
     const storedUser = localStorage.getItem('user');
     const userId = storedUser ? JSON.parse(storedUser).id : null;
+    const userStatus = storedUser ? JSON.parse(storedUser).isRegisteredInTournament : false;
 
     const fetchMatches = async () => {
         try {
@@ -55,14 +56,8 @@ const PlayerSchedule = () => {
         }
     };
 
-    const fetchUserTournamentStatus = async () => {
-        if (!userId) return;
-        try {
-            const response = await axios.get(`http://localhost:8081/api/user/${userId}`);
-            setIsTournamentJoined(response.data.isRegisteredInTournament);
-        } catch (err) {
-            console.error("Failed to fetch user tournament status", err);
-        }
+    const fetchUserTournamentStatus = () => {
+        setIsTournamentJoined(userStatus);
     };
 
     useEffect(() => {
@@ -116,7 +111,13 @@ const PlayerSchedule = () => {
             await axios.put(`http://localhost:8081/api/user/${userId}/tournament`, {
                 isRegisteredInTournament: !isTournamentJoined,
             });
+
+            const updatedUser = { ...JSON.parse(storedUser), isRegisteredInTournament: !isTournamentJoined };
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+
             setIsTournamentJoined(!isTournamentJoined);
+
+            fetchMatches();
         } catch (err) {
             setError(`Failed to update tournament status: ${err.response?.data || err.message}`);
         }
@@ -125,7 +126,8 @@ const PlayerSchedule = () => {
     const sortedMatches = matches.sort((a, b) => {
         const aField = a[sortField] || '';
         const bField = b[sortField] || '';
-        return sortDirection === 'asc' ? (aField > bField ? 1 : -1) : (aField < bField ? -1 : 1);
+
+        return sortDirection === 'asc' ? (aField > bField ? 1 : -1) : (aField < bField ? 1 : -1);
     });
 
     return (

@@ -20,11 +20,11 @@ public class CsvExportStrategy implements MatchExportStrategy {
                     match.getMatchDate(),
                     match.getMatchTime(),
                     match.getLocation(),
-                    match.getReferee().getName(),
-                    match.getPlayer1().getName(),
-                    match.getPlayer1Score(),
-                    match.getPlayer2().getName(),
-                    match.getPlayer2Score());
+                    match.getReferee() != null ? match.getReferee().getName() : "N/A",
+                    match.getPlayer1() != null ? match.getPlayer1().getName() : "N/A",
+                    match.getPlayer1Score() != null ? match.getPlayer1Score() : 0,
+                    match.getPlayer2() != null ? match.getPlayer2().getName() : "N/A",
+                    match.getPlayer2Score() != null ? match.getPlayer2Score() : 0);
             writer.write(line);
         }
 

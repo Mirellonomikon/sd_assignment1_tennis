@@ -195,21 +195,13 @@ public class MatchServiceImpl implements MatchService{
         Match match = matchRepository.findById(matchId)
                 .orElseThrow(() -> new NoSuchElementException("Match not found with ID: " + matchId));
 
-        boolean playerRemoved = false;
-
         if (match.getPlayer1() != null && match.getPlayer1().getId().equals(playerId)) {
             match.setPlayer1(null);
             match.setPlayer1Score(null);
-            playerRemoved = true;
         }
         if (match.getPlayer2() != null && match.getPlayer2().getId().equals(playerId)) {
             match.setPlayer2(null);
             match.setPlayer2Score(null);
-            playerRemoved = true;
-        }
-
-        if (!playerRemoved) {
-            throw new IllegalArgumentException("Player not found in the match with ID: " + playerId);
         }
 
         return matchRepository.save(match);
@@ -224,7 +216,7 @@ public class MatchServiceImpl implements MatchService{
                     .filter(match -> !match.getMatchDate().isBefore(startDate) && !match.getMatchDate().isAfter(endDate))
                     .collect(Collectors.toList());
         }
-        if (location != null) {
+        if (location != null && !location.isEmpty()) {
             matches = matches.stream()
                     .filter(match -> match.getLocation().equalsIgnoreCase(location))
                     .collect(Collectors.toList());
@@ -243,6 +235,7 @@ public class MatchServiceImpl implements MatchService{
 
         return matches;
     }
+
 
     @Override
     public void exportMatches(List<Match> matches, OutputStream outputStream, MatchExportStrategy strategy) throws IOException {

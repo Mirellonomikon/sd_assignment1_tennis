@@ -84,13 +84,16 @@ public class MatchController {
 
 
     @GetMapping("/export")
-    public ResponseEntity<byte[]> exportMatches(@RequestParam(required = false) LocalDate startDate,
-                                                @RequestParam(required = false) LocalDate endDate,
-                                                @RequestParam(required = false) String location,
-                                                @RequestParam(required = false) Integer refereeId,
-                                                @RequestParam(required = false) Integer playerId,
-                                                @RequestParam String format) throws Exception {
+    public ResponseEntity<byte[]> exportMatches(
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) Integer refereeId,
+            @RequestParam(required = false) Integer playerId,
+            @RequestParam String format) throws Exception {
+
         List<Match> matches = matchService.findMatches(startDate, endDate, location, refereeId, playerId);
+        System.out.println("Found matches: " + matches.size());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         MatchExportStrategy strategy = format.equals("csv") ? new CsvExportStrategy() : new TxtExportStrategy();
         matchService.exportMatches(matches, outputStream, strategy);

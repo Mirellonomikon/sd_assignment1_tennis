@@ -117,7 +117,8 @@ const RefereeSchedule = () => {
     const sortedMatches = matches.sort((a, b) => {
         const aField = a[sortField] || '';
         const bField = b[sortField] || '';
-        return sortDirection === 'asc' ? (aField > bField ? 1 : -1) : (aField < bField ? -1 : 1);
+
+        return sortDirection === 'asc' ? (aField > bField ? 1 : -1) : (aField < bField ? 1 : -1);
     });
 
     return (

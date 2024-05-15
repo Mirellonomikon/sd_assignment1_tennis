@@ -25,6 +25,8 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
     const [roles] = useState(['referee', 'player', 'administrator']);
     const [error, setError] = useState('');
     const [isRegisteredInTournament, setIsRegisteredInTournament] = useState(false);
+    const [originalRole, setOriginalRole] = useState('');
+    const [originalTournamentStatus, setOriginalTournamentStatus] = useState(false);
 
     useEffect(() => {
         if (open) {
@@ -39,6 +41,8 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                     setPassword(user.password);
                     setRole(user.userType);
                     setIsRegisteredInTournament(user.isRegisteredInTournament);
+                    setOriginalRole(user.userType);
+                    setOriginalTournamentStatus(user.isRegisteredInTournament);
                 } catch (err) {
                     setError(err.response?.data || 'Failed to fetch user details.');
                 }
@@ -65,6 +69,18 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                 userType: role,
                 isRegisteredInTournament
             };
+
+            if ((originalRole === 'player' && role !== 'player') || (originalTournamentStatus && !isRegisteredInTournament)) {
+                const matchesResponse = await axios.get('http://localhost:8081/api/match/all');
+                const matches = matchesResponse.data;
+                const userMatches = matches.filter(
+                    (match) => match.player1?.id === userId || match.player2?.id === userId
+                );
+
+                for (const match of userMatches) {
+                    await axios.put(`http://localhost:8081/api/match/${match.id}/remove/${userId}`);
+                }
+            }
 
             await axios.put(`http://localhost:8081/api/user/${userId}`, userDTO);
             handleClose(true);
