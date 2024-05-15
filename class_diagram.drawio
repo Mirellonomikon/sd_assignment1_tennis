@@ -1,0 +1,314 @@
+<mxfile host="app.diagrams.net" modified="2024-05-15T05:38:06.845Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" version="24.4.0" etag="jXTjjXmlKCehMVPJ8KbU" type="device">
+  <diagram id="_fCg3_Qy0PaFipiwztML" name="Page-1">
+    <mxGraphModel dx="2500" dy="1706" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="node8" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;CsvExportStrategy&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ export(List&amp;lt;Match&amp;gt;, OutputStream): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="1029" y="2523" width="304" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="node18" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br/&gt;&lt;b&gt;GenericMapper&lt;Entity, DTO&gt;&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ toDTO(Entity): DTO&lt;br/&gt;+ toEntity(DTO): Entity&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="262" y="2252" width="279" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="node5" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;GlobalExceptionHandler&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- logger: Logger&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ handleDataIntegrityViolationException(DataIntegrityViolationException): ResponseEntity&amp;lt;String&amp;gt;&lt;br/&gt;+ handleException(Exception): ResponseEntity&amp;lt;String&amp;gt;&lt;br/&gt;+ handleIllegalArgumentException(IllegalArgumentException): ResponseEntity&amp;lt;String&amp;gt;&lt;br/&gt;+ handleNoSuchElementException(NoSuchElementException): ResponseEntity&amp;lt;String&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="1413" y="3576" width="577" height="148" as="geometry" />
+        </mxCell>
+        <mxCell id="node14" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Match&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- id: Integer&lt;br/&gt;- location: String&lt;br/&gt;- matchDate: LocalDate&lt;br/&gt;- matchTime: LocalTime&lt;br/&gt;- name: String&lt;br/&gt;- player1: User&lt;br/&gt;- player1Score: Integer&lt;br/&gt;- player2: User&lt;br/&gt;- player2Score: Integer&lt;br/&gt;- referee: User&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getId(): Integer&lt;br/&gt;+ getLocation(): String&lt;br/&gt;+ getMatchDate(): LocalDate&lt;br/&gt;+ getMatchTime(): LocalTime&lt;br/&gt;+ getName(): String&lt;br/&gt;+ getPlayer1(): User&lt;br/&gt;+ getPlayer1Score(): Integer&lt;br/&gt;+ getPlayer2(): User&lt;br/&gt;+ getPlayer2Score(): Integer&lt;br/&gt;+ getReferee(): User&lt;br/&gt;+ setId(Integer): void&lt;br/&gt;+ setLocation(String): void&lt;br/&gt;+ setMatchDate(LocalDate): void&lt;br/&gt;+ setMatchTime(LocalTime): void&lt;br/&gt;+ setName(String): void&lt;br/&gt;+ setPlayer1(User): void&lt;br/&gt;+ setPlayer1Score(Integer): void&lt;br/&gt;+ setPlayer2(User): void&lt;br/&gt;+ setPlayer2Score(Integer): void&lt;br/&gt;+ setReferee(User): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="681" y="549" width="240" height="723" as="geometry" />
+        </mxCell>
+        <mxCell id="node23" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MatchController&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- matchService: MatchService&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ createMatch(MatchDTO): ResponseEntity&amp;lt;Match&amp;gt;&lt;br/&gt;+ deleteMatch(Integer): ResponseEntity&amp;lt;Void&amp;gt;&lt;br/&gt;+ exportMatches(LocalDate, LocalDate, String, Integer, Integer, String): ResponseEntity&amp;lt;byte[]&amp;gt;&lt;br/&gt;+ getAllMatches(): ResponseEntity&amp;lt;List&amp;lt;Match&amp;gt;&amp;gt;&lt;br/&gt;+ getMatchById(Integer): ResponseEntity&amp;lt;Match&amp;gt;&lt;br/&gt;+ getMatchByRef(Integer): ResponseEntity&amp;lt;List&amp;lt;Match&amp;gt;&amp;gt;&lt;br/&gt;+ registerPlayerToMatch(Integer, Integer): ResponseEntity&amp;lt;Match&amp;gt;&lt;br/&gt;+ removePlayerFromMatch(Integer, Integer): ResponseEntity&amp;lt;Match&amp;gt;&lt;br/&gt;+ updateMatch(Integer, MatchDTO): ResponseEntity&amp;lt;Match&amp;gt;&lt;br/&gt;+ updateMatchScore(Integer, Map&amp;lt;String, Integer&amp;gt;): ResponseEntity&amp;lt;Match&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="263" y="3127" width="556" height="286" as="geometry" />
+        </mxCell>
+        <mxCell id="node20" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MatchDTO&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- location: String&lt;br/&gt;- matchDate: LocalDate&lt;br/&gt;- matchTime: LocalTime&lt;br/&gt;- name: String&lt;br/&gt;- player1: Integer&lt;br/&gt;- player1Score: Integer&lt;br/&gt;- player2: Integer&lt;br/&gt;- player2Score: Integer&lt;br/&gt;- referee: Integer&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getLocation(): String&lt;br/&gt;+ getMatchDate(): LocalDate&lt;br/&gt;+ getMatchTime(): LocalTime&lt;br/&gt;+ getName(): String&lt;br/&gt;+ getPlayer1(): Integer&lt;br/&gt;+ getPlayer1Score(): Integer&lt;br/&gt;+ getPlayer2(): Integer&lt;br/&gt;+ getPlayer2Score(): Integer&lt;br/&gt;+ getReferee(): Integer&lt;br/&gt;+ setLocation(String): void&lt;br/&gt;+ setMatchDate(LocalDate): void&lt;br/&gt;+ setMatchTime(LocalTime): void&lt;br/&gt;+ setName(String): void&lt;br/&gt;+ setPlayer1(Integer): void&lt;br/&gt;+ setPlayer1Score(Integer): void&lt;br/&gt;+ setPlayer2(Integer): void&lt;br/&gt;+ setPlayer2Score(Integer): void&lt;br/&gt;+ setReferee(Integer): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="-139" y="1303" width="240" height="654" as="geometry" />
+        </mxCell>
+        <mxCell id="node13" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br/&gt;&lt;b&gt;MatchExportStrategy&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ export(List&amp;lt;Match&amp;gt;, OutputStream): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="1209" y="2263" width="304" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="node2" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MatchMapper&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- modelMapper: ModelMapper&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ toDTO(Match): MatchDTO&lt;br/&gt;+ toEntity(MatchDTO): Match&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="291" y="2499" width="220" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="node21" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br/&gt;&lt;b&gt;MatchRepository&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ findByReferee(User): List&amp;lt;Match&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="432" y="2843" width="259" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="node17" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br/&gt;&lt;b&gt;MatchService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ createMatch(MatchDTO): Match&lt;br/&gt;+ deleteMatch(Integer): void&lt;br/&gt;+ exportMatches(List&amp;lt;Match&amp;gt;, OutputStream, MatchExportStrategy): void&lt;br/&gt;+ findAllMatches(): List&amp;lt;Match&amp;gt;&lt;br/&gt;+ findAllMatchesByRefereeId(Integer): List&amp;lt;Match&amp;gt;&lt;br/&gt;+ findMatchById(Integer): Match&lt;br/&gt;+ findMatches(LocalDate, LocalDate, String, Integer, Integer): List&amp;lt;Match&amp;gt;&lt;br/&gt;+ registerPlayerToMatch(Integer, Integer): Match&lt;br/&gt;+ removePlayerFromMatch(Integer, Integer): Match&lt;br/&gt;+ updateMatch(MatchDTO, Integer): Match&lt;br/&gt;+ updateMatchScore(Integer, Integer, Integer): Match&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="-130" y="2728" width="502" height="284" as="geometry" />
+        </mxCell>
+        <mxCell id="node19" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MatchServiceImpl&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- matchMapper: MatchMapper&lt;br/&gt;- matchRepository: MatchRepository&lt;br/&gt;- userRepository: UserRepository&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ createMatch(MatchDTO): Match&lt;br/&gt;+ deleteMatch(Integer): void&lt;br/&gt;+ exportMatches(List&amp;lt;Match&amp;gt;, OutputStream, MatchExportStrategy): void&lt;br/&gt;+ findAllMatches(): List&amp;lt;Match&amp;gt;&lt;br/&gt;+ findAllMatchesByRefereeId(Integer): List&amp;lt;Match&amp;gt;&lt;br/&gt;+ findMatchById(Integer): Match&lt;br/&gt;+ findMatches(LocalDate, LocalDate, String, Integer, Integer): List&amp;lt;Match&amp;gt;&lt;br/&gt;+ registerPlayerToMatch(Integer, Integer): Match&lt;br/&gt;+ removePlayerFromMatch(Integer, Integer): Match&lt;br/&gt;+ updateMatch(MatchDTO, Integer): Match&lt;br/&gt;+ updateMatchScore(Integer, Integer, Integer): Match&lt;br/&gt;- validateMatchDTO(MatchDTO): void&lt;br/&gt;- validateMatchDetails(String, LocalDate, LocalTime, String): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="-130" y="3450" width="502" height="401" as="geometry" />
+        </mxCell>
+        <mxCell id="node6" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ModelMapperConfig&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ modelMapper(): ModelMapper&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="5" y="2063" width="232" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="node12" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;SecurityConfig&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ passwordEncoder(): PasswordEncoder&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="1037" y="2163" width="288" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="node10" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;TennisApiApplication&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ main(String[]): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="1435" y="2163" width="213" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="node22" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;TxtExportStrategy&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ export(List&amp;lt;Match&amp;gt;, OutputStream): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="1209" y="2843" width="304" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="node11" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;User&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- id: Integer&lt;br/&gt;- isRegisteredInTournament: Boolean&lt;br/&gt;- name: String&lt;br/&gt;- password: String&lt;br/&gt;- userType: String&lt;br/&gt;- username: String&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getId(): Integer&lt;br/&gt;+ getIsRegisteredInTournament(): Boolean&lt;br/&gt;+ getName(): String&lt;br/&gt;+ getPassword(): String&lt;br/&gt;+ getUserType(): String&lt;br/&gt;+ getUsername(): String&lt;br/&gt;+ setId(Integer): void&lt;br/&gt;+ setIsRegisteredInTournament(Boolean): void&lt;br/&gt;+ setName(String): void&lt;br/&gt;+ setPassword(String): void&lt;br/&gt;+ setUserType(String): void&lt;br/&gt;+ setUsername(String): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="40" y="-13" width="322" height="447" as="geometry" />
+        </mxCell>
+        <mxCell id="node15" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;UserController&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- userService: UserService&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ addUser(UserDTO): ResponseEntity&amp;lt;User&amp;gt;&lt;br/&gt;+ deleteUser(Integer): ResponseEntity&amp;lt;Void&amp;gt;&lt;br/&gt;+ getAllUsers(): ResponseEntity&amp;lt;List&amp;lt;User&amp;gt;&amp;gt;&lt;br/&gt;+ getRegisteredPlayers(): ResponseEntity&amp;lt;List&amp;lt;User&amp;gt;&amp;gt;&lt;br/&gt;+ getUser(Integer): ResponseEntity&amp;lt;User&amp;gt;&lt;br/&gt;+ getUserByRole(String): ResponseEntity&amp;lt;List&amp;lt;User&amp;gt;&amp;gt;&lt;br/&gt;+ loginUser(UserSignInDTO): ResponseEntity&amp;lt;User&amp;gt;&lt;br/&gt;+ registerUser(UserSignUpDTO): ResponseEntity&amp;lt;User&amp;gt;&lt;br/&gt;+ updateCredentials(Integer, UserUpdateCredentialsDTO): ResponseEntity&amp;lt;User&amp;gt;&lt;br/&gt;+ updateUser(UserDTO, Integer): ResponseEntity&amp;lt;User&amp;gt;&lt;br/&gt;+ userTournamentStatus(Integer): ResponseEntity&amp;lt;User&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="1109" y="3116" width="545" height="309" as="geometry" />
+        </mxCell>
+        <mxCell id="node16" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;UserDTO&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- isRegisteredInTournament: Boolean&lt;br/&gt;- name: String&lt;br/&gt;- password: String&lt;br/&gt;- userType: String&lt;br/&gt;- username: String&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getIsRegisteredInTournament(): Boolean&lt;br/&gt;+ getName(): String&lt;br/&gt;+ getPassword(): String&lt;br/&gt;+ getUserType(): String&lt;br/&gt;+ getUsername(): String&lt;br/&gt;+ setIsRegisteredInTournament(Boolean): void&lt;br/&gt;+ setName(String): void&lt;br/&gt;+ setPassword(String): void&lt;br/&gt;+ setUserType(String): void&lt;br/&gt;+ setUsername(String): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="140" y="1441" width="322" height="378" as="geometry" />
+        </mxCell>
+        <mxCell id="node9" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;UserMapper&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- modelMapper: ModelMapper&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- resolveUserType(String): String&lt;br/&gt;+ signUpDtoToEntity(UserSignUpDTO): User&lt;br/&gt;+ toDTO(User): UserDTO&lt;br/&gt;+ toEntity(UserDTO): User&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="845" y="2796" width="312" height="148" as="geometry" />
+        </mxCell>
+        <mxCell id="node0" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br/&gt;&lt;b&gt;UserRepository&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ findByIsRegisteredInTournament(Boolean): List&amp;lt;User&amp;gt;&lt;br/&gt;+ findByName(String): Optional&amp;lt;User&amp;gt;&lt;br/&gt;+ findByUserType(String): List&amp;lt;User&amp;gt;&lt;br/&gt;+ findByUsername(String): Optional&amp;lt;User&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="588" y="2489" width="387" height="154" as="geometry" />
+        </mxCell>
+        <mxCell id="node24" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br/&gt;&lt;b&gt;UserService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ addUser(UserDTO): User&lt;br/&gt;+ deleteUser(Integer): void&lt;br/&gt;+ findAllUsers(): List&amp;lt;User&amp;gt;&lt;br/&gt;+ findRegisteredPlayers(): List&amp;lt;User&amp;gt;&lt;br/&gt;+ findUserById(Integer): Optional&amp;lt;User&amp;gt;&lt;br/&gt;+ findUserByRole(String): List&amp;lt;User&amp;gt;&lt;br/&gt;+ loginUser(UserSignInDTO): User&lt;br/&gt;+ registerTournamentUser(Integer): User&lt;br/&gt;+ registerUser(UserSignUpDTO): User&lt;br/&gt;+ updateUser(UserDTO, Integer): User&lt;br/&gt;+ updateUserCredentials(UserUpdateCredentialsDTO, Integer): User&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="1433" y="2408" width="457" height="284" as="geometry" />
+        </mxCell>
+        <mxCell id="node1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;UserServiceImpl&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- passwordEncoder: PasswordEncoder&lt;br/&gt;- userMapper: UserMapper&lt;br/&gt;- userRepository: UserRepository&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ addUser(UserDTO): User&lt;br/&gt;+ deleteUser(Integer): void&lt;br/&gt;+ findAllUsers(): List&amp;lt;User&amp;gt;&lt;br/&gt;+ findRegisteredPlayers(): List&amp;lt;User&amp;gt;&lt;br/&gt;+ findUserById(Integer): Optional&amp;lt;User&amp;gt;&lt;br/&gt;+ findUserByRole(String): List&amp;lt;User&amp;gt;&lt;br/&gt;+ loginUser(UserSignInDTO): User&lt;br/&gt;+ registerTournamentUser(Integer): User&lt;br/&gt;+ registerUser(UserSignUpDTO): User&lt;br/&gt;+ updateUser(UserDTO, Integer): User&lt;br/&gt;+ updateUserCredentials(UserUpdateCredentialsDTO, Integer): User&lt;br/&gt;- validateUserCredentials(String, String, String): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="733" y="3461" width="457" height="378" as="geometry" />
+        </mxCell>
+        <mxCell id="node7" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;UserSignInDTO&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- password: String&lt;br/&gt;- username: String&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getPassword(): String&lt;br/&gt;+ getUsername(): String&lt;br/&gt;+ setPassword(String): void&lt;br/&gt;+ setUsername(String): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="377" y="825" width="209" height="171" as="geometry" />
+        </mxCell>
+        <mxCell id="node3" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;UserSignUpDTO&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- name: String&lt;br/&gt;- password: String&lt;br/&gt;- userTypeCode: String&lt;br/&gt;- username: String&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getName(): String&lt;br/&gt;+ getPassword(): String&lt;br/&gt;+ getUserTypeCode(): String&lt;br/&gt;+ getUsername(): String&lt;br/&gt;+ setName(String): void&lt;br/&gt;+ setPassword(String): void&lt;br/&gt;+ setUserTypeCode(String): void&lt;br/&gt;+ setUsername(String): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="822" y="1476" width="239" height="309" as="geometry" />
+        </mxCell>
+        <mxCell id="node4" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;UserUpdateCredentialsDTO&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- name: String&lt;br/&gt;- newPassword: String&lt;br/&gt;- oldPassword: String&lt;br/&gt;- username: String&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ getName(): String&lt;br/&gt;+ getNewPassword(): String&lt;br/&gt;+ getOldPassword(): String&lt;br/&gt;+ getUsername(): String&lt;br/&gt;+ setName(String): void&lt;br/&gt;+ setNewPassword(String): void&lt;br/&gt;+ setOldPassword(String): void&lt;br/&gt;+ setUsername(String): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=#FAE5C7;strokeColor=#0F8B8D;fontColor=#143642;" parent="1" vertex="1">
+          <mxGeometry x="510" y="1476" width="263" height="309" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=block;endSize=12;strokeColor=#A8201A;exitX=0.500;exitY=0.001;exitDx=0;exitDy=0;entryX=0.500;entryY=1.001;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node8" target="node13" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1181" y="2490" />
+              <mxPoint x="1361" y="2490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge8" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=diamondThinstartSize=12;endArrow=openThin;endSize=12;strokeColor=#A8201A;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.750;entryY=1.000;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node14" target="node11" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="801" y="510" />
+              <mxPoint x="282" y="510" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label48" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge8" vertex="1" connectable="0">
+          <mxGeometry x="271" y="439" as="geometry" />
+        </mxCell>
+        <mxCell id="label52" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge8" vertex="1" connectable="0">
+          <mxGeometry x="790" y="519" as="geometry" />
+        </mxCell>
+        <mxCell id="label53" value="referee" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge8" vertex="1" connectable="0">
+          <mxGeometry x="282" y="439" as="geometry" />
+        </mxCell>
+        <mxCell id="edge12" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#A8201A;exitX=0.750;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.001;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node23" target="node8" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="3090" />
+              <mxPoint x="1361" y="3090" />
+              <mxPoint x="1361" y="3070" />
+              <mxPoint x="1181" y="3070" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label74" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge12" vertex="1" connectable="0">
+          <mxGeometry x="1311" y="3070" as="geometry" />
+        </mxCell>
+        <mxCell id="edge16" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=diamondThinstartSize=12;endArrow=openThin;endSize=12;strokeColor=#A8201A;exitX=0.250;exitY=0.000;exitDx=0;exitDy=0;entryX=0.750;entryY=1.000;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node23" target="node17" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="402" y="3090" />
+              <mxPoint x="247" y="3090" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label96" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge16" vertex="1" connectable="0">
+          <mxGeometry x="236" y="3017" as="geometry" />
+        </mxCell>
+        <mxCell id="label100" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge16" vertex="1" connectable="0">
+          <mxGeometry x="272" y="3070" as="geometry" />
+        </mxCell>
+        <mxCell id="label101" value="matchService" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge16" vertex="1" connectable="0">
+          <mxGeometry x="247" y="3017" as="geometry" />
+        </mxCell>
+        <mxCell id="edge9" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#A8201A;exitX=0.750;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.001;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node23" target="node22" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="3090" />
+              <mxPoint x="1361" y="3090" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label56" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge9" vertex="1" connectable="0">
+          <mxGeometry x="1064" y="3070" as="geometry" />
+        </mxCell>
+        <mxCell id="edge0" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=block;endSize=12;strokeColor=#A8201A;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.001;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node2" target="node18" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge11" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=diamondThinstartSize=12;endArrow=openThin;endSize=12;strokeColor=#A8201A;exitX=0.750;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node19" target="node2" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="247" y="3110" />
+              <mxPoint x="401" y="3110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label66" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge11" vertex="1" connectable="0">
+          <mxGeometry x="390" y="2606" as="geometry" />
+        </mxCell>
+        <mxCell id="label70" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge11" vertex="1" connectable="0">
+          <mxGeometry x="236" y="3372" as="geometry" />
+        </mxCell>
+        <mxCell id="label71" value="matchMapper" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge11" vertex="1" connectable="0">
+          <mxGeometry x="401" y="2606" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=diamondThinstartSize=12;endArrow=openThin;endSize=12;strokeColor=#A8201A;exitX=0.750;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.001;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node19" target="node21" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="247" y="3110" />
+              <mxPoint x="401" y="3110" />
+              <mxPoint x="401" y="3050" />
+              <mxPoint x="561" y="3050" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label42" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge7" vertex="1" connectable="0">
+          <mxGeometry x="550" y="2902" as="geometry" />
+        </mxCell>
+        <mxCell id="label46" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge7" vertex="1" connectable="0">
+          <mxGeometry x="236" y="3425" as="geometry" />
+        </mxCell>
+        <mxCell id="label47" value="matchRepository" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge7" vertex="1" connectable="0">
+          <mxGeometry x="561" y="2902" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=block;endSize=12;strokeColor=#A8201A;exitX=0.250;exitY=0.000;exitDx=0;exitDy=0;entryX=0.250;entryY=1.000;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node19" target="node17" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge17" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=diamondThinstartSize=12;endArrow=openThin;endSize=12;strokeColor=#A8201A;exitX=0.750;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node19" target="node0" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="247" y="3110" />
+              <mxPoint x="401" y="3110" />
+              <mxPoint x="401" y="3070" />
+              <mxPoint x="781" y="3070" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label102" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge17" vertex="1" connectable="0">
+          <mxGeometry x="770" y="2678" as="geometry" />
+        </mxCell>
+        <mxCell id="label106" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge17" vertex="1" connectable="0">
+          <mxGeometry x="195" y="3383" as="geometry" />
+        </mxCell>
+        <mxCell id="label107" value="userRepository" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge17" vertex="1" connectable="0">
+          <mxGeometry x="781" y="2617" as="geometry" />
+        </mxCell>
+        <mxCell id="edge15" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#A8201A;exitX=0.500;exitY=0.001;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node6" target="node14" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="121" y="2030" />
+              <mxPoint x="801" y="2030" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label92" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge15" vertex="1" connectable="0">
+          <mxGeometry x="436" y="2010" as="geometry" />
+        </mxCell>
+        <mxCell id="edge13" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#A8201A;exitX=0.500;exitY=0.001;exitDx=0;exitDy=0;entryX=0.250;entryY=1.000;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node6" target="node11" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="121" y="1290" />
+              <mxPoint x="121" y="1290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label80" value="«create»" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge13" vertex="1" connectable="0">
+          <mxGeometry x="71" y="1280" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=block;endSize=12;strokeColor=#A8201A;exitX=0.500;exitY=0.001;exitDx=0;exitDy=0;entryX=0.500;entryY=1.001;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node22" target="node13" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge14" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=diamondThinstartSize=12;endArrow=openThin;endSize=12;strokeColor=#A8201A;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.750;entryY=1.000;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node15" target="node24" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1381" y="3090" />
+              <mxPoint x="1775" y="3090" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label84" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge14" vertex="1" connectable="0">
+          <mxGeometry x="1764" y="2697" as="geometry" />
+        </mxCell>
+        <mxCell id="label88" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge14" vertex="1" connectable="0">
+          <mxGeometry x="1533" y="3070" as="geometry" />
+        </mxCell>
+        <mxCell id="label89" value="userService" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge14" vertex="1" connectable="0">
+          <mxGeometry x="1775" y="2697" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=block;endSize=12;strokeColor=#A8201A;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node9" target="node18" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1001" y="2470" />
+              <mxPoint x="401" y="2470" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge10" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=diamondThinstartSize=12;endArrow=openThin;endSize=12;strokeColor=#A8201A;exitX=0.250;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node1" target="node9" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="847" y="3430" />
+              <mxPoint x="841" y="3430" />
+              <mxPoint x="841" y="3070" />
+              <mxPoint x="1001" y="3070" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label60" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge10" vertex="1" connectable="0">
+          <mxGeometry x="990" y="2955" as="geometry" />
+        </mxCell>
+        <mxCell id="label64" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge10" vertex="1" connectable="0">
+          <mxGeometry x="836" y="3420" as="geometry" />
+        </mxCell>
+        <mxCell id="label65" value="userMapper" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge10" vertex="1" connectable="0">
+          <mxGeometry x="1001" y="2955" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=0;startArrow=diamondThinstartSize=12;endArrow=openThin;endSize=12;strokeColor=#A8201A;exitX=0.250;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node1" target="node0" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="847" y="3430" />
+              <mxPoint x="841" y="3430" />
+              <mxPoint x="841" y="3050" />
+              <mxPoint x="781" y="3050" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label36" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge6" vertex="1" connectable="0">
+          <mxGeometry x="770" y="2617" as="geometry" />
+        </mxCell>
+        <mxCell id="label40" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge6" vertex="1" connectable="0">
+          <mxGeometry x="796" y="3420" as="geometry" />
+        </mxCell>
+        <mxCell id="label41" value="userRepository" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;strokeColor=#0F8B8D;labelBackgroundColor=none;fontColor=#143642;" parent="edge6" vertex="1" connectable="0">
+          <mxGeometry x="781" y="2675" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=block;endSize=12;strokeColor=#A8201A;exitX=0.750;exitY=0.000;exitDx=0;exitDy=0;entryX=0.250;entryY=1.000;entryDx=0;entryDy=0;labelBackgroundColor=none;fontColor=default;" parent="1" source="node1" target="node24" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1075" y="3050" />
+              <mxPoint x="1547" y="3050" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
