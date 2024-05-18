@@ -20,6 +20,7 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
     const [defaultUser, setDefaultUser] = useState(null);
     const [username, setUsername] = useState('');
     const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
     const [roles] = useState(['referee', 'player', 'administrator']);
@@ -39,6 +40,7 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                     setUsername(user.username);
                     setName(user.name);
                     setPassword(user.password);
+                    setEmail(user.email);
                     setRole(user.userType);
                     setIsRegisteredInTournament(user.isRegisteredInTournament);
                     setOriginalRole(user.userType);
@@ -65,6 +67,7 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
             const userDTO = {
                 username,
                 name,
+                email,
                 password,
                 userType: role,
                 isRegisteredInTournament
@@ -95,6 +98,7 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
             setName(defaultUser.name);
             setPassword(defaultUser.password);
             setRole(defaultUser.userType);
+            setEmail(defaultUser.email);
             setIsRegisteredInTournament(defaultUser.isRegisteredInTournament);
         }
     };
@@ -120,6 +124,26 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                     variant="outlined"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                />
+                <TextField
+                    margin="dense"
+                    label="Name"
+                    required
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+                <TextField
+                    margin="dense"
+                    label="Email"
+                    required
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                 />
                 <TextField
                     margin="dense"

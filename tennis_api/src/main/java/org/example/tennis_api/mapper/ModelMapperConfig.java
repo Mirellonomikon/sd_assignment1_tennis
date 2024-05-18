@@ -32,6 +32,7 @@ public class ModelMapperConfig {
             User destination = new User();
             destination.setUsername(source.getUsername());
             destination.setName(source.getName());
+            destination.setEmail(source.getEmail());
             destination.setPassword(source.getNewPassword());
             return destination;
         };

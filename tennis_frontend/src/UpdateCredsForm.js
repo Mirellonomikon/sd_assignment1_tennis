@@ -11,7 +11,7 @@ import {
 import axios from 'axios';
 
 const UpdateCredsForm = ({ open, handleClose, userId }) => {
-    const [userData, setUserData] = useState({ username: '', name: '', newPassword: '', oldPassword: '' });
+    const [userData, setUserData] = useState({ username: '', name: '', email: '', newPassword: '', oldPassword: '' });
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -20,7 +20,7 @@ const UpdateCredsForm = ({ open, handleClose, userId }) => {
                 try {
                     const response = await axios.get(`http://localhost:8081/api/user/${userId}`);
                     const user = response.data;
-                    setUserData(prev => ({ ...prev, username: user.username, name: user.name }));
+                    setUserData(prev => ({ ...prev, username: user.username, name: user.name, email: user.email}));
                     setError('');
                 } catch (err) {
                     setError(err.response?.data || 'Failed to fetch user details.');
@@ -40,6 +40,7 @@ const UpdateCredsForm = ({ open, handleClose, userId }) => {
             const userUpdateCredentialsDTO = {
                 username: userData.username,
                 name: userData.name,
+                email: userData.email,
                 newPassword: userData.newPassword,
                 oldPassword: userData.oldPassword
             };
@@ -75,6 +76,17 @@ const UpdateCredsForm = ({ open, handleClose, userId }) => {
                     fullWidth
                     variant="outlined"
                     value={userData.name}
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    name="email"
+                    label="Email"
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={userData.email}
                     onChange={handleInputChange}
                 />
                 <TextField

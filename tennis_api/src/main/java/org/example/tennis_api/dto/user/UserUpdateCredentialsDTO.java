@@ -12,6 +12,7 @@ import lombok.Setter;
 public class UserUpdateCredentialsDTO {
     private String username;
     private String name;
+    private String email;
     private String newPassword;
     private String oldPassword;
 }

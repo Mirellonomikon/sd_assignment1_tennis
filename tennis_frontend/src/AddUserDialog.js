@@ -20,6 +20,7 @@ const AddUserDialog = ({ open, handleClose }) => {
     const [username, setUsername] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
     const [role, setRole] = useState('');
     const [roles] = useState(['referee', 'player', 'administrator']);
     const [error, setError] = useState('');
@@ -29,6 +30,7 @@ const AddUserDialog = ({ open, handleClose }) => {
         setUsername('');
         setName('');
         setPassword('');
+        setEmail('');
         setRole('');
         setIsRegisteredInTournament(false);
         setError('');
@@ -39,6 +41,7 @@ const AddUserDialog = ({ open, handleClose }) => {
             const userDTO = {
                 username,
                 name,
+                email,
                 password,
                 userType: role,
                 isRegisteredInTournament
@@ -100,6 +103,16 @@ const AddUserDialog = ({ open, handleClose }) => {
                     variant="outlined"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                />
+                <TextField
+                    margin="dense"
+                    label="Email"
+                    required
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                 />
                 <FormControl fullWidth margin="dense">
                     <InputLabel>Role</InputLabel>

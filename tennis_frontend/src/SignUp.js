@@ -7,6 +7,7 @@ const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [userTypeCode, setUserTypeCode] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const SignUp = () => {
       const user = {
         username,
         password,
+        email,
         name,
         userTypeCode,
       };
@@ -26,6 +28,7 @@ const SignUp = () => {
       setUsername("");
       setPassword("");
       setName("");
+      setEmail("");
       setUserTypeCode("player");
 
       navigate("/login");
@@ -82,6 +85,16 @@ const SignUp = () => {
 
         <TextField
           variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <TextField
+          variant="outlined"
           type="password"
           margin="normal"
           required
@@ -103,7 +116,7 @@ const SignUp = () => {
         <Button
           variant="contained"
           color="primary"
-          sx={{ width: 'calc(75%)', marginTop: 2}}
+          sx={{ width: 'calc(75%)', marginTop: 2 }}
           onClick={handleSignUp}
         >
           Sign Up
@@ -111,7 +124,7 @@ const SignUp = () => {
 
         <Button
           variant="text"
-          sx={{ marginTop: 2, width: 'calc(75%)'}}
+          sx={{ marginTop: 2, width: 'calc(75%)' }}
           onClick={() => navigate("/login")}
         >
           Already have an account? Login

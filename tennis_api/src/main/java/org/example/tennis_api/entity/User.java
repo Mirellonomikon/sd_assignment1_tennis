@@ -19,6 +19,9 @@ public class User {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
@@ -31,9 +34,10 @@ public class User {
     @Column(name = "tournament_register", nullable = false)
     private Boolean isRegisteredInTournament;
 
-    public User(String username, String name, String password, String userType) {
+    public User(String username, String name, String email, String password, String userType) {
         this.username = username;
         this.name = name;
+        this.email = email;
         this.password = password;
         this.userType = userType;
         this.isRegisteredInTournament = false;
