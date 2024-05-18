@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -157,5 +158,30 @@ public class UserServiceImpl implements UserService{
             throw new NoSuchElementException("User not found.");
         }
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public List<User> filterUsers(String name, String username, Boolean isCompeting) {
+        List<User> users = userRepository.findAll();
+
+        if (name != null && !name.isEmpty()) {
+            users = users.stream()
+                    .filter(user -> user.getName().toLowerCase().contains(name.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        if (username != null && !username.isEmpty()) {
+            users = users.stream()
+                    .filter(user -> user.getUsername().toLowerCase().contains(username.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        if (isCompeting != null) {
+            users = users.stream()
+                    .filter(user -> user.getIsRegisteredInTournament() == isCompeting)
+                    .collect(Collectors.toList());
+        }
+
+        return users;
     }
 }

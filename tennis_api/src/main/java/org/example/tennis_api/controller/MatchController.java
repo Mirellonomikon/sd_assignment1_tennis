@@ -3,6 +3,7 @@ package org.example.tennis_api.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.tennis_api.dto.match.MatchDTO;
 import org.example.tennis_api.entity.Match;
+import org.example.tennis_api.entity.User;
 import org.example.tennis_api.service.MatchService;
 import org.example.tennis_api.utilities.CsvExportStrategy;
 import org.example.tennis_api.utilities.MatchExportStrategy;
@@ -82,6 +83,16 @@ public class MatchController {
         return ResponseEntity.ok(updatedMatch);
     }
 
+    @GetMapping("/filter/matches")
+    public ResponseEntity<List<Match>> filterMatches(@RequestParam(required = false) LocalDate startDate,
+                                                     @RequestParam(required = false) LocalDate endDate,
+                                                     @RequestParam(required = false) String location,
+                                                     @RequestParam(required = false) Integer refereeId,
+                                                     @RequestParam(required = false) Integer playerId) {
+
+        List<Match> matches = matchService.findMatches(startDate, endDate, location, refereeId, playerId);
+        return ResponseEntity.ok(matches);
+    }
 
     @GetMapping("/export")
     public ResponseEntity<byte[]> exportMatches(
@@ -93,7 +104,6 @@ public class MatchController {
             @RequestParam String format) throws Exception {
 
         List<Match> matches = matchService.findMatches(startDate, endDate, location, refereeId, playerId);
-        System.out.println("Found matches: " + matches.size());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         MatchExportStrategy strategy = format.equals("csv") ? new CsvExportStrategy() : new TxtExportStrategy();
         matchService.exportMatches(matches, outputStream, strategy);

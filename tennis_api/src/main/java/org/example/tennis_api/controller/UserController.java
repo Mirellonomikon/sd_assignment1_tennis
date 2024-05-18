@@ -5,6 +5,7 @@ import org.example.tennis_api.dto.user.UserDTO;
 import org.example.tennis_api.dto.user.UserSignInDTO;
 import org.example.tennis_api.dto.user.UserSignUpDTO;
 import org.example.tennis_api.dto.user.UserUpdateCredentialsDTO;
+import org.example.tennis_api.entity.Match;
 import org.example.tennis_api.entity.User;
 import org.example.tennis_api.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -84,5 +85,13 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) throws IllegalArgumentException {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/filter/players")
+    public ResponseEntity<List<User>> filterUsers(@RequestParam(required = false) String name,
+                                                  @RequestParam(required = false) String username,
+                                                  @RequestParam(required = false) Boolean isCompeting) {
+        List<User> users = userService.filterUsers(name, username, isCompeting);
+        return ResponseEntity.ok(users);
     }
 }

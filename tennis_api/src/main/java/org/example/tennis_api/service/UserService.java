@@ -21,4 +21,5 @@ public interface UserService {
     User addUser(UserDTO userDTO) throws Exception;
     User updateUser(UserDTO userDTO, Integer id);
     void deleteUser(Integer userId);
+    List<User> filterUsers(String name, String username, Boolean isCompeting);
 }
