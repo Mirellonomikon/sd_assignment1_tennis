@@ -209,7 +209,24 @@ const PlayerSchedule = () => {
                                             Match Time
                                         </TableSortLabel>
                                     </TableCell>
-                                    <TableCell>Location</TableCell>
+                                    <TableCell>
+                                        <TableSortLabel
+                                            active={sortField === 'referee'}
+                                            direction={sortDirection}
+                                            onClick={() => handleSort('referee')}
+                                        >
+                                            Referee
+                                        </TableSortLabel>
+                                    </TableCell>
+                                    <TableCell>
+                                        <TableSortLabel
+                                            active={sortField === 'location'}
+                                            direction={sortDirection}
+                                            onClick={() => handleSort('location')}
+                                        >
+                                            Location
+                                        </TableSortLabel>
+                                    </TableCell>
                                     <TableCell>Player 1</TableCell>
                                     <TableCell>Player 2</TableCell>
                                     <TableCell>Player 1 Score</TableCell>
@@ -228,6 +245,7 @@ const PlayerSchedule = () => {
                                         <TableCell>{match.name}</TableCell>
                                         <TableCell>{match.matchDate}</TableCell>
                                         <TableCell>{match.matchTime}</TableCell>
+                                        <TableCell>{match.referee?.name ?? 'N/A'}</TableCell>
                                         <TableCell>{match.location}</TableCell>
                                         <TableCell>{match.player1?.name ?? 'N/A'}</TableCell>
                                         <TableCell>{match.player2?.name ?? 'N/A'}</TableCell>

@@ -5,7 +5,6 @@ import org.example.tennis_api.dto.user.UserDTO;
 import org.example.tennis_api.dto.user.UserSignInDTO;
 import org.example.tennis_api.dto.user.UserSignUpDTO;
 import org.example.tennis_api.dto.user.UserUpdateCredentialsDTO;
-import org.example.tennis_api.entity.Match;
 import org.example.tennis_api.entity.User;
 import org.example.tennis_api.service.UserService;
 import org.springframework.http.ResponseEntity;

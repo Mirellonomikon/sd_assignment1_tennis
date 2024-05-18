@@ -53,10 +53,11 @@ const UpdateCredsForm = ({ open, handleClose, userId }) => {
     };
 
     return (
-        <Dialog open={open} onClose={() => handleClose(false)}>
+        <Dialog open={open} onClose={() => handleClose(false)}
+        sx={{ '& .MuiPaper-root': { backgroundColor: '#f1f8e9' } }}>
             <DialogTitle>Update Your Credentials</DialogTitle>
             <DialogContent>
-                {error && <Alert severity="error">{error}</Alert>}
+                {error && <Alert severity="error" style={{ backgroundColor: '#FFF6EA', marginBottom: '5px' }}>{error}</Alert>}
                 <TextField
                     autoFocus
                     margin="dense"
@@ -109,7 +110,7 @@ const UpdateCredsForm = ({ open, handleClose, userId }) => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => handleClose(false)} color="primary">
+                <Button onClick={() => handleClose(false)} color="secondary">
                     Cancel
                 </Button>
                 <Button onClick={handleUpdate} color="primary">

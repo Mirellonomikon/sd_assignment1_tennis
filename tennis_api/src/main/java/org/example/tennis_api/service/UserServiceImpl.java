@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<User> filterUsers(String name, String username, Boolean isCompeting) {
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findByUserType("player");
 
         if (name != null && !name.isEmpty()) {
             users = users.stream()

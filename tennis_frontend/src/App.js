@@ -8,6 +8,7 @@ import RefereeSchedule from './RefereeSchedule';
 import PlayerSchedule from './PlayerSchedule';
 import AdminSchedule from './AdminSchedule';
 import AdminUsersView from "./AdminUsersView";
+import RefereePlayers from "./RefereePlayers";
 import theme from './theme';
 import { ThemeProvider } from "@mui/material/styles";
 
@@ -26,6 +27,16 @@ const App = () => {
           element={
             <ProtectedRoute
               element={<RefereeSchedule />}
+              allowedRoles={['referee']}
+            />
+          }
+        />
+
+        <Route
+          path="/referee-players"
+          element={
+            <ProtectedRoute
+              element={<RefereePlayers />}
               allowedRoles={['referee']}
             />
           }
