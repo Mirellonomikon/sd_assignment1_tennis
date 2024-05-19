@@ -26,6 +26,8 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
     const [roles] = useState(['referee', 'player', 'administrator']);
     const [error, setError] = useState('');
     const [isRegisteredInTournament, setIsRegisteredInTournament] = useState(false);
+    const [tournamentStatus, setTournamentStatus] = useState('NONE');
+    const [tournamentStatuses] = useState(['NONE', 'ACCEPTED', 'REJECTED']);
     const [originalRole, setOriginalRole] = useState('');
     const [originalTournamentStatus, setOriginalTournamentStatus] = useState(false);
 
@@ -43,6 +45,7 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                     setEmail(user.email);
                     setRole(user.userType);
                     setIsRegisteredInTournament(user.isRegisteredInTournament);
+                    setTournamentStatus(user.tournamentRegistrationStatus);
                     setOriginalRole(user.userType);
                     setOriginalTournamentStatus(user.isRegisteredInTournament);
                 } catch (err) {
@@ -59,8 +62,25 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
     useEffect(() => {
         if (role !== 'player') {
             setIsRegisteredInTournament(false);
+            setTournamentStatus('NONE');
         }
     }, [role]);
+
+    useEffect(() => {
+        if (tournamentStatus === 'ACCEPTED') {
+            setIsRegisteredInTournament(true);
+        } else {
+            setIsRegisteredInTournament(false);
+        }
+    }, [tournamentStatus]);
+
+    useEffect(() => {
+        if (isRegisteredInTournament) {
+            setTournamentStatus('ACCEPTED');
+        } else {
+            setTournamentStatus('NONE');
+        }
+    }, [isRegisteredInTournament]);
 
     const handleUpdate = async () => {
         try {
@@ -70,7 +90,8 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                 email,
                 password,
                 userType: role,
-                isRegisteredInTournament
+                isRegisteredInTournament,
+                tournamentRegistrationStatus: tournamentStatus
             };
 
             if ((originalRole === 'player' && role !== 'player') || (originalTournamentStatus && !isRegisteredInTournament)) {
@@ -100,6 +121,7 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
             setRole(defaultUser.userType);
             setEmail(defaultUser.email);
             setIsRegisteredInTournament(defaultUser.isRegisteredInTournament);
+            setTournamentStatus(defaultUser.tournamentRegistrationStatus);
         }
     };
 
@@ -147,16 +169,6 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                 />
                 <TextField
                     margin="dense"
-                    label="Name"
-                    required
-                    type="text"
-                    fullWidth
-                    variant="outlined"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
-                <TextField
-                    margin="dense"
                     label="Password"
                     type="password"
                     required
@@ -184,6 +196,22 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                         ))}
                     </Select>
                 </FormControl>
+                {role === 'player' && (
+                    <FormControl fullWidth margin="dense">
+                        <InputLabel>Tournament Status</InputLabel>
+                        <Select
+                            value={tournamentStatus}
+                            label="Tournament Status"
+                            onChange={(e) => setTournamentStatus(e.target.value)}
+                        >
+                            {tournamentStatuses.map((status) => (
+                                <MenuItem key={status} value={status}>
+                                    {status}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                )}
                 <FormControlLabel
                     control={
                         <Checkbox

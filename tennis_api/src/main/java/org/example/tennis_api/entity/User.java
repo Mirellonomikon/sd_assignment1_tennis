@@ -34,6 +34,9 @@ public class User {
     @Column(name = "tournament_register", nullable = false)
     private Boolean isRegisteredInTournament;
 
+    @Column(name = "tournament_registration_status", nullable = false)
+    private String tournamentRegistrationStatus;
+
     public User(String username, String name, String email, String password, String userType) {
         this.username = username;
         this.name = name;
@@ -41,5 +44,6 @@ public class User {
         this.password = password;
         this.userType = userType;
         this.isRegisteredInTournament = false;
+        this.tournamentRegistrationStatus = "NONE";
     }
 }

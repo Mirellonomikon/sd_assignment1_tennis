@@ -240,6 +240,15 @@ const AdminUsersView = () => {
                                             Competing
                                         </TableSortLabel>
                                     </TableCell>
+                                    <TableCell>
+                                        <TableSortLabel
+                                            active={sortField === 'tournamentRegistrationStatus'}
+                                            direction={sortDirection}
+                                            onClick={() => handleSort('tournamentRegistrationStatus')}
+                                        >
+                                            Tournament Status
+                                        </TableSortLabel>
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -260,6 +269,7 @@ const AdminUsersView = () => {
                                             <TableCell>
                                                 {user.isRegisteredInTournament ? "Yes" : "No"}
                                             </TableCell>
+                                            <TableCell>{user.tournamentRegistrationStatus}</TableCell>
                                         </TableRow>
                                     ))}
                             </TableBody>

@@ -48,7 +48,6 @@ public class UserServiceImpl implements UserService{
         }
         userSignUpDTO.setPassword(passwordEncoder.encode(userSignUpDTO.getPassword()));
         User user = userMapper.signUpDtoToEntity(userSignUpDTO);
-        user.setIsRegisteredInTournament(false);
         return userRepository.save(user);
     }
 
@@ -108,6 +107,11 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new NoSuchElementException("User not found."));
 
         user.setIsRegisteredInTournament(!user.getIsRegisteredInTournament());
+        if(user.getTournamentRegistrationStatus().equals("NONE")) {
+            user.setTournamentRegistrationStatus("ACCEPTED");
+        }
+        else
+            user.setTournamentRegistrationStatus("NONE");
         return userRepository.save(user);
     }
 
@@ -149,6 +153,7 @@ public class UserServiceImpl implements UserService{
         existingUser.setEmail(userDTO.getEmail());
         existingUser.setUserType(userDTO.getUserType());
         existingUser.setIsRegisteredInTournament(userDTO.getIsRegisteredInTournament());
+        existingUser.setTournamentRegistrationStatus(userDTO.getTournamentRegistrationStatus());
         return userRepository.save(existingUser);
     }
 

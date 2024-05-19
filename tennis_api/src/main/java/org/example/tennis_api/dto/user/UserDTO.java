@@ -16,4 +16,5 @@ public class UserDTO {
     private String name;
     private String userType;
     private Boolean isRegisteredInTournament;
+    private String tournamentRegistrationStatus;
 }

@@ -85,7 +85,7 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
     }
-
+    
     @GetMapping("/filter/players")
     public ResponseEntity<List<User>> filterUsers(@RequestParam(required = false) String name,
                                                   @RequestParam(required = false) String username,

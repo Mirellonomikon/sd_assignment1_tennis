@@ -23,6 +23,8 @@ public class ModelMapperConfig {
         modelMapper.typeMap(UserSignUpDTO.class, User.class).addMappings(mapper -> {
             mapper.skip(User::setUserType);
             mapper.skip(User::setId);
+            mapper.skip(User::setTournamentRegistrationStatus);
+            mapper.skip(User::setIsRegisteredInTournament);
         });
 
         modelMapper.getConfiguration().setAmbiguityIgnored(true);

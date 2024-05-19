@@ -25,6 +25,8 @@ const AddUserDialog = ({ open, handleClose }) => {
     const [roles] = useState(['referee', 'player', 'administrator']);
     const [error, setError] = useState('');
     const [isRegisteredInTournament, setIsRegisteredInTournament] = useState(false);
+    const [tournamentStatus, setTournamentStatus] = useState('NONE');
+    const [tournamentStatuses] = useState(['NONE', 'ACCEPTED', 'REJECTED']);
 
     const resetForm = () => {
         setUsername('');
@@ -33,6 +35,7 @@ const AddUserDialog = ({ open, handleClose }) => {
         setEmail('');
         setRole('');
         setIsRegisteredInTournament(false);
+        setTournamentStatus('NONE');
         setError('');
     };
 
@@ -44,7 +47,8 @@ const AddUserDialog = ({ open, handleClose }) => {
                 email,
                 password,
                 userType: role,
-                isRegisteredInTournament
+                isRegisteredInTournament,
+                tournamentRegistrationStatus: tournamentStatus
             };
 
             await axios.post('http://localhost:8081/api/user/add', userDTO);
@@ -65,8 +69,25 @@ const AddUserDialog = ({ open, handleClose }) => {
     useEffect(() => {
         if (role !== 'player') {
             setIsRegisteredInTournament(false);
+            setTournamentStatus('NONE');
         }
     }, [role]);
+
+    useEffect(() => {
+        if (tournamentStatus === 'ACCEPTED') {
+            setIsRegisteredInTournament(true);
+        } else {
+            setIsRegisteredInTournament(false);
+        }
+    }, [tournamentStatus]);
+
+    useEffect(() => {
+        if (isRegisteredInTournament) {
+            setTournamentStatus('ACCEPTED');
+        } else {
+            setTournamentStatus('NONE');
+        }
+    }, [isRegisteredInTournament]);
 
     return (
         <Dialog open={open} onClose={() => handleDialogClose(false)} sx={{ '& .MuiPaper-root': { backgroundColor: '#f1f8e9' } }}>
@@ -132,6 +153,22 @@ const AddUserDialog = ({ open, handleClose }) => {
                         ))}
                     </Select>
                 </FormControl>
+                {role === 'player' && (
+                    <FormControl fullWidth margin="dense">
+                        <InputLabel>Tournament Status</InputLabel>
+                        <Select
+                            value={tournamentStatus}
+                            label="Tournament Status"
+                            onChange={(e) => setTournamentStatus(e.target.value)}
+                        >
+                            {tournamentStatuses.map((status) => (
+                                <MenuItem key={status} value={status}>
+                                    {status}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                )}
                 <FormControlLabel
                     control={
                         <Checkbox
