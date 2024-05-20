@@ -31,8 +31,8 @@ public class MatchController {
         return ResponseEntity.ok(match);
     }
 
-    @PutMapping("/{matchId}/register")
-    public ResponseEntity<Match> registerPlayerToMatch(@PathVariable Integer matchId, @RequestParam Integer playerId) throws Exception {
+    @PutMapping("/match/register")
+    public ResponseEntity<Match> registerPlayerToMatch(@RequestParam Integer matchId, @RequestParam Integer playerId) throws Exception {
         Match match = matchService.registerPlayerToMatch(matchId, playerId);
         return ResponseEntity.ok(match);
     }
@@ -49,14 +49,14 @@ public class MatchController {
         return ResponseEntity.ok(match);
     }
 
-    @GetMapping("/ref/{ref}")
-    public ResponseEntity<List<Match>> getMatchByRef(@PathVariable Integer ref) throws Exception {
+    @GetMapping("/ref")
+    public ResponseEntity<List<Match>> getMatchByRef(@RequestParam Integer ref) throws Exception {
         List<Match> matches = matchService.findAllMatchesByRefereeId(ref);
         return ResponseEntity.ok(matches);
     }
 
-    @GetMapping("/player/{playerId}")
-    public ResponseEntity<List<Match>> getMatchesByPlayerId(@PathVariable Integer playerId) {
+    @GetMapping("/player")
+    public ResponseEntity<List<Match>> getMatchesByPlayerId(@RequestParam Integer playerId) {
         List<Match> matches = matchService.findAllMatchesByPlayerId(playerId);
         return ResponseEntity.ok(matches);
     }
@@ -73,14 +73,14 @@ public class MatchController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{matchId}/remove/{playerId}")
-    public ResponseEntity<Match> removePlayerFromMatch(@PathVariable Integer matchId, @PathVariable Integer playerId) {
+    @PutMapping("/match/remove")
+    public ResponseEntity<Match> removePlayerFromMatch(@RequestParam Integer matchId, @RequestParam Integer playerId) {
         Match updatedMatch = matchService.removePlayerFromMatch(matchId, playerId);
         return ResponseEntity.ok(updatedMatch);
     }
 
-    @PutMapping("/{matchId}/score")
-    public ResponseEntity<Match> updateMatchScore(@PathVariable Integer matchId, @RequestBody Map<String, Integer> scoreData) throws Exception {
+    @PutMapping("/match/score")
+    public ResponseEntity<Match> updateMatchScore(@RequestParam Integer matchId, @RequestBody Map<String, Integer> scoreData) throws Exception {
         Integer player1Score = scoreData.getOrDefault("player1Score", null);
         Integer player2Score = scoreData.getOrDefault("player2Score", null);
 

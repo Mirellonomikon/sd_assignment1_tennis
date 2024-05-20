@@ -42,7 +42,9 @@ const PlayerSchedule = () => {
 
     const fetchMatches = async () => {
         try {
-            const response = await axios.get(`http://localhost:8081/api/match/player/${userId}`);
+            const response = await axios.get(`http://localhost:8081/api/match/player`, {
+                params: { playerId: userId }
+            });
             const data = response.data.map((match) => ({
                 ...match,
                 matchDate: match.matchDate ? new Date(match.matchDate).toLocaleDateString('en-GB') : 'N/A',

@@ -32,8 +32,8 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<User> updateCredentials(@PathVariable Integer id, @RequestBody UserUpdateCredentialsDTO userUpdateCredentialsDTO) throws Exception {
+    @PutMapping("/update")
+    public ResponseEntity<User> updateCredentials(@RequestParam Integer id, @RequestBody UserUpdateCredentialsDTO userUpdateCredentialsDTO) throws Exception {
         User updatedUser = userService.updateUserCredentials(userUpdateCredentialsDTO, id);
         return ResponseEntity.ok(updatedUser);
     }
@@ -56,26 +56,26 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PutMapping("/{id}/quit-tournament")
-    public ResponseEntity<User> userTournamentStatus(@PathVariable Integer id) throws Exception {
+    @PutMapping("/quit-tournament")
+    public ResponseEntity<User> userTournamentStatus(@RequestParam Integer id) throws Exception {
         User updatedUser = userService.quitTournamentUser(id);
         return ResponseEntity.ok(updatedUser);
     }
 
-    @PutMapping("/{id}/request-tournament")
-    public ResponseEntity<User> requestTournamentRegistration(@PathVariable Integer id) throws Exception{
+    @PutMapping("/request-tournament")
+    public ResponseEntity<User> requestTournamentRegistration(@RequestParam Integer id) {
         User user = userService.requestTournamentRegistration(id);
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping("/{id}/accept-tournament")
-    public ResponseEntity<User> acceptTournamentRegistration(@PathVariable Integer id) throws Exception {
+    @PutMapping("/accept-tournament")
+    public ResponseEntity<User> acceptTournamentRegistration(@RequestParam Integer id) {
         User updatedUser = userService.acceptTournamentRegistration(id);
         return ResponseEntity.ok(updatedUser);
     }
 
-    @PutMapping("/{id}/reject-tournament")
-    public ResponseEntity<User> rejectTournamentRegistration(@PathVariable Integer id) throws Exception {
+    @PutMapping("/reject-tournament")
+    public ResponseEntity<User> rejectTournamentRegistration(@RequestParam Integer id) {
         User updatedUser = userService.rejectTournamentRegistration(id);
         return ResponseEntity.ok(updatedUser);
     }
