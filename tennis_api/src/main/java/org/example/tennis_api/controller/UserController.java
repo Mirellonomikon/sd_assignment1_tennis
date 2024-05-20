@@ -56,10 +56,16 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PutMapping("/{id}/tournament")
+    @PutMapping("/{id}/quit-tournament")
     public ResponseEntity<User> userTournamentStatus(@PathVariable Integer id) throws Exception {
-        User updatedUser = userService.registerTournamentUser(id);
+        User updatedUser = userService.quitTournamentUser(id);
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @PutMapping("/{id}/request-tournament")
+    public ResponseEntity<User> requestTournamentRegistration(@PathVariable Integer id) throws Exception{
+        User user = userService.requestTournamentRegistration(id);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{id}")

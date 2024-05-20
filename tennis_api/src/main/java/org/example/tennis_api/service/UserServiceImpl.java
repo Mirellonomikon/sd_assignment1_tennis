@@ -102,18 +102,26 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User registerTournamentUser(Integer id) throws NoSuchElementException {
+    public User quitTournamentUser(Integer id) throws NoSuchElementException {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found."));
+        user.setIsRegisteredInTournament(false);
+        user.setTournamentRegistrationStatus("NONE");
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User requestTournamentRegistration(Integer id) throws NoSuchElementException {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found."));
 
-        user.setIsRegisteredInTournament(!user.getIsRegisteredInTournament());
-        if(user.getTournamentRegistrationStatus().equals("NONE")) {
-            user.setTournamentRegistrationStatus("ACCEPTED");
+        if (user.getUserType().equals("player")) {
+            user.setTournamentRegistrationStatus("PENDING");
+            user.setIsRegisteredInTournament(false);
         }
-        else
-            user.setTournamentRegistrationStatus("NONE");
         return userRepository.save(user);
     }
+
 
     @Override
     public List<User> findAllUsers() {

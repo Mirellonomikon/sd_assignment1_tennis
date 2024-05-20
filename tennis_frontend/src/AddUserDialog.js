@@ -26,7 +26,7 @@ const AddUserDialog = ({ open, handleClose }) => {
     const [error, setError] = useState('');
     const [isRegisteredInTournament, setIsRegisteredInTournament] = useState(false);
     const [tournamentStatus, setTournamentStatus] = useState('NONE');
-    const [tournamentStatuses] = useState(['NONE', 'ACCEPTED', 'REJECTED']);
+    const [tournamentStatuses] = useState(['NONE', 'ACCEPTED', 'REJECTED', 'PENDING']);
 
     const resetForm = () => {
         setUsername('');

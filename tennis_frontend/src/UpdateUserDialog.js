@@ -27,7 +27,7 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
     const [error, setError] = useState('');
     const [isRegisteredInTournament, setIsRegisteredInTournament] = useState(false);
     const [tournamentStatus, setTournamentStatus] = useState('NONE');
-    const [tournamentStatuses] = useState(['NONE', 'ACCEPTED', 'REJECTED']);
+    const [tournamentStatuses] = useState(['NONE', 'ACCEPTED', 'REJECTED', 'PENDING']);
     const [originalRole, setOriginalRole] = useState('');
     const [originalTournamentStatus, setOriginalTournamentStatus] = useState(false);
 

@@ -48,16 +48,4 @@ public class Match {
 
     @Column(name = "player2_score")
     private Integer player2Score;
-
-    public Match(String name, LocalDate matchDate, LocalTime matchTime, String location, User referee, User player1, Integer player1Score, User player2, Integer player2Score) {
-        this.name = name;
-        this.matchDate = matchDate;
-        this.matchTime = matchTime;
-        this.location = location;
-        this.referee = referee;
-        this.player1 = player1;
-        this.player1Score = player1Score;
-        this.player2 = player2;
-        this.player2Score = player2Score;
-    }
 }

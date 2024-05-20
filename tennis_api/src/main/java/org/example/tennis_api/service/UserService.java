@@ -7,6 +7,7 @@ import org.example.tennis_api.dto.user.UserUpdateCredentialsDTO;
 import org.example.tennis_api.entity.User;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public interface UserService {
@@ -16,7 +17,8 @@ public interface UserService {
     Optional<User> findUserById(Integer id);
     List<User> findUserByRole(String role);
     List<User> findRegisteredPlayers();
-    User registerTournamentUser(Integer id) throws Exception;
+    User quitTournamentUser(Integer id) throws Exception;
+    User requestTournamentRegistration(Integer id) throws NoSuchElementException;
     List<User> findAllUsers();
     User addUser(UserDTO userDTO) throws Exception;
     User updateUser(UserDTO userDTO, Integer id);

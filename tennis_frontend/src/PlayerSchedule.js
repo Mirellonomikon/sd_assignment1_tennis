@@ -32,11 +32,13 @@ const PlayerSchedule = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [openUpdateForm, setOpenUpdateForm] = useState(false);
     const [isTournamentJoined, setIsTournamentJoined] = useState(false);
+    const [tournamentStatus, setTournamentStatus] = useState("");
 
     const navigate = useNavigate();
     const storedUser = localStorage.getItem('user');
     const userId = storedUser ? JSON.parse(storedUser).id : null;
     const userStatus = storedUser ? JSON.parse(storedUser).isRegisteredInTournament : false;
+    const userTournamentStatus = storedUser ? JSON.parse(storedUser).tournamentRegistrationStatus : "";
 
     const fetchMatches = async () => {
         try {
@@ -58,6 +60,7 @@ const PlayerSchedule = () => {
 
     const fetchUserTournamentStatus = () => {
         setIsTournamentJoined(userStatus);
+        setTournamentStatus(userTournamentStatus);
     };
 
     useEffect(() => {
@@ -96,30 +99,41 @@ const PlayerSchedule = () => {
         setOpenUpdateForm(false);
     };
 
-    const handleTournamentToggle = async () => {
+    const handleTournamentRequest = async () => {
         try {
-            if (isTournamentJoined) {
-                const userMatches = matches.filter(
-                    (match) => match.player1?.id === userId || match.player2?.id === userId
-                );
+            await axios.put(`http://localhost:8081/api/user/${userId}/request-tournament`);
 
-                for (const match of userMatches) {
-                    await axios.put(`http://localhost:8081/api/match/${match.id}/remove/${userId}`);
-                }
-            }
-
-            await axios.put(`http://localhost:8081/api/user/${userId}/tournament`, {
-                isRegisteredInTournament: !isTournamentJoined,
-            });
-
-            const updatedUser = { ...JSON.parse(storedUser), isRegisteredInTournament: !isTournamentJoined };
+            const updatedUser = { ...JSON.parse(storedUser), isRegisteredInTournament: false, tournamentRegistrationStatus: "PENDING" };
             localStorage.setItem('user', JSON.stringify(updatedUser));
 
-            setIsTournamentJoined(!isTournamentJoined);
+            setIsTournamentJoined(false);
+            setTournamentStatus("PENDING");
+        } catch (err) {
+            setError(`Failed to request tournament registration: ${err.response?.data || err.message}`);
+        }
+    };
+
+    const handleTournamentQuit = async () => {
+        try {
+            const userMatches = matches.filter(
+                (match) => match.player1?.id === userId || match.player2?.id === userId
+            );
+
+            for (const match of userMatches) {
+                await axios.put(`http://localhost:8081/api/match/${match.id}/remove/${userId}`);
+            }
+
+            await axios.put(`http://localhost:8081/api/user/${userId}/quit-tournament`);
+
+            const updatedUser = { ...JSON.parse(storedUser), isRegisteredInTournament: false, tournamentRegistrationStatus: "NONE" };
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+
+            setIsTournamentJoined(false);
+            setTournamentStatus("NONE");
 
             fetchMatches();
         } catch (err) {
-            setError(`Failed to update tournament status: ${err.response?.data || err.message}`);
+            setError(`Failed to quit tournament: ${err.response?.data || err.message}`);
         }
     };
 
@@ -159,14 +173,18 @@ const PlayerSchedule = () => {
                 <ClickAwayListener onClickAway={handleTableClickAway}>
                     <TableContainer component={Paper}>
                         <Toolbar>
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                                 <Button
                                     variant="contained"
                                     color={isTournamentJoined ? "secondary" : "primary"}
-                                    onClick={handleTournamentToggle}
+                                    onClick={isTournamentJoined ? handleTournamentQuit : handleTournamentRequest}
+                                    disabled={tournamentStatus === "PENDING"}
                                 >
                                     {isTournamentJoined ? "Quit Tournament" : "Join Tournament"}
                                 </Button>
+                                <Typography variant="body1" sx={{ marginLeft: 2 }}>
+                                    Status: {tournamentStatus}
+                                </Typography>
                             </Box>
                         </Toolbar>
 
