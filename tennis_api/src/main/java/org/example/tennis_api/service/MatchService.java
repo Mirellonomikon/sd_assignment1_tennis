@@ -15,6 +15,7 @@ public interface MatchService {
     Match registerPlayerToMatch(Integer matchId, Integer playerId) throws Exception;
     List<Match> findAllMatches();
     List<Match> findAllMatchesByRefereeId(Integer refereeId) throws Exception;
+    List<Match> findAllMatchesByPlayerId(Integer playerId) throws NoSuchElementException, IllegalArgumentException;
     Match findMatchById(Integer matchId);
     Match updateMatchScore(Integer matchId, Integer player1Score, Integer player2Score) throws Exception;
     Match updateMatch(MatchDTO matchDTO, Integer id) throws Exception;

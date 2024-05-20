@@ -124,6 +124,14 @@ public class MatchServiceImpl implements MatchService{
         return matchRepository.findByReferee(referee);
     }
 
+    public List<Match> findAllMatchesByPlayerId(Integer playerId) throws NoSuchElementException, IllegalArgumentException {
+        User player = userRepository.findById(playerId)
+                .orElseThrow(() -> new NoSuchElementException("User doesn't exist."));
+        if(!player.getUserType().equals("player"))
+            throw new IllegalArgumentException("User is not a player");
+        return matchRepository.findByPlayer1OrPlayer2(player, player);
+    }
+
     @Override
     public Match findMatchById(Integer matchId) {
         return matchRepository.findById(matchId).orElseThrow(() -> new NoSuchElementException("Match not found"));
