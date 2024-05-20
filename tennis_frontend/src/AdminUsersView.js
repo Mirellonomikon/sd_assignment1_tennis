@@ -208,7 +208,7 @@ const AdminUsersView = () => {
                                     color="inherit"
                                     onClick={handleNotificationClick}
                                     disabled={pendingUsers.length === 0}
-                                    sx={{ color: pendingUsers.length > 0 ? '#FF5733' : 'grey' }}
+                                    sx={{ color: pendingUsers.length > 0 ? '#E4D00A' : 'grey' }}
                                 >
                                     <Notifications />
                                 </IconButton>
