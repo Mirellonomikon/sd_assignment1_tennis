@@ -24,4 +24,7 @@ public interface UserService {
     User updateUser(UserDTO userDTO, Integer id);
     void deleteUser(Integer userId);
     List<User> filterUsers(String name, String username, Boolean isCompeting);
+    User acceptTournamentRegistration(Integer id);
+    User rejectTournamentRegistration(Integer id);
+    List<User> findUserByStatus(String pending);
 }

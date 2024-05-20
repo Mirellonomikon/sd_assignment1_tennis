@@ -20,13 +20,15 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
+    Popover,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Edit, Delete } from '@mui/icons-material';
+import { Edit, Delete, Notifications } from '@mui/icons-material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import AddUserDialog from './AddUserDialog';
 import UpdateUserDialog from './UpdateUserDialog';
+import PendingRequests from './PendingRequests';
 
 const AdminUsersView = () => {
     const [users, setUsers] = useState([]);
@@ -41,6 +43,9 @@ const AdminUsersView = () => {
     const [isUpdateFormOpen, setIsUpdateFormOpen] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+    const [pendingUsers, setPendingUsers] = useState([]);
+    const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
+
     const navigate = useNavigate();
 
     const fetchUsers = async () => {
@@ -54,8 +59,18 @@ const AdminUsersView = () => {
         }
     };
 
+    const fetchPendingUsers = async () => {
+        try {
+            const response = await axios.get('http://localhost:8081/api/user/pending');
+            setPendingUsers(response.data);
+        } catch (err) {
+            setError(`Failed to fetch pending users: ${err.response?.data || err.message}`);
+        }
+    };
+
     useEffect(() => {
         fetchUsers();
+        fetchPendingUsers();
     }, []);
 
     const handleDelete = async () => {
@@ -123,6 +138,14 @@ const AdminUsersView = () => {
         setSelectedUser(null);
     };
 
+    const handleNotificationClick = (event) => {
+        setNotificationAnchorEl(event.currentTarget);
+    };
+
+    const handleNotificationClose = () => {
+        setNotificationAnchorEl(null);
+    };
+
     const sortedUsers = users.sort((a, b) => {
         const aField = a[sortField] || '';
         const bField = b[sortField] || '';
@@ -131,6 +154,7 @@ const AdminUsersView = () => {
     });
 
     const isEditDeleteEnabled = Boolean(selectedUser);
+    const isNotificationOpen = Boolean(notificationAnchorEl);
 
     return (
         <Container component="main">
@@ -165,7 +189,7 @@ const AdminUsersView = () => {
                 <ClickAwayListener onClickAway={handleTableClickAway}>
                     <TableContainer component={Paper}>
                         <Toolbar>
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                                 <IconButton
                                     color="primary"
                                     onClick={() => handleOpenUpdateForm(selectedUser?.id)}
@@ -179,6 +203,14 @@ const AdminUsersView = () => {
                                     disabled={!isEditDeleteEnabled}
                                 >
                                     <Delete />
+                                </IconButton>
+                                <IconButton
+                                    color="inherit"
+                                    onClick={handleNotificationClick}
+                                    disabled={pendingUsers.length === 0}
+                                    sx={{ color: pendingUsers.length > 0 ? '#FF5733' : 'grey' }}
+                                >
+                                    <Notifications />
                                 </IconButton>
                             </Box>
                         </Toolbar>
@@ -215,20 +247,20 @@ const AdminUsersView = () => {
                                     </TableCell>
                                     <TableCell>
                                         <TableSortLabel
-                                            active={sortField === 'userType'}
-                                            direction={sortDirection}
-                                            onClick={() => handleSort('userType')}
-                                        >
-                                            User Type
-                                        </TableSortLabel>
-                                    </TableCell>
-                                    <TableCell>
-                                        <TableSortLabel
                                             active={sortField === 'email'}
                                             direction={sortDirection}
                                             onClick={() => handleSort('email')}
                                         >
                                             Email
+                                        </TableSortLabel>
+                                    </TableCell>
+                                    <TableCell>
+                                        <TableSortLabel
+                                            active={sortField === 'userType'}
+                                            direction={sortDirection}
+                                            onClick={() => handleSort('userType')}
+                                        >
+                                            User Type
                                         </TableSortLabel>
                                     </TableCell>
                                     <TableCell>
@@ -285,7 +317,6 @@ const AdminUsersView = () => {
                             rowsPerPageOptions={[10, 25, 50]}
                             labelRowsPerPage="Rows per page"
                         />
-
                     </TableContainer>
                 </ClickAwayListener>
             )}
@@ -323,6 +354,22 @@ const AdminUsersView = () => {
 
             <AddUserDialog open={isAddFormOpen} handleClose={handleCloseAddForm} />
             <UpdateUserDialog open={isUpdateFormOpen} userId={selectedUserId} handleClose={handleCloseUpdateForm} />
+            
+            <Popover
+                open={isNotificationOpen}
+                anchorEl={notificationAnchorEl}
+                onClose={handleNotificationClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+            >
+                <PendingRequests pendingUsers={pendingUsers} fetchPendingUsers={fetchPendingUsers} fetchUsers={fetchUsers} />
+            </Popover>
         </Container>
     );
 };

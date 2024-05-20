@@ -68,6 +68,24 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @PutMapping("/{id}/accept-tournament")
+    public ResponseEntity<User> acceptTournamentRegistration(@PathVariable Integer id) throws Exception {
+        User updatedUser = userService.acceptTournamentRegistration(id);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PutMapping("/{id}/reject-tournament")
+    public ResponseEntity<User> rejectTournamentRegistration(@PathVariable Integer id) throws Exception {
+        User updatedUser = userService.rejectTournamentRegistration(id);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @GetMapping("/pending")
+    public ResponseEntity<List<User>> getPendingUsers() {
+        List<User> users = userService.findUserByStatus("PENDING");
+        return ResponseEntity.ok(users);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Integer id) throws IllegalArgumentException {
         User user = userService.findUserById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
