@@ -36,7 +36,7 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
         if (open) {
             const fetchUserDetails = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8081/api/user/id?id=${userId}`, {
+                    await axios.put(`http://localhost:8081/api/match/${matchId}`, matchDTO, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     const user = response.data;
@@ -98,21 +98,25 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
             };
 
             if ((originalRole === 'player' && role !== 'player') || (originalTournamentStatus && !isRegisteredInTournament)) {
-                const matchesResponse = await axios.get('http://localhost:8081/api/match/all');
+                const matchesResponse = await axios.get('http://localhost:8081/api/match/all', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
                 const matches = matchesResponse.data;
                 const userMatches = matches.filter(
                     (match) => match.player1?.id === userId || match.player2?.id === userId
                 );
 
                 for (const match of userMatches) {
-                    await axios.put(`http://localhost:8081/api/match/${match.id}/remove/${userId}`, {}, {
-                        headers: { Authorization: `Bearer ${token}` }
+                    await axios.put(`http://localhost:8081/api/match/match/remove`, {}, {
+                        headers: { Authorization: `Bearer ${token}` },
+                        params: { matchId: match.id, playerId: userId }
                     });
                 }
             }
 
-            await axios.put(`http://localhost:8081/api/user/id?id=${userId}`, userDTO, {
-                headers: { Authorization: `Bearer ${token}` }
+            await axios.put(`http://localhost:8081/api/user/id`, userDTO, {
+                headers: { Authorization: `Bearer ${token}` },
+                params: { id: userId }
             });
             handleClose(true);
         } catch (err) {

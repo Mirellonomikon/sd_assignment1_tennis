@@ -48,7 +48,9 @@ const AdminSchedule = () => {
 
     const fetchMatches = async () => {
         try {
-            const response = await axios.get('http://localhost:8081/api/match/all');
+            const response = await axios.get('http://localhost:8081/api/match/all', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             const data = response.data.map((match) => ({
                 ...match,
                 matchDate: match.matchDate
@@ -69,7 +71,9 @@ const AdminSchedule = () => {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`http://localhost:8081/api/match/${selectedMatch?.id}`);
+            await axios.delete(`http://localhost:8081/api/match/${selectedMatch?.id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setDeleteConfirmationOpen(false);
             fetchMatches();
         } catch (err) {

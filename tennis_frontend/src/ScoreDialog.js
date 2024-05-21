@@ -25,7 +25,10 @@ const ScoreDialog = ({ open, handleClose, matchId }) => {
             console.log("Fetching details for match ID:", matchId);
             const fetchMatchDetails = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8081/api/match/${matchId}`);
+                    const response = await axios.get(`http://localhost:8081/api/match/matchId`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                        params: { id: matchId }
+                    });
                     const match = response.data;
                     const p1Score = match.player1Score != null ? match.player1Score.toString() : '0';
                     const p2Score = match.player2Score != null ? match.player2Score.toString() : '0';
@@ -60,7 +63,11 @@ const ScoreDialog = ({ open, handleClose, matchId }) => {
                 player2Score: player2ScoreValue,
             };
 
-            await axios.put(`http://localhost:8081/api/match/${matchId}/score`, scoreData);
+            await axios.put(`http://localhost:8081/api/match/match/score`, scoreData, {
+                headers: { Authorization: `Bearer ${token}` },
+                params: { matchId: matchId }
+            });
+
             handleClose(true);
         } catch (err) {
             setError(err.response?.data || err.message || 'Failed to update scores.');

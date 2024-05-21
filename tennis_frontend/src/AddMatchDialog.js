@@ -32,7 +32,9 @@ const AddMatchDialog = ({ open, handleClose }) => {
     useEffect(() => {
         const fetchUsers = async (role) => {
             try {
-                const response = await axios.get(`http://localhost:8081/api/user/role/${role}`);
+                const response = await axios.get(`http://localhost:8081/api/user/role/${role}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
                 if (role === 'referee') {
                     setReferees(response.data);
                 } else {
@@ -45,7 +47,10 @@ const AddMatchDialog = ({ open, handleClose }) => {
 
         const fetchPlayers = async () => {
             try {
-                const response = await axios.get('http://localhost:8081/api/user/role/tournament');
+                const response = await axios.get('http://localhost:8081/api/user/role/tournament', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
                 setPlayers(response.data);
             }
             catch (err) {
@@ -84,7 +89,9 @@ const AddMatchDialog = ({ open, handleClose }) => {
                 player2Score
             };
 
-            await axios.post('http://localhost:8081/api/match/create', matchDTO);
+            await axios.post('http://localhost:8081/api/match/create', matchDTO, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             handleClose(true);
             resetForm();
         } catch (err) {

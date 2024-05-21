@@ -35,7 +35,10 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
         if (open) {
             const fetchMatchDetails = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8081/api/match/${matchId}`);
+                    const response = await axios.get(`http://localhost:8081/api/match/matchId`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                        params: { id: matchId }
+                    });
                     const match = response.data;
                     setDefaultMatch(match);
 
@@ -50,12 +53,16 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                     setPlayer2Score(match.player2Score);
 
                     const fetchUsers = async (role) => {
-                        const userResponse = await axios.get(`http://localhost:8081/api/user/role/${role}`);
+                        const userResponse = await axios.get(`http://localhost:8081/api/user/role/${role}`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
                         return userResponse.data;
                     };
 
                     const fetchPlayers = async () => {
-                        const userResponse = await axios.get(`http://localhost:8081/api/user/role/tournament`);
+                        const userResponse = await axios.get(`http://localhost:8081/api/user/role/tournament`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
                         return userResponse.data;
                     };
 
@@ -86,7 +93,9 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
                 player2Score,
             };
 
-            await axios.put(`http://localhost:8081/api/match/${matchId}`, matchDTO);
+            await axios.put(`http://localhost:8081/api/match/${matchId}`, matchDTO, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             handleClose(true);
         } catch (err) {
             setError(err.response?.data || 'Failed to update match.');

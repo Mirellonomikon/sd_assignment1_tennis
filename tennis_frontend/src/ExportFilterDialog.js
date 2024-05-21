@@ -76,6 +76,7 @@ const ExportFilterDialog = ({ open, handleClose }) => {
                 {
                     params,
                     responseType: 'blob',
+                    headers: { Authorization: `Bearer ${token}` }
                 }
             );
 

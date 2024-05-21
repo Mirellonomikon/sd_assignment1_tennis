@@ -44,7 +44,9 @@ const RefereeSchedule = () => {
     const fetchMatches = async () => {
         
         try {
-            const response = await axios.get(`http://localhost:8081/api/match/ref/${refereeId}`);
+            const response = await axios.get(`http://localhost:8081/api/match/ref?ref=${refereeId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             const data = response.data.map((match) => ({
                 ...match,
                 matchDate: match.matchDate ? new Date(match.matchDate).toLocaleDateString('en-GB') : 'N/A',

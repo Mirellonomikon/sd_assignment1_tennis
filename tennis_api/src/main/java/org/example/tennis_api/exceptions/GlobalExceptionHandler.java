@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException ex) {
         logger.error("Forbidden: {}", ex.getMessage(), ex);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Yeeee: " + ex.getMessage());
     }
 }
 
