@@ -6,11 +6,14 @@ import org.example.tennis_api.dto.user.UserSignInDTO;
 import org.example.tennis_api.dto.user.UserSignUpDTO;
 import org.example.tennis_api.dto.user.UserUpdateCredentialsDTO;
 import org.example.tennis_api.entity.User;
+import org.example.tennis_api.security.JwtUtil;
 import org.example.tennis_api.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -19,6 +22,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody UserSignUpDTO userSignUpDTO) throws Exception {
@@ -26,10 +30,22 @@ public class UserController {
         return ResponseEntity.ok(registeredUser);
     }
 
+//    @PostMapping("/login")
+//    public ResponseEntity<User> loginUser(@RequestBody UserSignInDTO userSignInDTO) throws Exception {
+//            User user = userService.loginUser(userSignInDTO);
+//            return ResponseEntity.ok(user);
+//    }
+
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody UserSignInDTO userSignInDTO) throws Exception {
-        User user = userService.loginUser(userSignInDTO);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody UserSignInDTO userSignInDTO) throws Exception {
+            User user = userService.loginUser(userSignInDTO);
+            String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getUserType());
+
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("token", token);
+            responseBody.put("user", user);
+
+            return ResponseEntity.ok(responseBody);
     }
 
     @PutMapping("/update")

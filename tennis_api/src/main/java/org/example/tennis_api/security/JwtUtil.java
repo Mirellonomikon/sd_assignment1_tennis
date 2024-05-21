@@ -3,23 +3,33 @@ package org.example.tennis_api.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.function.Function;
 
+@Getter
 @Component
 public class JwtUtil {
 
-    private final SecretKey key = Keys.hmacShaKeyFor("morello".getBytes());
+    private final SecretKey key = Keys.hmacShaKeyFor("armored-core-VI-fires-of-rubicon".getBytes());
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public Integer extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("id", Integer.class));
+    }
+
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    public String extractUserType(String token) {
+        return extractClaim(token, claims -> claims.get("userType", String.class));
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -38,13 +48,15 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(String username) {
-        return createToken(username);
+    public String generateToken(Integer userId, String username, String userType) {
+        return createToken(userId, username, userType);
     }
 
-    private String createToken(String subject) {
+    private String createToken(Integer userId, String subject, String role) {
         return Jwts.builder()
                 .subject(subject)
+                .claim("id", userId)
+                .claim("userType", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) //1 hour
                 .signWith(key)
