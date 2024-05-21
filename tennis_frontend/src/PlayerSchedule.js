@@ -36,6 +36,7 @@ const PlayerSchedule = () => {
 
     const navigate = useNavigate();
     const storedUser = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
     const userId = storedUser ? JSON.parse(storedUser).id : null;
     const userStatus = storedUser ? JSON.parse(storedUser).isRegisteredInTournament : false;
     const userTournamentStatus = storedUser ? JSON.parse(storedUser).tournamentRegistrationStatus : "";
@@ -90,6 +91,7 @@ const PlayerSchedule = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
         navigate('/login');
     };
 
@@ -103,7 +105,9 @@ const PlayerSchedule = () => {
 
     const handleTournamentRequest = async () => {
         try {
-            await axios.put(`http://localhost:8081/api/user/${userId}/request-tournament`);
+            await axios.put(`http://localhost:8081/api/user/request-tournament?id=${userId}`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
 
             const updatedUser = { ...JSON.parse(storedUser), isRegisteredInTournament: false, tournamentRegistrationStatus: "PENDING" };
             localStorage.setItem('user', JSON.stringify(updatedUser));
@@ -125,7 +129,9 @@ const PlayerSchedule = () => {
                 await axios.put(`http://localhost:8081/api/match/${match.id}/remove/${userId}`);
             }
 
-            await axios.put(`http://localhost:8081/api/user/${userId}/quit-tournament`);
+            await axios.put(`http://localhost:8081/api/user/quit-tournament?id=${userId}`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
 
             const updatedUser = { ...JSON.parse(storedUser), isRegisteredInTournament: false, tournamentRegistrationStatus: "NONE" };
             localStorage.setItem('user', JSON.stringify(updatedUser));

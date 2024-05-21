@@ -19,6 +19,7 @@ const FilterUsersForm = ({ open, handleClose, setPlayers }) => {
     const [username, setUsername] = useState('');
     const [isCompeting, setIsCompeting] = useState('');
     const [error, setError] = useState(null);
+    const token = localStorage.getItem('token');
 
     const resetFilters = () => {
         setName('');
@@ -40,7 +41,10 @@ const FilterUsersForm = ({ open, handleClose, setPlayers }) => {
         };
 
         try {
-            const response = await axios.get('http://localhost:8081/api/user/filter/players', { params });
+            await axios.get('http://localhost:8081/api/user/filter/players', {
+                headers: { Authorization: `Bearer ${token}` },
+                params,
+            });
             setPlayers(response.data);
             handleDialogClose();
         } catch (err) {

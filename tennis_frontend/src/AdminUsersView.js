@@ -47,10 +47,13 @@ const AdminUsersView = () => {
     const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
 
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8081/api/user/all');
+            const response = await axios.get('http://localhost:8081/api/user/all', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setUsers(response.data);
         } catch (err) {
             setError(`Failed to fetch users: ${err.response?.data || err.message}`);
@@ -61,7 +64,9 @@ const AdminUsersView = () => {
 
     const fetchPendingUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8081/api/user/pending');
+            const response = await axios.get('http://localhost:8081/api/user/pending', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setPendingUsers(response.data);
         } catch (err) {
             setError(`Failed to fetch pending users: ${err.response?.data || err.message}`);
@@ -75,7 +80,9 @@ const AdminUsersView = () => {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`http://localhost:8081/api/user/${selectedUser?.id}`);
+            await axios.delete(`http://localhost:8081/api/user/id?id=${selectedUser?.id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setDeleteConfirmationOpen(false);
             fetchUsers();
         } catch (err) {
@@ -85,6 +92,7 @@ const AdminUsersView = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
         navigate('/login');
     };
 
@@ -354,7 +362,7 @@ const AdminUsersView = () => {
 
             <AddUserDialog open={isAddFormOpen} handleClose={handleCloseAddForm} />
             <UpdateUserDialog open={isUpdateFormOpen} userId={selectedUserId} handleClose={handleCloseUpdateForm} />
-            
+
             <Popover
                 open={isNotificationOpen}
                 anchorEl={notificationAnchorEl}

@@ -36,10 +36,13 @@ const RefereePlayers = () => {
     const navigate = useNavigate();
     const storedUser = localStorage.getItem('user');
     const refereeId = storedUser ? JSON.parse(storedUser).id : null;
+    const token = localStorage.getItem('token');
 
     const fetchPlayers = async () => {
         try {
-            const response = await axios.get('http://localhost:8081/api/user/role/player');
+            const response = await axios.get('http://localhost:8081/api/user/role/player', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setPlayers(response.data);
         } catch (err) {
             setError(`Failed to fetch players: ${err.response?.data || err.message}`);
@@ -72,6 +75,7 @@ const RefereePlayers = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
         navigate('/login');
     };
 

@@ -30,12 +30,15 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
     const [tournamentStatuses] = useState(['NONE', 'ACCEPTED', 'REJECTED', 'PENDING']);
     const [originalRole, setOriginalRole] = useState('');
     const [originalTournamentStatus, setOriginalTournamentStatus] = useState(false);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         if (open) {
             const fetchUserDetails = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8081/api/user/${userId}`);
+                    const response = await axios.get(`http://localhost:8081/api/user/id?id=${userId}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
                     const user = response.data;
                     setDefaultUser(user);
 
@@ -102,11 +105,15 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                 );
 
                 for (const match of userMatches) {
-                    await axios.put(`http://localhost:8081/api/match/${match.id}/remove/${userId}`);
+                    await axios.put(`http://localhost:8081/api/match/${match.id}/remove/${userId}`, {}, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
                 }
             }
 
-            await axios.put(`http://localhost:8081/api/user/${userId}`, userDTO);
+            await axios.put(`http://localhost:8081/api/user/id?id=${userId}`, userDTO, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             handleClose(true);
         } catch (err) {
             setError(err.response?.data || 'Failed to update user.');

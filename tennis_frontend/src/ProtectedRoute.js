@@ -1,10 +1,12 @@
 import { Navigate, useLocation } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
 
 function ProtectedRoute({ element, allowedRoles }) {
   const location = useLocation();
-  const storedUser = localStorage.getItem('user');
-  const user = storedUser ? JSON.parse(storedUser) : null;
-  const userRole = user ? user.userType : null;
+
+  const token = localStorage.getItem('token');
+  const decodedToken = token ? jwtDecode(token) : null;
+  const userRole = decodedToken ? decodedToken.userType : null;
 
   if (!userRole || !allowedRoles.includes(userRole)) {
     return <Navigate to="/" state={{ from: location }} />;

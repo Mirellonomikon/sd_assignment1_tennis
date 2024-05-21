@@ -13,14 +13,17 @@ import axios from 'axios';
 const UpdateCredsForm = ({ open, handleClose, userId }) => {
     const [userData, setUserData] = useState({ username: '', name: '', email: '', newPassword: '', oldPassword: '' });
     const [error, setError] = useState('');
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         if (open) {
             const fetchUserDetails = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8081/api/user/${userId}`);
+                    const response = await axios.get(`http://localhost:8081/api/user/id?id=${userId}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
                     const user = response.data;
-                    setUserData(prev => ({ ...prev, username: user.username, name: user.name, email: user.email}));
+                    setUserData(prev => ({ ...prev, username: user.username, name: user.name, email: user.email }));
                     setError('');
                 } catch (err) {
                     setError(err.response?.data || 'Failed to fetch user details.');
@@ -45,7 +48,9 @@ const UpdateCredsForm = ({ open, handleClose, userId }) => {
                 oldPassword: userData.oldPassword
             };
 
-            await axios.put(`http://localhost:8081/api/user/update/${userId}`, userUpdateCredentialsDTO);
+            await axios.put(`http://localhost:8081/api/user/update?id=${userId}`, userUpdateCredentialsDTO, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             handleClose(true);
         } catch (err) {
             setError(err.response?.data || 'Failed to update user.');
@@ -54,7 +59,7 @@ const UpdateCredsForm = ({ open, handleClose, userId }) => {
 
     return (
         <Dialog open={open} onClose={() => handleClose(false)}
-        sx={{ '& .MuiPaper-root': { backgroundColor: '#f1f8e9' } }}>
+            sx={{ '& .MuiPaper-root': { backgroundColor: '#f1f8e9' } }}>
             <DialogTitle>Update Your Credentials</DialogTitle>
             <DialogContent>
                 {error && <Alert severity="error" style={{ backgroundColor: '#FFF6EA', marginBottom: '5px' }}>{error}</Alert>}

@@ -27,6 +27,7 @@ const AddUserDialog = ({ open, handleClose }) => {
     const [isRegisteredInTournament, setIsRegisteredInTournament] = useState(false);
     const [tournamentStatus, setTournamentStatus] = useState('NONE');
     const [tournamentStatuses] = useState(['NONE', 'ACCEPTED', 'REJECTED', 'PENDING']);
+    const token = localStorage.getItem('token');
 
     const resetForm = () => {
         setUsername('');
@@ -51,7 +52,9 @@ const AddUserDialog = ({ open, handleClose }) => {
                 tournamentRegistrationStatus: tournamentStatus
             };
 
-            await axios.post('http://localhost:8081/api/user/add', userDTO);
+            await axios.post('http://localhost:8081/api/user/add', userDTO, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             handleClose(true);
             resetForm();
         } catch (err) {

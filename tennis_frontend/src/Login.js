@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Container, CssBaseline, Box, Alert } from '@mui/material';
 import axios from 'axios';
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -19,10 +20,16 @@ const Login = () => {
                 password
             });
 
-            const user = response.data;
+            const { token, user } = response.data;
+            const decodedToken = jwtDecode(token);
+
+            localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
 
-            switch (user.userType) {
+            console.log(decodedToken);
+            console.log(user);
+
+            switch (decodedToken.userType) {
                 case 'administrator':
                     navigate('/admin-schedule');
                     break;

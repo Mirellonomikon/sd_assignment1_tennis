@@ -4,9 +4,13 @@ import { Check, Close } from '@mui/icons-material';
 import axios from 'axios';
 
 const PendingRequests = ({ pendingUsers, fetchPendingUsers, fetchUsers }) => {
+    const token = localStorage.getItem('token');
+
     const handleAccept = async (userId) => {
         try {
-            await axios.put(`http://localhost:8081/api/user/${userId}/accept-tournament`);
+            await axios.put(`http://localhost:8081/api/user/accept-tournament?id=${userId}`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             fetchPendingUsers();
             fetchUsers();
         } catch (err) {
@@ -16,7 +20,9 @@ const PendingRequests = ({ pendingUsers, fetchPendingUsers, fetchUsers }) => {
 
     const handleReject = async (userId) => {
         try {
-            await axios.put(`http://localhost:8081/api/user/${userId}/reject-tournament`);
+            await axios.put(`http://localhost:8081/api/user/reject-tournament?id=${userId}`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             fetchPendingUsers();
             fetchUsers();
         } catch (err) {

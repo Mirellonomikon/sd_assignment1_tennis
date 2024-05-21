@@ -24,12 +24,17 @@ const ExportFilterDialog = ({ open, handleClose }) => {
     const [selectedPlayer, setSelectedPlayer] = useState('');
     const [format, setFormat] = useState('csv');
     const [error, setError] = useState(null);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchRefereesAndPlayers = async () => {
             try {
-                const refereesResponse = await axios.get('http://localhost:8081/api/user/role/referee');
-                const playersResponse = await axios.get('http://localhost:8081/api/user/role/player');
+                const refereesResponse = await axios.get('http://localhost:8081/api/user/role/referee', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                const playersResponse = await axios.get('http://localhost:8081/api/user/role/player', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
                 setReferees(refereesResponse.data);
                 setPlayers(playersResponse.data);
             } catch (err) {

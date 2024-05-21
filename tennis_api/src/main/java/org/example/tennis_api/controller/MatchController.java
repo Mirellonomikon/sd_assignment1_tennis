@@ -25,60 +25,70 @@ public class MatchController {
 
     private final MatchService matchService;
 
+    //administrator only
     @PostMapping("/create")
     public ResponseEntity<Match> createMatch(@RequestBody MatchDTO matchDTO) throws Exception {
         Match match = matchService.createMatch(matchDTO);
         return ResponseEntity.ok(match);
     }
 
+    //administrator only
     @PutMapping("/match/register")
     public ResponseEntity<Match> registerPlayerToMatch(@RequestParam Integer matchId, @RequestParam Integer playerId) throws Exception {
         Match match = matchService.registerPlayerToMatch(matchId, playerId);
         return ResponseEntity.ok(match);
     }
 
+    //administrator only
     @GetMapping("/all")
     public ResponseEntity<List<Match>> getAllMatches() {
         List<Match> matches = matchService.findAllMatches();
         return ResponseEntity.ok(matches);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Match> getMatchById(@PathVariable Integer id) {
+    //referee and administrator only but checks for id to match token one
+    @GetMapping("/matchId")
+    public ResponseEntity<Match> getMatchById(@RequestParam Integer id) {
         Match match = matchService.findMatchById(id);
         return ResponseEntity.ok(match);
     }
 
+    //referee only but checks for id to match token one
     @GetMapping("/ref")
     public ResponseEntity<List<Match>> getMatchByRef(@RequestParam Integer ref) throws Exception {
         List<Match> matches = matchService.findAllMatchesByRefereeId(ref);
         return ResponseEntity.ok(matches);
     }
 
+    //player only but checks for id to match token one
     @GetMapping("/player")
     public ResponseEntity<List<Match>> getMatchesByPlayerId(@RequestParam Integer playerId) {
         List<Match> matches = matchService.findAllMatchesByPlayerId(playerId);
         return ResponseEntity.ok(matches);
     }
 
+    //administrator only
     @PutMapping("/{id}")
     public ResponseEntity<Match> updateMatch(@PathVariable Integer id, @RequestBody MatchDTO matchDTO) throws Exception {
         Match updatedMatch = matchService.updateMatch(matchDTO, id);
         return ResponseEntity.ok(updatedMatch);
     }
 
+    //administrator only
     @DeleteMapping("/{id}")
        public ResponseEntity<Void> deleteMatch(@PathVariable Integer id) throws Exception {
         matchService.deleteMatch(id);
         return ResponseEntity.ok().build();
     }
 
+    //allowed for administrator and player but for player checks for id to match token one
     @PutMapping("/match/remove")
     public ResponseEntity<Match> removePlayerFromMatch(@RequestParam Integer matchId, @RequestParam Integer playerId) {
         Match updatedMatch = matchService.removePlayerFromMatch(matchId, playerId);
         return ResponseEntity.ok(updatedMatch);
     }
 
+    //referee only, checks for referee of updated match to match id of user
     @PutMapping("/match/score")
     public ResponseEntity<Match> updateMatchScore(@RequestParam Integer matchId, @RequestBody Map<String, Integer> scoreData) throws Exception {
         Integer player1Score = scoreData.getOrDefault("player1Score", null);
@@ -88,6 +98,7 @@ public class MatchController {
         return ResponseEntity.ok(updatedMatch);
     }
 
+    //administrator and referee only
     @GetMapping("/filter/matches")
     public ResponseEntity<List<Match>> filterMatches(@RequestParam(required = false) LocalDate startDate,
                                                      @RequestParam(required = false) LocalDate endDate,
@@ -99,6 +110,7 @@ public class MatchController {
         return ResponseEntity.ok(matches);
     }
 
+    //administrator only
     @GetMapping("/export")
     public ResponseEntity<byte[]> exportMatches(
             @RequestParam(required = false) LocalDate startDate,
