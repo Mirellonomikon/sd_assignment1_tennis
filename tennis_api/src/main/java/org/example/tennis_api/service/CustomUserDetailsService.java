@@ -2,6 +2,7 @@ package org.example.tennis_api.service;
 
 import org.example.tennis_api.entity.User;
 import org.example.tennis_api.repository.UserRepository;
+import org.example.tennis_api.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,6 +28,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getUserType().toUpperCase()));
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        return new CustomUserDetails(user.getId(), user.getUsername(), user.getPassword(), authorities);
     }
 }

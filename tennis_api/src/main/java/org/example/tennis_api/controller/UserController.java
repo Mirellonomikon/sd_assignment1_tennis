@@ -125,9 +125,9 @@ public class UserController {
 
     //allowed for all but for player and referee checks for id to match token one
     @GetMapping("/id")
-    @PreAuthorize("#id == authentication.principal.id or hasRole('ADMINISTRATOR')")
-    public ResponseEntity<User> getUser(@RequestParam Integer id) throws IllegalArgumentException {
-        User user = userService.findUserById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+    @PreAuthorize("hasRole('ADMINISTRATOR') or (#userId == authentication.principal.id)")
+    public ResponseEntity<User> getUser(@RequestParam Integer userId) throws IllegalArgumentException {
+        User user = userService.findUserById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         return ResponseEntity.ok(user);
     }
 

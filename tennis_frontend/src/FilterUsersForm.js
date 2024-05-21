@@ -41,7 +41,7 @@ const FilterUsersForm = ({ open, handleClose, setPlayers }) => {
         };
 
         try {
-            await axios.get('http://localhost:8081/api/user/filter/players', {
+            const response = await axios.get('http://localhost:8081/api/user/filter/players', {
                 headers: { Authorization: `Bearer ${token}` },
                 params,
             });

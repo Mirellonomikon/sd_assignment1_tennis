@@ -18,6 +18,7 @@ const ScoreDialog = ({ open, handleClose, matchId }) => {
     const [player2Name, setPlayer2Name] = useState('');
     const [initialPlayer1Score, setInitialPlayer1Score] = useState('');
     const [initialPlayer2Score, setInitialPlayer2Score] = useState('');
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         if (open && matchId) {

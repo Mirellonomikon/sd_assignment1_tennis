@@ -19,7 +19,7 @@ const UpdateCredsForm = ({ open, handleClose, userId }) => {
         if (open) {
             const fetchUserDetails = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8081/api/user/id?id=${userId}`, {
+                    const response = await axios.get(`http://localhost:8081/api/user/id?userId=${userId}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     const user = response.data;

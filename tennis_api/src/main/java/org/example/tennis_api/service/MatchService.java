@@ -23,6 +23,7 @@ public interface MatchService {
     Match removePlayerFromMatch(Integer matchId, Integer playerId) throws NoSuchElementException, IllegalArgumentException;
     List<Match> findMatches(LocalDate startDate, LocalDate endDate, String location, Integer refereeId, Integer playerId);
     void exportMatches(List<Match> matches, OutputStream outputStream, MatchExportStrategy strategy) throws IOException;
+    Integer findMatchRef(Integer matchId);
 }
 
 

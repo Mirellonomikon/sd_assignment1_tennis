@@ -39,14 +39,10 @@ const RefereeSchedule = () => {
     const navigate = useNavigate();
     const storedUser = localStorage.getItem('user');
     const refereeId = storedUser ? JSON.parse(storedUser).id : null;
+    const token = localStorage.getItem('token');
 
     const fetchMatches = async () => {
-        if (!refereeId) {
-            setError('No referee ID found. Please log in again.');
-            setLoading(false);
-            return;
-        }
-
+        
         try {
             const response = await axios.get(`http://localhost:8081/api/match/ref/${refereeId}`);
             const data = response.data.map((match) => ({

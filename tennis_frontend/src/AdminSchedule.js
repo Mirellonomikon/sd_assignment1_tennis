@@ -44,6 +44,7 @@ const AdminSchedule = () => {
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
     const [isFilterExportFormOpen, setIsFilterExportFormOpen] = useState(false);
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
 
     const fetchMatches = async () => {
         try {

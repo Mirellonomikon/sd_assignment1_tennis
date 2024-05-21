@@ -27,6 +27,7 @@ const AddMatchDialog = ({ open, handleClose }) => {
     const [referees, setReferees] = useState([]);
     const [players, setPlayers] = useState([]);
     const [error, setError] = useState('');
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchUsers = async (role) => {

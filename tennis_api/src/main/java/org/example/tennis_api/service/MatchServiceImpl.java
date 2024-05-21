@@ -244,9 +244,14 @@ public class MatchServiceImpl implements MatchService{
         return matches;
     }
 
-
     @Override
     public void exportMatches(List<Match> matches, OutputStream outputStream, MatchExportStrategy strategy) throws IOException {
         strategy.export(matches, outputStream);
+    }
+
+    @Override
+    public Integer findMatchRef(Integer matchId) {
+        Match match = findMatchById(matchId);
+        return match.getReferee().getId();
     }
 }

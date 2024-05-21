@@ -29,6 +29,7 @@ const UpdateMatchDialog = ({ open, handleClose, matchId }) => {
     const [referees, setReferees] = useState([]);
     const [players, setPlayers] = useState([]);
     const [error, setError] = useState('');
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         if (open) {
