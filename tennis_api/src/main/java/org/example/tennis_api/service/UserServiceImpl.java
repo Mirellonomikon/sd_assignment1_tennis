@@ -25,6 +25,9 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
@@ -123,10 +126,14 @@ public class UserServiceImpl implements UserService{
         if (user.getUserType().equals("player")) {
             user.setTournamentRegistrationStatus("PENDING");
             user.setIsRegisteredInTournament(false);
+
+            List<User> admins = userRepository.findByUserType("administrator");
+            List<String> adminEmails = admins.stream().map(User::getEmail).collect(Collectors.toList());
+            emailService.notifyAdmins("New Tournament Registration Request",
+                    "A new tournament registration request has been received from " + user.getName() + " (" + user.getUsername() + ").", adminEmails);
         }
         return userRepository.save(user);
     }
-
 
     @Override
     public List<User> findAllUsers() {
@@ -209,6 +216,10 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new NoSuchElementException("User not found."));
         user.setIsRegisteredInTournament(true);
         user.setTournamentRegistrationStatus("ACCEPTED");
+
+        emailService.notifyUser(user.getEmail(), "Tournament Registration Accepted",
+                "Dear " + user.getName() + ",\n\nYour registration for the tournament has been accepted. Congrats.\n");
+
         return userRepository.save(user);
     }
 
@@ -218,6 +229,11 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new NoSuchElementException("User not found."));
         user.setIsRegisteredInTournament(false);
         user.setTournamentRegistrationStatus("REJECTED");
+
+        emailService.notifyUser(user.getEmail(), "Tournament Registration Rejected",
+                "Dear " + user.getName() + ",\n\nYour registration for the tournament has been rejected. Sorry not sorry.\n");
+
+
         return userRepository.save(user);
     }
 

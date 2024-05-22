@@ -1,15 +1,18 @@
 create table users
 (
-    id        serial
+    id                             serial
         primary key,
-    username  varchar(255) not null
+    username                       varchar(255)                                  not null
         unique,
-    name      varchar(255) not null,
-    password  varchar(255) not null,
-    user_type varchar(255) not null
+    name                           varchar(255)                                  not null,
+    password                       varchar(255)                                  not null,
+    user_type                      varchar(255)                                  not null
         constraint users_user_type_check
             check ((user_type)::text = ANY
-                   ((ARRAY ['player'::character varying, 'referee'::character varying, 'administrator'::character varying])::text[]))
+                   ((ARRAY ['player'::character varying, 'referee'::character varying, 'administrator'::character varying])::text[])),
+    tournament_register            boolean     default false                     not null,
+    email                          varchar(255)                                  not null,
+    tournament_registration_status varchar(20) default 'NONE'::character varying not null
 );
 
 alter table users
@@ -24,16 +27,18 @@ create table matches
     match_time    time         not null,
     location      varchar(255) not null,
     referee_id    integer
-        references users,
+                               references users
+                                   on delete set null,
     player1_id    integer
-        references users,
+                               references users
+                                   on delete set null,
     player2_id    integer
-        references users,
+                               references users
+                                   on delete set null,
     player1_score integer,
     player2_score integer
 );
 
 alter table matches
     owner to postgres;
-
 
