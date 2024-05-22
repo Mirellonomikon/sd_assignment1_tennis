@@ -36,8 +36,9 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
         if (open) {
             const fetchUserDetails = async () => {
                 try {
-                    await axios.put(`http://localhost:8081/api/match/${matchId}`, matchDTO, {
-                        headers: { Authorization: `Bearer ${token}` }
+                    const response = await axios.get(`http://localhost:8081/api/user/id`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                        params: { userId }
                     });
                     const user = response.data;
                     setDefaultUser(user);
@@ -107,11 +108,12 @@ const UpdateUserDialog = ({ open, handleClose, userId }) => {
                 );
 
                 for (const match of userMatches) {
-                    await axios.put(`http://localhost:8081/api/match/match/remove`, {}, {
+                    await axios.put(`http://localhost:8081/api/match/remove`, null, {
                         headers: { Authorization: `Bearer ${token}` },
                         params: { matchId: match.id, playerId: userId }
                     });
                 }
+                
             }
 
             await axios.put(`http://localhost:8081/api/user/id`, userDTO, {

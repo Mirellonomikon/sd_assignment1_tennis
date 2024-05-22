@@ -43,7 +43,7 @@ const PlayerSchedule = () => {
 
     const fetchMatches = async () => {
         try {
-            const response = await axios.get(`http://localhost:8081/api/match/player?playerId=${userId}`, {}, {
+            const response = await axios.get(`http://localhost:8081/api/match/player?playerId=${userId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = response.data.map((match) => ({
@@ -126,14 +126,16 @@ const PlayerSchedule = () => {
             );
 
             for (const match of userMatches) {
-                await axios.put(`http://localhost:8081/api/match/remove`, { matchId: match.id, playerId: userId }, {
-                    headers: { Authorization: `Bearer ${token}` }
+                await axios.put(`http://localhost:8081/api/match/remove`, null, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    params: { matchId: match.id, playerId: userId }
                 });
             }
 
-            await axios.put(`http://localhost:8081/api/user/quit-tournament?id=${userId}`, {}, {
+            await axios.put(`http://localhost:8081/api/user/quit-tournament?userId=${userId}`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
+
 
             const updatedUser = { ...JSON.parse(storedUser), isRegisteredInTournament: false, tournamentRegistrationStatus: "NONE" };
             localStorage.setItem('user', JSON.stringify(updatedUser));

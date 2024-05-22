@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -33,10 +35,12 @@ public class Match {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "referee_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private User referee;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "player1_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private User player1;
 
     @Column(name = "player1_score")
@@ -44,6 +48,7 @@ public class Match {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "player2_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private User player2;
 
     @Column(name = "player2_score")

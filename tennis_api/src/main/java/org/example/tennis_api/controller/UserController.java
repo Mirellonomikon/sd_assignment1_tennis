@@ -32,12 +32,6 @@ public class UserController {
         return ResponseEntity.ok(registeredUser);
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<User> loginUser(@RequestBody UserSignInDTO userSignInDTO) throws Exception {
-//            User user = userService.loginUser(userSignInDTO);
-//            return ResponseEntity.ok(user);
-//    }
-
     //permitted for all
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> loginUser(@RequestBody UserSignInDTO userSignInDTO) throws Exception {
@@ -53,9 +47,9 @@ public class UserController {
 
     //permitted for all but checks for id to match token one
     @PutMapping("/update")
-    @PreAuthorize("#id == authentication.principal.id")
-    public ResponseEntity<User> updateCredentials(@RequestParam Integer id, @RequestBody UserUpdateCredentialsDTO userUpdateCredentialsDTO) throws Exception {
-        User updatedUser = userService.updateUserCredentials(userUpdateCredentialsDTO, id);
+    @PreAuthorize("#userId == authentication.principal.id")
+    public ResponseEntity<User> updateCredentials(@RequestParam Integer userId, @RequestBody UserUpdateCredentialsDTO userUpdateCredentialsDTO) throws Exception {
+        User updatedUser = userService.updateUserCredentials(userUpdateCredentialsDTO, userId);
         return ResponseEntity.ok(updatedUser);
     }
 
@@ -69,7 +63,7 @@ public class UserController {
 
     //administrator only
     @GetMapping("/role/{role}")
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    @PreAuthorize("hasRole('ADMINISTRATOR') or hasRole('REFEREE')")
     public ResponseEntity<List<User>> getUserByRole(@PathVariable String role) {
         List<User> users = userService.findUserByRole(role);
         return ResponseEntity.ok(users);
@@ -85,9 +79,9 @@ public class UserController {
 
     //player only, but checks for id to match token one
     @PutMapping("/quit-tournament")
-    @PreAuthorize("#id == authentication.principal.id and hasRole('PLAYER')")
-    public ResponseEntity<User> userTournamentStatus(@RequestParam Integer id) throws Exception {
-        User updatedUser = userService.quitTournamentUser(id);
+    @PreAuthorize("hasRole('PLAYER') and #userId == authentication.principal.id")
+    public ResponseEntity<User> userTournamentStatus(@RequestParam Integer userId) throws Exception {
+        User updatedUser = userService.quitTournamentUser(userId);
         return ResponseEntity.ok(updatedUser);
     }
 

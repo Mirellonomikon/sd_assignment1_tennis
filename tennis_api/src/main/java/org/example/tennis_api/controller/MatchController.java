@@ -45,7 +45,7 @@ public class MatchController {
 
     //administrator only
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'PLAYER', 'REFEREE')")
     public ResponseEntity<List<Match>> getAllMatches() {
         List<Match> matches = matchService.findAllMatches();
         return ResponseEntity.ok(matches);
@@ -69,7 +69,7 @@ public class MatchController {
 
     //player only but checks for id to match token one
     @GetMapping("/player")
-    @PreAuthorize("hasRole('PLAYER') and (#playerId == authentication.principal.id)")
+    @PreAuthorize("hasRole('PLAYER') and #playerId == authentication.principal.id")
     public ResponseEntity<List<Match>> getMatchesByPlayerId(@RequestParam Integer playerId) {
         List<Match> matches = matchService.findAllMatchesByPlayerId(playerId);
         return ResponseEntity.ok(matches);
@@ -92,8 +92,8 @@ public class MatchController {
     }
 
     //allowed for administrator and player but for player checks for id to match token one
-    @PutMapping("/match/remove")
-    @PreAuthorize("(hasRole('ADMINISTRATOR')) or (hasRole('PLAYER') and #playerId == authentication.principal.id)")
+    @PutMapping("/remove")
+    @PreAuthorize("hasRole('ADMINISTRATOR') or (hasRole('PLAYER') and #playerId == authentication.principal.id)")
     public ResponseEntity<Match> removePlayerFromMatch(@RequestParam Integer matchId, @RequestParam Integer playerId) {
         Match updatedMatch = matchService.removePlayerFromMatch(matchId, playerId);
         return ResponseEntity.ok(updatedMatch);
@@ -101,7 +101,7 @@ public class MatchController {
 
     //referee only, checks for referee attribute of match to be updated to match id of user
     @PutMapping("/match/score")
-    @PreAuthorize("hasRole('REFEREE') and @matchServiceImpl.findMatchRef(matchId) == authentication.principal.id")
+    @PreAuthorize("hasRole('REFEREE') and @matchServiceImpl.findMatchRef(#matchId) == authentication.principal.id")
     public ResponseEntity<Match> updateMatchScore(@RequestParam Integer matchId, @RequestBody Map<String, Integer> scoreData) throws Exception {
         Integer player1Score = scoreData.getOrDefault("player1Score", null);
         Integer player2Score = scoreData.getOrDefault("player2Score", null);
